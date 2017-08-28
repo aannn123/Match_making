@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title> {% block title %} {% endblock %}</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Logo icon title -->
+    <link rel="shortcut icon" href="(http://app.unbounce.com/favicon.ico)"/>
+    <link href="assets/images/logo.png"
+     rel="shortcut icon" type="image/x-icon" />
+    <!-- CSS bootstrap -->
+    <link rel="stylesheet" href="assets/css/bootstrap3.min.css" >
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="assets/css/bootstrap-theme3.min.css">
+    <!-- CSS And JS sweat alert -->
+    <link rel="stylesheet" href="assets/css/sweetalert.min.css">
+    <script src="assets/js/sweetalert.min.js"></script>
+
+   <!--  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.3.11/css/AdminLTE.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.3.11/css/skins/_all-skins.css"> -->
+
+    <!-- CSS Font Awesome   -->
+    <link rel="stylesheet" href="assets/css/font-awesome.min.css">
+
+    <!-- <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"> -->
+   <!--  
+    <link rel="stylesheet" href="/css/bootstrap-responsive.min.css" />
+    <link rel="stylesheet" href="/css/fullcalendar.css" />
+    <link rel="stylesheet" href="/css/matrix-style.css" />
+    <link rel="stylesheet" href="/css/matrix-media.css" />
+    <link href="font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/jquery.gritter.css" /> -->
+
+    <!-- <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,700,800" rel="stylesheet" type="text/css"> -->
+</head>
+<div class="input-group">
+  <span class="input-group-addon" id="basic-addon1">@</span>
+  <input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon1">
+</div>
+
+<div class="input-group">
+  <input type="text" class="form-control" placeholder="Recipient's username" aria-describedby="basic-addon2">
+  <span class="input-group-addon" id="basic-addon2">@example.com</span>
+</div>
+
+<div class="input-group">
+  <span class="input-group-addon">$</span>
+  <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+  <span class="input-group-addon">.00</span>
+</div>
+
+<label for="basic-url">Your vanity URL</label>
+<div class="input-group">
+  <span class="input-group-addon" id="basic-addon3">https://example.com/users/</span>
+  <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3">
+</div>
+    <!-- <section id="main" class="content"> -->
+        <div style="padding-left:5px; padding-right:5px; padding-top:0px;" class="container">
+            {# {% include 'templates/partials/flash.twig' %} #}
+            <div class="row">
+                <div style="padding-left:25px;" class="hidden-xs col-md-3">
+                  {#  {% include 'templates/partials/sidebar-nav.twig' %} #}
+                </div>
+                <div style="padding:0px;" class="col-md-9">
+                    {% block content %} {% endblock %}
+                </div>
+            </div>
+        </div>
+    <!-- </section> -->
+  
+    <!-- <footer style="color:white; width:100%; padding:17px;"id="footer">
+        <center><strong> &copy; 2017
+            <a href="http://blog.mitschool.co.id/"><i>MIT School</i></a></strong></center>
+    </footer> -->
+  </div>
+</div>
+
+  <script>
+     CKEDITOR.replace( 'editor1' );
+ </script>
+
+<!-- js jquery -->
+ <script src="assets/js/jquery-3.2.1.min.js"></script>
+<!-- Include a polyfill for ES6 Promises (optional) for IE11 and Android browser -->
+<!-- js core js -->
+ <script src="assets/js/core.js"></script>
+<!-- js bootrap -->
+ <script src="assets/js/bootstrap3.min.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.3.11/js/app.min.js"></script> -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.3.11/js/demo.js"></script> -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-formhelpers/2.3.0/js/bootstrap-formhelpers.min.js">
+</script>
+<!-- class active panel -->
+<script>
+   // $("#panel2").slideUp(200).delay(1000).slideDown(1000);
+        $('#btn1').on('click', function() {
+            $("#panel1").slideToggle(200);
+        });
+        $('#btn2').on('click', function() {
+            $("#panel2").slideToggle(200);
+        });
+</script>
+<!-- js upload image and ajax -->
+<script>
+$(document).ready(function (e) {
+$("#uploadimage").on('submit',(function(e) {
+e.preventDefault();
+$("#message").empty();
+$('#loading').show();
+$.ajax({
+url: "ajax_php_file.php", // Url to which the request is send
+type: "POST",             // Type of request to be send, called as method
+data: new FormData(this), // Data sent to server, a set of key/value pairs (i.e. form fields and values)
+contentType: false,       // The content type used when sending data to the server.
+cache: false,             // To unable request pages to be cached
+processData:false,        // To send DOMDocument or non processed data file it is set to false
+success: function(data)   // A function to be called if request succeeds
+{
+$('#loading').hide();
+$("#message").html(data);
+}
+});
+}));
+
+// Function to preview image after validation
+$(function() {
+$("#file").change(function() {
+$("#message").empty(); // To remove the previous error message
+var file = this.files[0];
+var imagefile = file.type;
+var match= ["image/jpeg","image/png","image/jpg"];
+if(!((imagefile==match[0]) || (imagefile==match[1]) || (imagefile==match[2])))
+{
+$('#previewing').attr('src','noimage.png');
+$("#message").html("<p id='error'>Please Select A valid Image File</p>"+"<h4>Note</h4>"+"<span id='error_message'>Only jpeg, jpg and png Images type allowed</span>");
+return false;
+}
+else
+{
+var reader = new FileReader();
+reader.onload = imageIsLoaded;
+reader.readAsDataURL(this.files[0]);
+}
+});
+});
+function imageIsLoaded(e) {
+$("#file").css("color","green");
+$('#image_preview').css("display", "block");
+$('#previewing').attr('src', e.target.result);
+$('#previewing').attr('width', '250px');
+$('#previewing').attr('height', '230px');
+};
+});
+$(document).ready(function() {
+    $('#example2').DataTable();
+} );
+</script>
+{% block script %} {% endblock %}
+</body>
+</html>

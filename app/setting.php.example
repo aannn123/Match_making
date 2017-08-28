@@ -1,0 +1,43 @@
+<?php
+
+return [
+	//setting display error
+	'displayErrorDetails'	=> true,
+
+	'addContentLengthHeader' => false,
+
+	//setting timezone
+	'timezone'	=> 'Asia/Jakarta',
+
+	//setting language
+	'lang'	=> [
+		'default'	=> 'en',
+	],
+
+	//setting db (with doctrine)
+	'db'	=> [
+		'url'	=> 'mysql://root:nrd113@db/reporting-app',
+	],
+
+	'determineRouteBeforeAppMiddleware' => true,
+
+	//setting language
+	'lang'	=> [
+		'default'	=> 'en',
+	],
+
+	// Setting View
+	'view' => [
+		'path'	=>	__DIR__ . '/../views',
+		'twig'	=> 	[
+			'cache'	=>	false,
+		]
+	],
+
+	'reporting' => [
+		   'base_uri' => 'http://localhost/Reporting-App/public/',
+		   'headers' => [
+			   'key' => $_ENV['REPORTING_API_KEY'],
+		   ],
+	   ],
+];
