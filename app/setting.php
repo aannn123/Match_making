@@ -1,6 +1,7 @@
 <?php
 
 return [
+
 	//setting display error
 	'displayErrorDetails'	=> true,
 
