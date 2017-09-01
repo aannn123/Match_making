@@ -24,6 +24,7 @@ class UsersSeed extends AbstractSeed
             'role'     => 1,
             'password' => password_hash('admin123', PASSWORD_DEFAULT),
             'status'   => 1,
+            'accepted_by' => 1
         ];
 
         $data[] = [
@@ -36,6 +37,7 @@ class UsersSeed extends AbstractSeed
             'role'     => 0,
             'password' => password_hash('farhan123  ', PASSWORD_DEFAULT),
             'status'   => 0,
+            'accepted_by' => 1
         ];
 
         $data[] = [
@@ -48,6 +50,33 @@ class UsersSeed extends AbstractSeed
             'role'     => 0,
             'password' => password_hash('yazid123  ', PASSWORD_DEFAULT),
             'status'   => 0,
+            'accepted_by' => 1
+        ];
+
+        $data[] = [
+            'username' => 'alya',
+            'gender'   => 'perempuan',
+            'email'    => 'alya123@gmail.com',
+            'phone'    => '089604702886',
+            'photo'    => 'user.png',
+            'ktp'      => 'user.png',
+            'role'     => 0,
+            'password' => password_hash('alya123  ', PASSWORD_DEFAULT),
+            'status'   => 0,
+            'accepted_by' => 1
+        ];
+
+        $data[] = [
+            'username' => 'nadia',
+            'gender'   => 'perempuan',
+            'email'    => 'nadia@gmail.com',
+            'phone'    => '089604702886',
+            'photo'    => 'user.png',
+            'ktp'      => 'user.png',
+            'role'     => 0,
+            'password' => password_hash('nadia123  ', PASSWORD_DEFAULT),
+            'status'   => 0,
+            'accepted_by' => 1
         ];
 
         $this->insert('users', $data);

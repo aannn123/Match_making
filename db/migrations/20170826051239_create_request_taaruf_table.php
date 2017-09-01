@@ -32,8 +32,8 @@ class CreateRequestTaarufTable extends AbstractMigration
                   ->addColumn('id_terequest', 'integer')
                   ->addColumn('status', 'integer', ['limit' => 3, 'default' => 0])
                   ->addColumn('blokir', 'integer', ['limit' => 1, 'default' => 0])
-                  ->addColumn('update_at', 'datetime')
-                  ->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
+                  ->addColumn('updated_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP','update' => 'CURRENT_TIMESTAMP'])
+                  ->addColumn('created_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
                   ->addForeignKey('id_perequest', 'users', 'id')
                   ->addForeignKey('id_terequest', 'users', 'id')
                   ->create();

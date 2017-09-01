@@ -25,6 +25,32 @@ abstract class BaseModel
         return $query->fetchAll();
     }
 
+    public function update(array $data, $column, $value)
+    {
+        $columns = [];
+        $paramData = [];
+        $qb = $this->db->createQueryBuilder();
+
+        $qb->update($this->table);
+        foreach ($data as $key => $values) {
+            $columns[$key] = ':'.$key;
+            $paramData[$key] = $values;
+
+            $qb->set($key, $columns[$key]);
+        }
+        try {
+            $qb->where( $column.'='. $value)
+                        ->setParameters($paramData)
+                        ->execute();
+            return true;
+        } catch (Exception $e) {
+            return false;
+        }
+
+
+
+
+    }
     // Trash
     public function getAllTrash()
     {
@@ -68,6 +94,22 @@ abstract class BaseModel
             ->setParameter($param, $value)
             ->where($column . ' = '. $param);
         $result = $qb->execute();
+        return $result->fetch();
+    }
+
+    public function findWithoutDelete($column, $value)
+    {
+        $param = ':'.$column;
+        $qb = $this->db->createQueryBuilder();
+
+        $qb->select($this->column)
+           ->from($this->table)
+           ->where($column . ' = '. $param)
+           ->setParameter($param, $value);
+           // echo $this->qb->getSQL();
+           // die();
+        $result = $qb->execute();
+
         return $result->fetch();
     }
 

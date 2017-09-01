@@ -17,7 +17,7 @@ environments:
     development:
         adapter: mysql
         host: localhost
-        name: match-making
+        name: mach-making
         user: root
         pass: 'mustaqim'
         port: 3306

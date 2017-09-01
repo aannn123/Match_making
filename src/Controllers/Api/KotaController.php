@@ -1,14 +1,18 @@
 <?php 
 
-namespace App\Controllers\api;
+namespace App\Controllers\Api;
 
 use App\Models\KotaModel;
+use App\Models\Users\UserToken;
 
 class KotaController extends BaseController
 {
     public function getAllKota($request, $response)
     {
         $kota = new KotaModel($this->db);
+        $userToken = new UserToken($this->db);
+        $token = $request->getHeader('Authorization')[0];
+        $userId = $userToken->getUserId($token);
         $get = $kota->getAllKota();
         $countKota = count($get);
         $query = $request->getQueryParams();
@@ -64,6 +68,7 @@ class KotaController extends BaseController
         $input  = $request->getParsedBody();
         $findkota = $kota->find('nama', $input['nama']);
         $find = $kota->find('id', $args['id']);
+        
         $this->validator->rule('required', ['nama', 'id_provinsi']);
 
         if ($this->validator->validate()) {

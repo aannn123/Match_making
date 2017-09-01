@@ -1,6 +1,6 @@
 <?php 
 
-namespace App\Controllers\api;
+namespace App\Controllers\Api;
 
 use App\Models\ProvinsiModel;
 use App\Models\NegaraModel;

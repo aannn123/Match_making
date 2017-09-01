@@ -1,8 +1,8 @@
-<?php 
+<?php
 
 namespace App\Models\Users;
 
-use App\Models\Users\BaseModel;
+use App\Models\BaseModel;
 
 class UserToken extends BaseModel
 {
@@ -13,9 +13,10 @@ class UserToken extends BaseModel
     {
         $data = [
             'user_id' => $id,
-            'token'   => md5(openssl_random_pseudo_bytes(8)),
-            'login_at' => date('Y-m-d H:i:s', strtotime('+2 hour')),
-        ];  
+            'token' => md5(openssl_random_pseudo_bytes(8)),
+            'login_at' => date('Y-m-d H:i:s'),
+            'expired_date' => date('Y-m-d H:i:s', strtotime('+1 hour'))
+        ];
 
         $findUserId = $this->find('user_id', $id);
 
@@ -51,21 +52,22 @@ class UserToken extends BaseModel
 
         $qb = $this->db->createQueryBuilder();
         $qb->delete($this->table)
-           ->where($columnId. ' = '. $param)
+           ->where($columnId.' = '. $param)
            ->setParameter($param, $id)
            ->execute();
-
     }
 
     public function getUserId($token)
     {
-
         $qb = $this->db->createQueryBuilder();
         $qb->select('*')
-           ->from($this->table)
-           ->setParameter(':token', $token)
-           ->where( 'token = :token');
+            ->from($this->table)
+            ->setParameter(':token', $token)
+            ->where( 'token = :token');
         $result = $qb->execute();
         return $result->fetch()['user_id'];
     }
+
+    // public function geFindImage($)
+
 }

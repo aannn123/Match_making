@@ -33,8 +33,8 @@ class CreatePoligamiTable extends AbstractMigration
                   ->addColumn('penjelasan_kesiapan', 'text')
                   ->addColumn('alasan_poligami', 'text')
                   ->addColumn('kondisi_istri', 'enum', ['values' =>  ['belum mengizinkan', 'sudah mengizinkan', 'mendukung dan membantu mencarikan', 'belum punya istri']])
-                  ->addColumn('update_at', 'datetime')
-                  ->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
+                  ->addColumn('updated_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP','update' => 'CURRENT_TIMESTAMP'])
+                  ->addColumn('created_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
                   ->addIndex('user_id', ['unique' => true])
                   ->addForeignKey('user_id', 'users', 'id')
                   ->create();

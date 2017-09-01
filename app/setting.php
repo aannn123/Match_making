@@ -17,7 +17,7 @@ return [
 
 	//setting db (with doctrine)
 	'db'	=> [
-		'url'	=> 'mysql://root:mustaqim@localhost/match-making',
+		'url'	=> 'mysql://root:mustaqim@localhost/mach-making',
 	],
 
 	'determineRouteBeforeAppMiddleware' => true,

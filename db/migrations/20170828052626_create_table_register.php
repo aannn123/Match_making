@@ -2,7 +2,7 @@
 
 use Phinx\Migration\AbstractMigration;
 
-class CreateDipoligamiTable extends AbstractMigration
+class CreateTableRegister extends AbstractMigration
 {
     /**
      * Change Method.
@@ -27,14 +27,11 @@ class CreateDipoligamiTable extends AbstractMigration
      */
     public function change()
     {
-         $dipoligami = $this->table('dipoligami');
-             $dipoligami->addColumn('user_id', 'integer')
-                  ->addColumn('kesiapan', 'enum', ['values' => ['bersedia', 'kurang yakin', 'tidak bersedia']])
-                  ->addColumn('penjelasan_kesiapan', 'text')
-                  ->addColumn('updated_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP','update' => 'CURRENT_TIMESTAMP'])
-                  ->addColumn('created_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
-                  ->addIndex('user_id', ['unique' => true])
-                  ->addForeignKey('user_id', 'users', 'id')
-                  ->create();
+        $tokens = $this->table('registers');
+        $tokens ->addColumn('user_id', 'integer')
+                ->addColumn('token', 'string')
+                ->addColumn('expired_date', 'datetime')
+                ->addForeignKey('user_id', 'users', 'id')
+                ->create();
     }
 }
