@@ -10,6 +10,34 @@ use App\Controllers\Api\BaseController;
 
 class KeseharianController extends BaseController
 {
+    public function getAll($request, $response)
+    {
+        $keseharian = new KeseharianModel($this->db);
+        $userToken = new UserToken($this->db);
+        $token = $request->getHeader('Authorization')[0];
+        $userId = $userToken->getUserId($token);
+        $get = $keseharian->getAllData();
+        $countKeseharian = count($get);
+        $query = $request->getQueryParams();
+        if ($get) {
+            $page = !$request->getQueryParam('page') ? 1 : $request->getQueryParam('page');
+            $getKeseharian = $keseharian->getAllData()->setPaginate($page, 5);
+
+            if ($getKeseharian) {
+                $data = $this->responseDetail(200, false,  'Data tersedia', [
+                        'data'          =>  $getKeseharian['data'],
+                        'pagination'    =>  $getKeseharian['pagination'],
+                    ]);
+            } else {
+                $data = $this->responseDetail(404, true, 'Data tidak ditemukan');
+            }
+        } else {
+            $data = $this->responseDetail(204, false, 'Tidak ada konten');
+        }
+
+        return $data;
+    }
+
     public function createKeseharian($request, $response)
     {
         $keseharian = new KeseharianModel($this->db);

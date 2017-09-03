@@ -9,6 +9,34 @@ use App\Controllers\Api\BaseController;
 
 class LatarBelakangController extends BaseController
 {
+    public function getAll($request, $response)
+    {
+        $latar = new LatarBelakangModel($this->db);
+        $userToken = new UserToken($this->db);
+        $token = $request->getHeader('Authorization')[0];
+        $userId = $userToken->getUserId($token);
+        $get = $latar->getAllData();
+        $countLatar = count($get);
+        $query = $request->getQueryParams();
+        if ($get) {
+            $page = !$request->getQueryParam('page') ? 1 : $request->getQueryParam('page');
+            $getLatar = $latar->getAllData()->setPaginate($page, 5);
+
+            if ($getLatar) {
+                $data = $this->responseDetail(200, false,  'Data tersedia', [
+                        'data'          =>  $getLatar['data'],
+                        'pagination'    =>  $getLatar['pagination'],
+                    ]);
+            } else {
+                $data = $this->responseDetail(404, true, 'Data tidak ditemukan');
+            }
+        } else {
+            $data = $this->responseDetail(204, false, 'Tidak ada konten');
+        }
+
+        return $data;
+    }
+
     public function createLatarBelakang($request, $response)
     {
         $latar = new LatarBelakangModel($this->db);

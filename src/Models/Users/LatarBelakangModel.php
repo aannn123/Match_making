@@ -48,5 +48,4 @@ class LatarBelakangModel extends BaseModel
         $this->update($data, 'user_id', $data['user_id']);
         return $this->db->lastInsertId();
     }
-
 }

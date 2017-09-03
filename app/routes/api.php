@@ -2,9 +2,12 @@
 
 $app->get('/activateaccount/{token}', 'App\Controllers\Api\Users\UserController:activateAccount')->setName('api.activate');
 
+
 $app->group('/api', function() use ($app, $container) {
+    $app->post('/search', 'App\Controllers\Api\Users\UserController:searchUser')->setName('api.search.User');
     $app->get('/', 'App\Controllers\Api\HomeController:index')->setName('home');
     $app->post('/register', 'App\Controllers\Api\Users\UserController:register')->setName('register');
+    $app->post('/{id}/register/change-image', 'App\Controllers\Api\Users\UserController:postImage')->setname('api.user.image');
     $app->post('/login', 'App\Controllers\Api\Users\UserController:login')->setname('api.user.login');
     $app->post('/reset', 'App\Controllers\Api\Users\UserController:forgotPassword')->setName('api.reset');
     $app->get('/password/reset/{token}', 'App\Controllers\Api\Users\UserController:getResetPassword')->setName('api.get.reset');
@@ -59,15 +62,26 @@ $app->group('/api', function() use ($app, $container) {
         });
 
         $app->group('/keseharian', function() use ($app, $container) {
+            $app->get('', 'App\Controllers\Api\Users\KeseharianController:getAll');
+
             $app->post('/create', 'App\Controllers\Api\Users\KeseharianController:createKeseharian');
             $app->put('/update', 'App\Controllers\Api\Users\KeseharianController:updateKeseharian');
             $app->get('/find/{id}', 'App\Controllers\Api\Users\KeseharianController:findData');
         });
 
         $app->group('/latar-belakang', function() use ($app, $container) {
+            $app->get('', 'App\Controllers\Api\Users\LatarBelakangController:getAll');
             $app->post('/create', 'App\Controllers\Api\Users\LatarBelakangController:createLatarBelakang');
             $app->put('/update', 'App\Controllers\Api\Users\LatarBelakangController:updateLatarBelakang');
             $app->get('/find/{id}', 'App\Controllers\Api\Users\LatarBelakangController:findData');
+        });
+
+        $app->group('/poligami', function() use ($app, $container) {
+            $app->get('', 'App\Controllers\Api\Users\Poligami\PoligamiController:getAll');
+            $app->post('/create', 'App\Controllers\Api\Users\Poligami\PoligamiController:createPoligami');
+            $app->put('/update', 'App\Controllers\Api\Users\Poligami\PoligamiController:updatePoligami');
+            $app->get('/find/{id}', 'App\Controllers\Api\Users\Poligami\PoligamiController:findData');
+
         });
 
     });

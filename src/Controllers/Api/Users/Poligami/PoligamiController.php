@@ -1,28 +1,29 @@
 <?php 
 
-namespace App\Controllers\Api\Users;
+namespace App\Controllers\Api\Users\Poligami;
 
-use App\Models\Users\ProfilModel;
-use App\Models\Users\UserToken;
 use App\Models\Users\UserModel;
+use App\Models\Users\UserToken;
+use App\Models\Users\Poligami\PoligamiModel;
 use App\Controllers\Api\BaseController;
 
-class ProfilController extends BaseController
+
+class PoligamiController extends BaseController
 {
-    public function showProfileUser($request, $response)
+    public function getAll($request, $response)
     {
-        $profil = new ProfilModel($this->db);
-        $get = $profil->joinProfile();
-        $countUser = count($get);
+        $poligami = new PoligamiModel($this->db);
+        $get = $poligami->getAllData();
+        $count = count($get);
         $query = $request->getQueryParams();
         if ($get) {
             $page = !$request->getQueryParam('page') ? 1 : $request->getQueryParam('page');
-            $getUser = $profil->joinProfile()->setPaginate($page, 5);
+            $getData = $poligami->getAllData()->setPaginate($page, 5);
 
-            if ($getUser) {
+            if ($getData) {
                 $data = $this->responseDetail(200, false,  'Data tersedia', [
-                        'data'          =>  $getUser['data'],
-                        'pagination'    =>  $getUser['pagination'],
+                        'data'          =>  $getData['data'],
+                        'pagination'    =>  $getData['pagination'],
                     ]);
             } else {
                 $data = $this->responseDetail(404, true, 'Data tidak ditemukan');
@@ -34,46 +35,45 @@ class ProfilController extends BaseController
         return $data;
     }
 
-    public function createProfile($request, $response)
+    public function createPoligami($request, $response)
     {
-        $profile = new ProfilModel($this->db);
+        $poligami = new PoligamiModel($this->db);
         $UserToken = new UserToken($this->db);
         $token = $request->getHeader('Authorization')[0];
         $userId = $UserToken->getUserId($token);;
         // var_dump($userId);die();
-        $this->validator->rule('required', ['nama_lengkap', 'tanggal_lahir', 'tempat_lahir', 'umur', 'alamat', 'kota', 'provinsi', 'kewarganegaraan', 'target_menikah', 'tentang_saya', 'pasangan_harapan']);
+        
+        $this->validator->rule('required', ['kesiapan', 'penjelasan_kesiapan', 'alasan_poligami', 'kondisi_istri']);
 
         if ($this->validator->validate()) {
-            $create = $profile->createProfil($request->getParsedBody(), $userId['Id']);
-            $find = $profile->find('id', $create);
+            $create = $poligami->createPoligami($request->getParsedBody(), $userId);
+            // var_dump($create);die();
+            $find = $poligami->find('id', $create);
             $data = $this->responseDetail(201, false, 'Profile berhasil dibuat', [
                     'data' => $find,
                 ]);
         } else {
             $data = $this->responseDetail(400, true, $this->validator->errors());
         }   
-
             return $data;
     }
 
-
-    public function updateProfile($request, $response, $args)
+    public function updatePoligami($request, $response, $args)
     {
-        $user   = new UserModel($this->db);
+        $user = new UserModel($this->db);
         $userToken = new UserToken($this->db);
         $token = $request->getHeader('Authorization')[0];
-        $user = $userToken->getUserId($token);
-        $profil = new ProfilModel($this->db);
+        $userId = $userToken->getUserId($token);
+        $poligami = new PoligamiModel($this->db);
 
-        $find   = $profil->findWithoutDelete('user_id', $user['id']);
-
+        $find = $poligami->findWithoutDelete('user_id', $userId['id']);
         if ($find) {
             $datainput  = $request->getParsedBody();
-            $datainput['user_id'] = $user['id'];
+            $datainput['user_id'] = $userId['id'];
 
             try {
-                $profil->updateProfil($datainput);
-                $find  = $profil->findWithoutDelete('user_id', $user['id']);
+                $poligami->updatePoligami($datainput);
+                $find       = $poligami->findWithoutDelete('user_id', $userId['id']);
 
                 $data = $this->responseDetail(200, false, 'Data telah terupdate', [
                         'data'  => $find
@@ -89,24 +89,24 @@ class ProfilController extends BaseController
         return $data;
     }
 
-    public function findProfil($request, $response, $args)
+
+    public function findData($request, $response, $args)
     {
-        $profil = new ProfilModel($this->db);
+        $poligami = new PoligamiModel($this->db);
         $userToken = new UserToken($this->db);
         $token = $request->getHeader('Authorization')[0];
         $userId = $userToken->getUserId($token);
 
-        $findProfil = $profil->find('user_id', $args['id']);
+        $find = $poligami->find('user_id', $args['id']);
 
-        if ($findProfil) {
-            $data = $this->responseDetail(200, false, 'Data profile user id '."". $args['id']." ".'tersedia', [
-                    'data' => $findProfil
+        if ($find) {
+            $data = $this->responseDetail(200, false, 'Data poligami user tersedia', [
+                    'data' => $find
                 ]);
         } else {
-            $data = $this->responseDetail(404, true, 'Data profil tidak ditemukan');
+            $data = $this->responseDetail(200, false, 'Data poligami user tidak ditemukan');
         }
 
-            return $data;
+        return $data;
     }
 }
-                

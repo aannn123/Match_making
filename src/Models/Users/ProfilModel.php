@@ -50,12 +50,33 @@ class ProfilModel extends BaseModel
         $this->update($data, 'user_id', $data['user_id']);
         return $this->db->lastInsertId();
     }
-
-    public function getAllProfilUser()
+    
+    public function search($val, $id)
     {
         $qb = $this->db->createQueryBuilder();
         $this->query = $qb->select('*')
-            ->from($this->table);
+                 ->from($this->table)
+                 ->where('nama_lengkap LIKE :val')
+                 ->orWhere('umur LIKE :val')
+                 // ->orWhere('kota LIKE :val')
+                 ->andWhere('user_id != '. $id)
+                 // ->andWhere('status != 1')
+                 // ->andWhere('deleted = 0')
+                 ->setParameter('val', '%'.$val.'%');
+
+        $result = $this->query->execute();
+
+        return $result->fetchAll();
+    }
+
+   public function joinProfile()
+    {
+        $qb = $this->db->createQueryBuilder();
+        $this->query = $qb->select('prof.*','kot.nama as kota','prov.nama as provinsi','negara.nama as kewarganegaraan')
+            ->from($this->table,'prof')
+            ->join('prof','kota', 'kot', 'kot.id = prof.kota')
+            ->join('prof','provinsi', 'prov', 'prov.id = prof.provinsi')
+            ->join('prof','negara', 'negara', 'negara.id = prof.kewarganegaraan');
         $query = $qb->execute();
         return $this;
     }

@@ -72,7 +72,7 @@ class UserModel extends BaseModel
 
     public function search($val, $id)
     {
-        
+       
     }
 
     public function checkDuplicate($username, $email)

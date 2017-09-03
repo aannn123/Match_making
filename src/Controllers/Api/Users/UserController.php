@@ -361,11 +361,6 @@ class UserController extends BaseController
         }
                 return $data;
     }
-    // Method update profile
-    public function update($request, $response, $args)
-    {
-
-    }
     // Method Find User
     public function find($request, $response, $args)
     {
@@ -385,6 +380,77 @@ class UserController extends BaseController
     public function restore($requst, $response, $args)
     {
         
+    }
+
+    public function postImage($request, $response, $args)
+    {
+        $user = new UserModel($this->db);
+
+        $findUser = $user->getUser('id', $args['id']);
+
+        if (!$findUser) {
+            return $this->responseDetail(404, true, 'Akun tidak ditemukan');
+        }
+        if ($this->validator->validate()) {
+
+            if (!empty($request->getUploadedFiles()['image'])) {
+                $storage = new \Upload\Storage\FileSystem('assets/images');
+                $image = new \Upload\File('image',$storage);
+
+                $image->setName(uniqid('img-'.date('Ymd').'-'));
+                $image->addValidations(array(
+                    new \Upload\Validation\Mimetype(array('image/png', 'image/gif',
+                    'image/jpg', 'image/jpeg')),
+                    new \Upload\Validation\Size('5M')
+                ));
+
+                $image->upload();
+                $data['image'] = $image->getNameWithExtension();
+
+                $user->updateData($data, $args['id']);
+                $newUser = $user->getUser('id', $args['id']);
+                if (file_exists('assets/images/'.$findUser['image'])) {
+                    unlink('assets/images/'.$findUser['image']);die();
+                }
+                return  $this->responseDetail(200, false, 'Foto berhasil diunggah', [
+                    'result' => $newUser
+                ]);
+
+            } else {
+                return $this->responseDetail(400, true, 'File foto belum dipilih');
+
+            }
+        } else {
+            $errors = $this->validator->errors();
+
+            return  $this->responseDetail(400, true, $errors);
+        }
+
+    }
+
+    public function searchUser($request, $response)
+    {
+        $user = new UserModel($this->db);
+        $profil = new \App\Models\Users\ProfilModel($this->db);
+        $token = $request->getHeader('Authorization')[0];
+        $userToken = new UserToken($this->db);
+        $userId = $userToken->getUserId($token);
+        $query = $request->getQueryParams();
+
+        $search = $request->getParams()['search'];
+
+        $data['user'] = $profil->search($search, $userId);
+        $data['count'] = count($data['user']);
+
+        if ($data['count']) {
+            $data = $this->responseDetail(200, false, 'Berhasil menampilkan data search '.$search, [
+                    'query'     =>  $query,
+                    'data'    =>  $data
+                ]);
+        } else {
+            $data = $this->responseDetail(404, true, 'Data tidak ditemukan');
+        }
+            return $data;
     }
 
 }

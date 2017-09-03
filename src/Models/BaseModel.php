@@ -14,6 +14,14 @@ abstract class BaseModel
         $this->db = $db;
     }
 
+    public function getAllData()
+    {
+        $qb = $this->db->createQueryBuilder();
+        $this->query = $qb->select('*')
+            ->from($this->table);
+        $query = $qb->execute();
+        return $this;
+    }
     // Get All
     public function getAll()
     {
@@ -265,4 +273,6 @@ abstract class BaseModel
          $result1 = $qb1->execute();
          return $result1->fetch();
      }
+
+  
 }
