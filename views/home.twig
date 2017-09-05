@@ -1,5 +1,44 @@
 {% extends 'templates/default.twig' %}
-{% block title %}Home{% endblock %}
+{% block title %}Match Making{% endblock %}
+{% block wrapper %} Home {% endblock %}
+{% block breadcrumb %} Dashboard {% endblock %}
 {% block content %}
-    daskdmaks
+    <div class="table-responsive">
+    <table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>No</th>
+            <th>Nama Lengkap</th>
+            <th>Tanggal Lahir</th>
+            <th>Tempat Lahir</th>
+            <th>Alamat</th>
+            <th>Umur</th>
+            <th>Kota</th>
+            <th>Provinsi</th>
+            <th>Kewarganegaraa</th>
+            <th>Target Menikah</th>
+            <th>Tentang Saya</th>
+            <th>Pasangan Yang Di Harapakan</th>
+        </tr>
+    </thead>
+        <tbody>
+            {% for profil in data %}
+                <tr>
+                    <td> {{ loop.index }} </td>
+                    <td> {{ profil.nama_lengkap }} </td>
+                    <td> {{ profil.tanggal_lahir }} </td>
+                    <td> {{ profil.tempat_lahir }} </td>
+                    <td> {{ profil.alamat }} </td>
+                    <td> {{ profil.umur }} </td>
+                    <td> {{ profil.kota }} </td>
+                    <td> {{ profil.provinsi }} </td>
+                    <td> {{ profil.kewarganegaraan }} </td>
+                    <td> {{ profil.target_menikah }} </td>
+                    <td> {{ profil.tentang_saya }} </td>
+                    <td> {{ profil.pasangan_harapan }} </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
 {% endblock %}

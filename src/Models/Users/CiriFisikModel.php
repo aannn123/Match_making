@@ -37,7 +37,7 @@ class CiriFisikModel extends BaseModel
             'suku'              => $data['suku'],
             'hijab'             => $data['hijab'],
             'cadar'             => $data['cadar'],
-            'kaca_mata'          => $data['kaca_mata'],
+            'kaca_mata'         => $data['kaca_mata'],
             'status_kesehatan'  => $data['status_kesehatan'],
             'ciri_fisik_lain'   => $data['ciri_fisik_lain']
         ];
@@ -81,5 +81,15 @@ class CiriFisikModel extends BaseModel
 
         $this->update($data, 'user_id', $data['user_id']);
         return $this->db->lastInsertId();
+    }
+
+    public function showFisikPria($val)
+    {
+        $qb = $this->db->createQueryBuilder();
+        $this->query = $qb->select('*')
+            ->from($this->table)
+            ->where('hijab =', null);
+        $query = $qb->execute();
+        return $this;
     }
 }

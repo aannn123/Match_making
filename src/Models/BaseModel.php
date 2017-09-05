@@ -18,7 +18,8 @@ abstract class BaseModel
     {
         $qb = $this->db->createQueryBuilder();
         $this->query = $qb->select('*')
-            ->from($this->table);
+            ->from($this->table)
+            ->orderBy('id', 'desc');
         $query = $qb->execute();
         return $this;
     }

@@ -69,6 +69,28 @@ class ProfilModel extends BaseModel
         return $result->fetchAll();
     }
 
+    public function joinSearch($val, $id)
+    {
+        $qb = $this->db->createQueryBuilder();
+        $this->query = $qb->select('prof.*','kot.nama as kota','prov.nama as provinsi','negara.nama as kewarganegaraan')
+            ->from($this->table,'prof')
+            ->join('prof','kota', 'kot', 'kot.id = prof.kota')
+            ->join('prof','provinsi', 'prov', 'prov.id = prof.provinsi')
+            ->join('prof','negara', 'negara', 'negara.id = prof.kewarganegaraan')
+            ->where('umur LIKE :val')
+                 ->orWhere('kot.nama LIKE :val')
+                 ->orWhere('prov.nama LIKE :val')
+                 ->orWhere('negara.nama LIKE :val')
+                 ->andWhere('user_id != '. $id)
+                 // ->andWhere('status != 1')
+                 // ->andWhere('deleted = 0')
+                 ->setParameter('val', '%'.$val.'%');
+        // $query = $qb->execute();
+                 $result = $this->query->execute();
+        return $result->fetchAll();
+
+    }
+
    public function joinProfile()
     {
         $qb = $this->db->createQueryBuilder();

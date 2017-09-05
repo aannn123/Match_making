@@ -37,13 +37,13 @@ class CreateUserTable extends AbstractMigration
                  ->addColumn('photo', 'string')
                  ->addColumn('ktp', 'string')
                  ->addColumn('role', 'integer', ['limit' => 3, 'default' => 0])
-                 ->addColumn('status', 'integer')
+                 ->addColumn('status', 'string', ['default' => 0])
                  ->addColumn('accepted_by', 'integer')
                  ->addColumn('last_online', 'timestamp')
                  ->addColumn('created_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
                  ->addColumn('updated_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP','update' => 'CURRENT_TIMESTAMP'])
                  ->addColumn('deleted', 'integer', ['limit' => 1, 'default' => 0])
-                 ->addIndex(['username', 'email'], ['unique' => true])
+                 ->addIndex(['username', 'email', 'id'], ['unique' => true])
                  ->create();
     }
 }

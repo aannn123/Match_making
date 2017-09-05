@@ -20,7 +20,6 @@ class UserModel extends BaseModel
             'photo'    => $data['photo'],
             'ktp'      => $data['ktp'],
             'role'     => 0,
-            'status'   => 0,
             'accepted_by' => 0,
         ];
 
@@ -28,9 +27,18 @@ class UserModel extends BaseModel
         return $this->db->lastInsertId();
     }
 
-    public function updateUser(array $data, $id)
+    public function updateUser(array $data, $images, $id)
     {
-        
+        $data = [
+            'username' => $data['username'],
+            'gender'   => $data['gender'],
+            'password' => password_hash($data['password'], PASSWORD_BCRYPT),
+            'email'    => $data['email'],
+            'phone'    => $data['phone'],
+            'photo'    => $images,
+            'ktp'      => $images,
+        ];
+        $this->updateData($data, $id);
     }
 
     public function getUser($column, $val)
@@ -115,5 +123,34 @@ class UserModel extends BaseModel
            ->from('profil')
            ->join('profil', 'user_id', 'users', 'users.id = profil.user_id')
            ->execute();
+    }
+
+    public function setApproveUser($id)
+    {
+        $qb = $this->db->createQueryBuilder();
+        $qb->update($this->table)
+        ->set('status', 1)
+        ->where('id = ' . $id)
+        ->execute();
+
+        return $this->db->lastInsertId();
+    }
+
+    public function setActive($id)
+    {
+        $qb = $this->db->createQueryBuilder();
+        $qb->update($this->table)
+        ->set('status', 2)
+        ->where('id = ' . $id)
+        ->execute();
+    }
+
+    public function acceptedBy($id)
+    {
+        $qb = $this->db->createQueryBuilder();
+        $qb->update($this->table)
+        ->set('accepted_by', 11 )
+        ->where('id = ' . $id)
+        ->execute();
     }
 }

@@ -35,7 +35,7 @@ abstract class BaseController
             $data['pagination'] = null;
         }
         if (empty($data['data'])) {
-            $data['data'] = null;
+            $data['data'] = [];
         }
         if (empty($data['key'])) {
             $data['key'] = null;

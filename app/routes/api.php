@@ -1,9 +1,9 @@
 <?php 
 
-$app->get('/activateaccount/{token}', 'App\Controllers\Api\Users\UserController:activateAccount')->setName('api.activate');
 
 
 $app->group('/api', function() use ($app, $container) {
+    $app->get('/activateaccount/{token}', 'App\Controllers\Api\Users\UserController:activateAccount')->setName('api.activate');
     $app->post('/search', 'App\Controllers\Api\Users\UserController:searchUser')->setName('api.search.User');
     $app->get('/', 'App\Controllers\Api\HomeController:index')->setName('home');
     $app->post('/register', 'App\Controllers\Api\Users\UserController:register')->setName('register');
@@ -15,6 +15,7 @@ $app->group('/api', function() use ($app, $container) {
 
     $app->group('/admin', function() use ($app, $container) {
         $app->get('/setModerator/{id}', 'App\Controllers\Api\AdminController:setModerator');
+        $app->get('/approveUser/{id}', 'App\Controllers\Api\AdminController:approveUser');
 
         $app->group('/negara', function() use ($app, $container) {
             $app->get('', 'App\Controllers\Api\NegaraController:getAllNegara');
@@ -42,11 +43,13 @@ $app->group('/api', function() use ($app, $container) {
     });
 
     $app->group('/user', function() use ($app, $container) {
+        $app->get('', 'App\Controllers\Api\Users\UserController:getAllData')->setName('api.show.user.man');
+        $app->get('/send-request/{id}', 'App\Controllers\Api\Users\UserController:sendRequest')->setName('api.send.request');
         $app->get('/list-user-ikhwan', 'App\Controllers\Api\Users\UserController:getAllUserMan')->setName('api.show.user.man');
         $app->get('/list-user-akhwat', 'App\Controllers\Api\Users\UserController:getAllUserWoman')->setName('api.show.user.woman');
 
         $app->group('/profile', function() use ($app, $container) {
-            $app->get('', 'App\Controllers\Api\Users\ProfilController:showProfileUser');
+            $app->get('', 'App\Controllers\Api\Users\ProfilController:showProfileUser')->setName('api.show.profile');
             $app->post('/create', 'App\Controllers\Api\Users\ProfilController:createProfile');
             $app->put('/update', 'App\Controllers\Api\Users\ProfilController:updateProfile');
             $app->get('/find/{id}', 'App\Controllers\Api\Users\ProfilController:findProfil');
@@ -54,11 +57,14 @@ $app->group('/api', function() use ($app, $container) {
         });
 
         $app->group('/ciri-fisik', function() use ($app, $container) {
-            $app->get('/show', 'App\Controllers\Api\Users\CiriFisikController:getAll');
+            $app->get('/show/pria', 'App\Controllers\Api\Users\CiriFisikController:getAllFisikPria');
+            $app->get('/show/wanita', 'App\Controllers\Api\Users\CiriFisikController:getAllFisikWanita');
             $app->post('/create/pria', 'App\Controllers\Api\Users\CiriFisikController:createCiriFisikPria');
             $app->post('/create/wanita', 'App\Controllers\Api\Users\CiriFisikController:createCiriFisikWanita');            
             $app->put('/update/pria', 'App\Controllers\Api\Users\CiriFisikController:updateFisikPria');   
-            $app->put('/update/wanita', 'App\Controllers\Api\Users\CiriFisikController:updateFisikWanita');            
+            $app->put('/update/wanita', 'App\Controllers\Api\Users\CiriFisikController:updateFisikWanita');  
+            $app->get('/find/{id}', 'App\Controllers\Api\Users\CiriFisikController:findData');
+
         });
 
         $app->group('/keseharian', function() use ($app, $container) {
