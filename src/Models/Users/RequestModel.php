@@ -28,6 +28,46 @@ class RequestModel extends BaseModel
         ->execute();
     }
 
+    public function approveUser($id)
+    {
+        $qb = $this->db->createQueryBuilder();
+        $qb->update($this->table)
+        ->set('status', 2)
+        ->where('id = ' . $id)
+        ->execute();
+    }
+
+    public function blokirUser($id)
+    {
+        $qb = $this->db->createQueryBuilder();
+        $qb->update($this->table)
+        ->set('blokir', 1)
+        ->where('id = ' . $id)
+        ->execute();
+    }
+
+    public function allNotification($id)
+    {
+        $qb = $this->db->createQueryBuilder();
+        $this->query = $qb->select('*')
+            ->from($this->table)
+            ->where('status = 1 && id_terequest = '. $id)
+            ->orderBy('created_at', 'desc');
+        $query = $qb->execute();
+        return $this;
+    }
+
+    public function getAllRequest($id)
+    {
+        $qb = $this->db->createQueryBuilder();
+        $this->query = $qb->select('*')
+            ->from($this->table)
+            ->where('status = 1 && id_perequest = '. $id)
+            ->orderBy('created_at', 'desc');
+        $query = $qb->execute();
+        return $this;
+    }
+
     public function getRequest($column, $val)
     {
        $param = ':'.$column;

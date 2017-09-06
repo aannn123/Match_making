@@ -62,7 +62,7 @@ class UserModel extends BaseModel
         $this->query = $qb->select('*')
             ->from($this->table)
             ->where('gender'. " = ". 1 )
-            ->orderBy('id', 'desc');
+            ->orderBy('created_at', 'desc');
         $query = $qb->execute();
         return $this;
     }
@@ -73,14 +73,9 @@ class UserModel extends BaseModel
         $this->query = $qb->select('*')
             ->from($this->table)
             ->where('gender'. " = ". 2 )
-            ->orderBy('id', 'desc');
+            ->orderBy('created_at', 'desc');
         $query = $qb->execute();
         return $this;
-    }
-
-    public function search($val, $id)
-    {
-       
     }
 
     public function checkDuplicate($username, $email)

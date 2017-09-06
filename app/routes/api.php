@@ -45,6 +45,10 @@ $app->group('/api', function() use ($app, $container) {
     $app->group('/user', function() use ($app, $container) {
         $app->get('', 'App\Controllers\Api\Users\UserController:getAllData')->setName('api.show.user.man');
         $app->get('/send-request/{id}', 'App\Controllers\Api\Users\UserController:sendRequest')->setName('api.send.request');
+        $app->get('/approve-request/{id}', 'App\Controllers\Api\Users\UserController:approveRequest')->setName('api.approve.request');
+        $app->get('/notification', 'App\Controllers\Api\Users\UserController:getAllNotification')->setName('api.notification');
+        $app->get('/notification/blokir/{id}', 'App\Controllers\Api\Users\UserController:blokirRequestUser')->setName('api.notification.blokir');
+        $app->get('/request-all', 'App\Controllers\Api\Users\UserController:getAllRequest')->setName('api.request.all');
         $app->get('/list-user-ikhwan', 'App\Controllers\Api\Users\UserController:getAllUserMan')->setName('api.show.user.man');
         $app->get('/list-user-akhwat', 'App\Controllers\Api\Users\UserController:getAllUserWoman')->setName('api.show.user.woman');
 

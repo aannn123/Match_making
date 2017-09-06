@@ -1,6 +1,7 @@
 <?php
 
 return [
+
 	//setting display error
 	'displayErrorDetails'	=> true,
 
@@ -11,21 +12,25 @@ return [
 
 	//setting language
 	'lang'	=> [
-		'default'	=> 'en',
+		'default'	=> 'id',
 	],
 
 	//setting db (with doctrine)
 	'db'	=> [
-		'url'	=> 'mysql://root:nrd113@db/reporting-app',
+		'url'	=> 'mysql://username:password@localhost/dbname',
 	],
 
 	'determineRouteBeforeAppMiddleware' => true,
 
-	//setting language
-	'lang'	=> [
-		'default'	=> 'en',
-	],
-
+	'reporting' => [
+       'base_uri' => 'http://localhost/Project-Mit/match-making/public/api/',
+       'headers' => [
+           'key' => @$_ENV['REPORTING_API_KEY'],
+           'Accept' => 'application/json',
+           'Content-Type' => 'application/json',
+           'Authorization' => @$_SESSION['key']['key_token']
+       ],
+  ],
 	// Setting View
 	'view' => [
 		'path'	=>	__DIR__ . '/../views',
@@ -33,11 +38,4 @@ return [
 			'cache'	=>	false,
 		]
 	],
-
-	'reporting' => [
-		   'base_uri' => 'http://localhost/Reporting-App/public/',
-		   'headers' => [
-			   'key' => $_ENV['REPORTING_API_KEY'],
-		   ],
-	   ],
 ];

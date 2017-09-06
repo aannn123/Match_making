@@ -346,15 +346,15 @@ class UserController extends BaseController
         $user = new UserModel($this->db);
 
         $findUser = $user->getUser('id', $args['id']);
-        // var_dump($findUser);die();
+
         if (!$findUser) {
-            return $this->responseDetail(404, true, 'Akun tidak ditemukan');
+            $data = $this->responseDetail(404, true, 'Akun tidak ditemukan');
         }
         if ($this->validator->validate()) {
 
-            if (!empty($request->getUploadedFiles()['image'])) {
+            if (!empty($request->getUploadedFiles()['photo'])) {
                 $storage = new \Upload\Storage\FileSystem('assets/images');
-                $image = new \Upload\File('image',$storage);
+                $image = new \Upload\File('photo',$storage);
 
                 $image->setName(uniqid('img-'.date('Ymd').'-'));
                 $image->addValidations(array(
@@ -364,26 +364,27 @@ class UserController extends BaseController
                 ));
 
                 $image->upload();
-                $data['image'] = $image->getNameWithExtension();
+                $data['photo'] = $image->getNameWithExtension();
 
                 $user->updateData($data, $args['id']);
                 $newUser = $user->getUser('id', $args['id']);
-                if (file_exists('assets/images/'.$findUser['image'])) {
-                    unlink('assets/images/'.$findUser['image']);die();
+                if (file_exists('assets/images/'.$findUser['photo'])) {
+                    unlink('assets/images/'.$findUser['photo']);die();
                 }
-                return  $this->responseDetail(200, false, 'Foto berhasil diunggah', [
-                    'result' => $newUser
+                $data =  $this->responseDetail(200, false, 'Foto berhasil diunggah', [
+                    'data' => $newUser
                 ]);
 
             } else {
-                return $this->responseDetail(400, true, 'File foto belum dipilih');
+                $data = $this->responseDetail(400, true, 'File foto belum dipilih');
 
             }
         } else {
             $errors = $this->validator->errors();
 
-            return  $this->responseDetail(400, true, $errors);
+            $data =  $this->responseDetail(400, true, $errors);
         }
+            return $data;   
     }
 
     public function searchUser($request, $response)
@@ -421,7 +422,7 @@ class UserController extends BaseController
 
         $findUser = $requests->findTwo('id_terequest', $args['id'], 'id_perequest', $userId);
         $find = $user->getUser('id', $args['id']);
-        var_dump($find['gender']);die();
+        // var_dump($find['gender']);die();
         $data = [
             'id_terequest'  =>  $args['id'],
             'id_perequest' => $userId,  
@@ -436,6 +437,117 @@ class UserController extends BaseController
                 ]);
         }
         return $data;
+    }
+
+    public function approveRequest($request, $response, $args)
+    {
+        $users = new UserModel($this->db);
+        $requests = new \App\Models\Users\RequestModel($this->db);
+        $userToken = new UserToken($this->db);
+        $token = $request->getHeader('Authorization')[0];
+        $userId = $userToken->getUserId($token);
+
+        $findUser = $requests->find('id_perequest', $args['id']);
+        var_dump($userId);die();
+        if ($findUser) {
+            $approve = $requests->approveUser($userId, $args['id']);
+            // $find = $user->find('id', $approve);
+
+            $data = $this->responseDetail(200, false, 'Berhasil meneriman request', [
+                    'data' => $find
+                ]);
+        } else {
+            $data = $this->responseDetail(200, false, 'Data tidak ditemukan');
+        }
+
+            return $data;
+    }
+
+    public function getAllNotification($request, $response)
+    {
+        $user = new UserModel($this->db);
+        $userToken = new userToken($this->db);
+        $requests = new \App\Models\Users\RequestModel($this->db);
+        $token = $request->getHeader('Authorization')[0];
+        $userId = $userToken->getUserId($token);
+
+        $get = $requests->allNotification($userId);
+        // $gender = $user->find('gender');
+        // var_dump($userId);die();
+        $countUser = count($get);
+        $query = $request->getQueryParams();
+        if ($get) {
+            $page = !$request->getQueryParam('page') ? 1 : $request->getQueryParam('page');
+            $getNotification = $requests->allNotification($userId)->setPaginate($page, 5);
+
+            if ($getNotification) {
+                $data = $this->responseDetail(200, false,  'Data notification tersedia', [
+                        'data'          =>  $getNotification['data'],
+                        'pagination'    =>  $getNotification['pagination'],
+                    ]);
+            } else {
+                $data = $this->responseDetail(404, true, 'Data tidak ditemukan');
+            }
+        } else {
+            $data = $this->responseDetail(204, false, 'Tidak ada konten');
+        }
+
+        return $data;
+    }
+
+    public function getAllRequest($request, $response)
+    {
+        $user = new UserModel($this->db);
+        $userToken = new userToken($this->db);
+        $requests = new \App\Models\Users\RequestModel($this->db);
+        $token = $request->getHeader('Authorization')[0];
+        $userId = $userToken->getUserId($token);
+
+        $get = $requests->getAllRequest($userId);
+        // $gender = $user->find('gender');
+        // var_dump($userId);die();
+        $countUser = count($get);
+        $query = $request->getQueryParams();
+        if ($get) {
+            $page = !$request->getQueryParam('page') ? 1 : $request->getQueryParam('page');
+            $getNotification = $requests->getAllRequest($userId)->setPaginate($page, 5);
+
+            if ($getNotification) {
+                $data = $this->responseDetail(200, false,  'Data notification request', [
+                        'data'          =>  $getNotification['data'],
+                        'pagination'    =>  $getNotification['pagination'],
+                    ]);
+            } else {
+                $data = $this->responseDetail(404, true, 'Data tidak ditemukan');
+            }
+        } else {
+            $data = $this->responseDetail(204, false, 'Tidak ada konten');
+        }
+
+        return $data;
+    }
+
+    public function blokirRequestUser($request, $response, $args)
+    {
+        $user = new UserModel($this->db);
+        $requests = new \App\Models\Users\RequestModel($this->db);
+        $userToken = new UserToken($this->db);
+        $token = $request->getHeader('Authorization')[0];
+        $userId = $userToken->getUserId($token);
+
+        $findUser = $requests->findTwo('id_terequest', $userId, 'id_perequest', $args['id']);
+
+        // var_dump($data);die();
+        if ($findUser) {
+            $user = $requests->blokirUser($data);
+            var_dump($user);die();
+            $data = $this->responseDetail(201, false, 'User berhasil di blokir request', [
+                    'data' => $blokir
+                ]);
+        } else {
+            $data = $this->responseDetail(404, true, 'Data tidak ditemukan');
+        }
+            return $data;
     }
 
 }
