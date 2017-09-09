@@ -7,7 +7,7 @@ use App\Models\BaseModel;
 class UserModel extends BaseModel
 {
     protected $table = 'users';
-    protected $column = ['username', 'gender', 'email', 'phone', 'password', 'photo', 'ktp', 'status', 'accepted_by', 'last_online', 'created_at', 'updated_at'];
+    protected $column = ['id','username', 'gender', 'email', 'phone', 'password', 'photo', 'ktp', 'status', 'accepted_by', 'last_online', 'created_at', 'updated_at'];
 
     public function register(array $data, $images)
     {
@@ -61,7 +61,18 @@ class UserModel extends BaseModel
         $qb = $this->db->createQueryBuilder();
         $this->query = $qb->select('*')
             ->from($this->table)
-            ->where('gender'. " = ". 1 )
+            ->where('gender = 1')
+            ->orderBy('created_at', 'desc');
+        $query = $qb->execute();
+        return $this;
+    }
+
+    public function getAllNewuser()
+    {
+        $qb = $this->db->createQueryBuilder();
+        $this->query = $qb->select('*')
+            ->from($this->table)
+            ->where('status = 0 && role = 0')
             ->orderBy('created_at', 'desc');
         $query = $qb->execute();
         return $this;
@@ -72,7 +83,7 @@ class UserModel extends BaseModel
         $qb = $this->db->createQueryBuilder();
         $this->query = $qb->select('*')
             ->from($this->table)
-            ->where('gender'. " = ". 2 )
+            ->where('gender = 2 ')
             ->orderBy('created_at', 'desc');
         $query = $qb->execute();
         return $this;
@@ -97,7 +108,7 @@ class UserModel extends BaseModel
         $qb = $this->db->createQueryBuilder();
         $qb->update($this->table)
            ->set('role', 2)
-           ->where('id = '. $id)
+           ->where('role = 0 && status = 2 && id = '. $id)
            ->execute();
     }
 

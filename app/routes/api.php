@@ -14,11 +14,17 @@ $app->group('/api', function() use ($app, $container) {
     $app->post('/password/reset', 'App\Controllers\Api\Users\UserController:resetPassword')->setName('api.reset.password');
 
     $app->group('/admin', function() use ($app, $container) {
-        $app->get('/setModerator/{id}', 'App\Controllers\Api\AdminController:setModerator');
-        $app->get('/approveUser/{id}', 'App\Controllers\Api\AdminController:approveUser');
+        $app->get('/setModerator/{id}', 'App\Controllers\Api\AdminController:setModerator')->setName('admin.setModerator');
+        $app->get('/approveUser/{id}', 'App\Controllers\Api\AdminController:approveUser')->setName('admin.approve.user');
+        $app->get('/user/cancel/{id}', 'App\Controllers\Api\AdminController:cancelUser')->setName('admin.cancel.user');
+        $app->get('/get-taaruf', 'App\Controllers\Api\AdminController:getTaaruf')->setName('admin.get.taaruf');
+        $app->get('/get-taaruf/cancel/{perequest}/{terequest}', 'App\Controllers\Api\AdminController:cancelTaaruf');
+        $app->get('/new-user', 'App\Controllers\Api\AdminController:showNewUser')->setName('admin.new.user');
+        $app->get('/show-request-all', 'App\Controllers\Api\AdminController:showRequestAll')->setName('admin.request.all');
+        
 
         $app->group('/negara', function() use ($app, $container) {
-            $app->get('', 'App\Controllers\Api\NegaraController:getAllNegara');
+            $app->get('', 'App\Controllers\Api\NegaraController:getAllNegara')->setName('admin.negara');
             $app->post('/create', 'App\Controllers\Api\NegaraController:createNegara');
             $app->put('/update/{id}', 'App\Controllers\Api\NegaraController:updateNegara');
             $app->delete('/delete/{id}', 'App\Controllers\Api\NegaraController:delete');
@@ -26,7 +32,7 @@ $app->group('/api', function() use ($app, $container) {
         });
 
         $app->group('/provinsi', function() use ($app, $container) {
-            $app->get('', 'App\Controllers\Api\ProvinsiController:getAllprovinsi');
+            $app->get('', 'App\Controllers\Api\ProvinsiController:getAllprovinsi')->setName('admin.provinsi');
             $app->post('/create/{id}', 'App\Controllers\Api\ProvinsiController:createProvinsi');
             $app->put('/update/{id}', 'App\Controllers\Api\ProvinsiController:updateProvinsi');
             $app->get('/find/{id}', 'App\Controllers\Api\ProvinsiController:findProvinsi');
@@ -34,7 +40,7 @@ $app->group('/api', function() use ($app, $container) {
         });
 
         $app->group('/kota', function() use ($app, $container) {
-            $app->get('', 'App\Controllers\Api\KotaController:getAllKota');
+            $app->get('', 'App\Controllers\Api\KotaController:getAllKota')->setName('api.admin.kota');
             $app->post('/create', 'App\Controllers\Api\KotaController:createkota');
             $app->put('/update/{id}', 'App\Controllers\Api\KotaController:updateKota');
             $app->get('/find/{id}', 'App\Controllers\Api\KotaController:findKota');
@@ -43,11 +49,14 @@ $app->group('/api', function() use ($app, $container) {
     });
 
     $app->group('/user', function() use ($app, $container) {
-        $app->get('', 'App\Controllers\Api\Users\UserController:getAllData')->setName('api.show.user.man');
+        $app->get('', 'App\Controllers\Api\Users\UserController:getAllData')->setName('api.show.user');
+        $app->get('/find/{id}', 'App\Controllers\Api\Users\UserController:findByUser')->setName('api.find.user');
+        $app->get('/new', 'App\Controllers\Api\Users\UserController:getAllNewUser')->setName('api.new.user');
         $app->get('/send-request/{id}', 'App\Controllers\Api\Users\UserController:sendRequest')->setName('api.send.request');
         $app->get('/approve-request/{id}', 'App\Controllers\Api\Users\UserController:approveRequest')->setName('api.approve.request');
         $app->get('/notification', 'App\Controllers\Api\Users\UserController:getAllNotification')->setName('api.notification');
-        $app->get('/notification/blokir/{id}', 'App\Controllers\Api\Users\UserController:blokirRequestUser')->setName('api.notification.blokir');
+        $app->get('/notification/blokir/{id}', 'App\Controllers\Api\Users\UserController:blokirRequestUser')->setName('api.notification.blokir.request');
+        $app->get('/notification/blokir', 'App\Controllers\Api\Users\UserController:getAllBlokirRequest')->setName('api.notification.blokir');
         $app->get('/request-all', 'App\Controllers\Api\Users\UserController:getAllRequest')->setName('api.request.all');
         $app->get('/list-user-ikhwan', 'App\Controllers\Api\Users\UserController:getAllUserMan')->setName('api.show.user.man');
         $app->get('/list-user-akhwat', 'App\Controllers\Api\Users\UserController:getAllUserWoman')->setName('api.show.user.woman');
@@ -56,7 +65,7 @@ $app->group('/api', function() use ($app, $container) {
             $app->get('', 'App\Controllers\Api\Users\ProfilController:showProfileUser')->setName('api.show.profile');
             $app->post('/create', 'App\Controllers\Api\Users\ProfilController:createProfile');
             $app->put('/update', 'App\Controllers\Api\Users\ProfilController:updateProfile');
-            $app->get('/find/{id}', 'App\Controllers\Api\Users\ProfilController:findProfil');
+            $app->get('/find/{id}', 'App\Controllers\Api\Users\ProfilController:findProfil')->setName('user.find.profil');
 
         });
 
@@ -67,7 +76,7 @@ $app->group('/api', function() use ($app, $container) {
             $app->post('/create/wanita', 'App\Controllers\Api\Users\CiriFisikController:createCiriFisikWanita');            
             $app->put('/update/pria', 'App\Controllers\Api\Users\CiriFisikController:updateFisikPria');   
             $app->put('/update/wanita', 'App\Controllers\Api\Users\CiriFisikController:updateFisikWanita');  
-            $app->get('/find/{id}', 'App\Controllers\Api\Users\CiriFisikController:findData');
+            $app->get('/find/{id}', 'App\Controllers\Api\Users\CiriFisikController:findData')->setName('user.find.ciri-fisik');
 
         });
 
@@ -76,14 +85,14 @@ $app->group('/api', function() use ($app, $container) {
 
             $app->post('/create', 'App\Controllers\Api\Users\KeseharianController:createKeseharian');
             $app->put('/update', 'App\Controllers\Api\Users\KeseharianController:updateKeseharian');
-            $app->get('/find/{id}', 'App\Controllers\Api\Users\KeseharianController:findData');
+            $app->get('/find/{id}', 'App\Controllers\Api\Users\KeseharianController:findData')->setName('user.find.keseharian');
         });
 
         $app->group('/latar-belakang', function() use ($app, $container) {
-            $app->get('', 'App\Controllers\Api\Users\LatarBelakangController:getAll');
+            $app->get('', 'App\Controllers\Api\Users\LatarBelakangController:getAll')->setName('api.show.latar');
             $app->post('/create', 'App\Controllers\Api\Users\LatarBelakangController:createLatarBelakang');
             $app->put('/update', 'App\Controllers\Api\Users\LatarBelakangController:updateLatarBelakang');
-            $app->get('/find/{id}', 'App\Controllers\Api\Users\LatarBelakangController:findData');
+            $app->get('/find/{id}', 'App\Controllers\Api\Users\LatarBelakangController:findData')->setName('user.find.latar-belakang');
         });
 
         $app->group('/poligami', function() use ($app, $container) {

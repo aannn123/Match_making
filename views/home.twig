@@ -2,91 +2,115 @@
 {% block title %}Match Making{% endblock %}
 {% block wrapper %} Home {% endblock %}
 {% block breadcrumb %} Dashboard {% endblock %}
-{% block bar %}
- <!-- / main menu header-->
-      <!-- main menu content-->
-      <div class="main-menu-content">
-        <ul id="main-menu-navigation" data-menu="menu-navigation" class="navigation navigation-main">
-          <li class=" nav-item"><a href="{{ base_url() }}/home"><i class="icon-home3"></i><span data-i18n="nav.dash.main" class="menu-title">Home</span></a>
-          </li>
-          <li class=" nav-item"><a href="#"><i class="icon-users"></i><span data-i18n="nav.page_layouts.main" class="menu-title">User</span></a>
-            <ul class="menu-content">
-              <li><a href="layout-1-column.html" data-i18n="nav.page_layouts.1_column" class="menu-item">All user</a>
-              </li>
-              <li><a href="layout-2-columns.html" data-i18n="nav.page_layouts.2_columns" class="menu-item">New user</a>
-              </li>
-              <li><a href="layout-boxed.html" data-i18n="nav.page_layouts.boxed_layout" class="menu-item">List user ikhwan</a>
-              </li>
-              <li><a href="layout-static.html" data-i18n="nav.page_layouts.static_layout" class="menu-item">List user akhwat</a>
-              </li>
-            </ul>
-          </li>
-          <li class=" nav-item"><a href="#"><i class="icon-briefcase4"></i><span data-i18n="nav.project.main" class="menu-title">CRUD</span></a>
-            <ul class="menu-content">
-              <li><a href="invoice-template.html" data-i18n="nav.invoice.invoice_template" class="menu-item">Negara</a>
-              </li>
-              <li><a href="gallery-grid.html" data-i18n="nav.gallery_pages.gallery_grid" class="menu-item">Provinsi</a>
-              </li>
-              <li><a href="search-page.html" data-i18n="nav.search_pages.search_page" class="menu-item">Kota</a>
-              </li>
-              <li><a href="search-website.html" data-i18n="nav.search_pages.search_website" class="menu-item">User</a>
-              </li>
-            </ul>
-          </li>
-          <li class=" nav-item"><a href="#"><i class="icon-ios-albums-outline"></i><span data-i18n="nav.cards.main" class="menu-title">Notification</span></a>
-            <ul class="menu-content">
-              <li><a href="card-bootstrap.html" data-i18n="nav.cards.card_bootstrap" class="menu-item">Bootstrap Cards</a>
-              </li>
-              <li><a href="card-actions.html" data-i18n="nav.cards.card_actions" class="menu-item">Card Action</a>
-              </li>
-            </ul>
-          </li>
-          <li class=" navigation-header"><span data-i18n="nav.category.support">Support</span><i data-toggle="tooltip" data-placement="right" data-original-title="Support" class="icon-ellipsis icon-ellipsis"></i>
-          </li>
-          <li class=" nav-item"><a href="https://github.com/pixinvent/robust-free-bootstrap-admin-template/issues"><i class="icon-support"></i><span data-i18n="nav.support_raise_support.main" class="menu-title">Raise Support</span></a>
-          </li>
-          <li class=" nav-item"><a href="https://pixinvent.com/free-bootstrap-template/robust-lite/documentation"><i class="icon-document-text"></i><span data-i18n="nav.support_documentation.main" class="menu-title">Documentation</span></a>
-          </li>
-        </ul>
-      </div>    
-{% endblock %}
 {% block content %}
-    <div class="table-responsive">
-    <table class="table table-bordered table-striped">
-    <thead>
-        <tr>
-            <th>No</th>
-            <th>Nama Lengkap</th>
-            <th>Tanggal Lahir</th>
-            <th>Tempat Lahir</th>
-            <th>Alamat</th>
-            <th>Umur</th>
-            <th>Kota</th>
-            <th>Provinsi</th>
-            <th>Kewarganegaraa</th>
-            <th>Target Menikah</th>
-            <th>Tentang Saya</th>
-            <th>Pasangan Yang Di Harapakan</th>
-        </tr>
-    </thead>
-        <tbody>
-            {% for profil in data %}
-                <tr>
-                    <td> {{ loop.index }} </td>
-                    <td> {{ profil.nama_lengkap }} </td>
-                    <td> {{ profil.tanggal_lahir }} </td>
-                    <td> {{ profil.tempat_lahir }} </td>
-                    <td> {{ profil.alamat }} </td>
-                    <td> {{ profil.umur }} </td>
-                    <td> {{ profil.kota }} </td>
-                    <td> {{ profil.provinsi }} </td>
-                    <td> {{ profil.kewarganegaraan }} </td>
-                    <td> {{ profil.target_menikah }} </td>
-                    <td> {{ profil.tentang_saya }} </td>
-                    <td> {{ profil.pasangan_harapan }} </td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="app-content content container-fluid">
+      <div class="content-wrapper">
+        <div class="content-header row">
+        </div>
+        <div class="content-body"><!-- stats -->
+<div class="row">
+    <div class="col-xl-4 col-lg-6 col-xs-6">
+        <div class="card">
+            <div class="card-body">
+                <div class="card-block">
+                    <div class="media">
+                        <div class="media-body text-xs-left">
+                            <h3 class="pink">{{count_akhwat}}</h3>
+                            <span>List user akhwat</span>
+                        </div>
+                        <div class="media-right media-middle">
+                            <i class="icon-bag2 pink font-large-2 float-xs-right"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+    <div class="col-xl-4 col-lg-6 col-xs-6">
+        <div class="card">
+            <div class="card-body">
+                <div class="card-block">
+                    <div class="media">
+                        <div class="media-body text-xs-left">
+                            <h3 class="teal"> {{count_ikhwan}} </h3>
+                            <span>List user ikhwan</span>
+                        </div>
+                        <div class="media-right media-middle">
+                            <i class="icon-users teal font-large-2 float-xs-right"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-4 col-lg-6 col-xs-6">
+        <div class="card">
+            <div class="card-body">
+                <div class="card-block">
+                    <div class="media">
+                        <div class="media-body text-xs-left">
+                            <h3 class="deep-orange">{{count_new}}</h3>
+                            <span>New user</span>
+                        </div>
+                        <div class="media-right media-middle">
+                            <i class="icon-diagram deep-orange font-large-2 float-xs-right"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-4 col-lg-6 col-xs-6">
+        <div class="card">
+            <div class="card-body">
+                <div class="card-block">
+                    <div class="media">
+                        <div class="media-body text-xs-left">
+                            <h3 class="deep-orange"> {{ count_user }} </h3>
+                            <span>All user</span>
+                        </div>
+                        <div class="media-right media-middle">
+                            <i class="icon-diagram deep-orange font-large-2 float-xs-right"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-4 col-lg-6 col-xs-6">
+        <div class="card">
+            <div class="card-body">
+                <div class="card-block">
+                    <div class="media">
+                        <div class="media-body text-xs-left">
+                            <h3 class="deep-orange">64.89 %</h3>
+                            <span>All moderator</span>
+                        </div>
+                        <div class="media-right media-middle">
+                            <i class="icon-diagram deep-orange font-large-2 float-xs-right"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-4 col-lg-6 col-xs-6">
+        <div class="card">
+            <div class="card-body">
+                <div class="card-block">
+                    <div class="media">
+                        <div class="media-body text-xs-left">
+                            <h3 class="cyan">423</h3>
+                            <span>Approve User</span>
+                        </div>
+                        <div class="media-right media-middle">
+                            <i class="icon-ios-help-outline cyan font-large-2 float-xs-right"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+     
 {% endblock %}

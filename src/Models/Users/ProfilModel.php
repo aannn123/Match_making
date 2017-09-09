@@ -102,4 +102,19 @@ class ProfilModel extends BaseModel
         $query = $qb->execute();
         return $this;
     }
+
+    public function findProfile($column, $value)
+    {
+        $param = ':'.$column;
+        $qb = $this->db->createQueryBuilder();
+        $qb->select('prof.*','kot.nama as kota','prov.nama as provinsi','negara.nama as kewarganegaraan')
+            ->from($this->table,'prof')
+            ->join('prof','kota', 'kot', 'kot.id = prof.kota')
+            ->join('prof','provinsi', 'prov', 'prov.id = prof.provinsi')
+            ->join('prof','negara', 'negara', 'negara.id = prof.kewarganegaraan')
+            ->setParameter($param, $value)
+            ->where($column . ' = '. $param);
+        $result = $qb->execute();
+        return $result->fetch();
+    }
 }

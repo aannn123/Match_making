@@ -1,5 +1,5 @@
 /vendor
-/public/assets/images
+/public/assets/images/
 /app/setting.php
 phinx.yml
 composer.lock

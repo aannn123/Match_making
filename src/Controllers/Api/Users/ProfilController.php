@@ -96,9 +96,10 @@ class ProfilController extends BaseController
         $token = $request->getHeader('Authorization')[0];
         $userId = $userToken->getUserId($token);
 
-        $findProfil = $profil->find('user_id', $args['id']);
+        $findProfil = $profil->findProfile('user_id', $args['id']);
 
         if ($findProfil) {
+            // $profil->findProfile($args['id']);
             $data = $this->responseDetail(200, false, 'Data profile user id '."". $args['id']." ".'tersedia', [
                     'data' => $findProfil
                 ]);

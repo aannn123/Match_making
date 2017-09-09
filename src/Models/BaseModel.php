@@ -19,8 +19,10 @@ abstract class BaseModel
         $qb = $this->db->createQueryBuilder();
         $this->query = $qb->select('*')
             ->from($this->table)
-            ->orderBy('id', 'desc');
+            // ->whereNotIn('role = 1')
+            ->orderBy('created_at', 'desc');
         $query = $qb->execute();
+        
         return $this;
     }
     // Get All

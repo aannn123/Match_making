@@ -56,4 +56,16 @@ class KotaModel extends BaseModel
             return $this;
 
     }
+
+    public function joinKota()
+    {
+        $qb = $this->db->createQueryBuilder();
+        $this->query = $qb->select('prov.nama as provinsi','kot.nama')
+            ->from($this->table,'kot')
+            ->join('kot','provinsi', 'prov', 'kot.id_provinsi = prov.id');
+            // ->join('prof','provinsi', 'prov', 'prov.id = prof.provinsi')
+            // ->join('prof','negara', 'negara', 'negara.id = prof.kewarganegaraan');
+        $query = $qb->execute();
+        return $this;
+    }
 }

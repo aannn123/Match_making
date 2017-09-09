@@ -111,13 +111,21 @@ class AdminController extends BaseController
     {
         $users = new UserModel($this->db);
         $findUser = $users->find('id', $args['id']);
-
+        $user = $users->getUser('id', $args['id']);
+        // var_dump($user['role']);die();
         if ($findUser) {
-            $setModerator = $users->setModerator('id', $args['id']);
-            $find = $users->find('id', $setModerator);
-            $data = $this->responseDetail(200, false, 'User berhasil dijadikan moderator', [
-                    'data'  => $setModerator
+            if ($user['role'] == 2) {
+                $data = $this->responseDetail(400, false, 'User sudah menjadi moderator');
+                
+            } elseif($user['role'] == 0 && $user['status'] == 2) {
+                $setModerator = $users->setModerator($args['id']);
+                $find = $users->find('id', $setModerator);
+                $data = $this->responseDetail(200, false, 'User berhasil dijadikan moderator', [
+                        'data'  => $setModerator
                 ]);
+            } else {
+                $data = $this->responseDetail(404, true, 'User tidak bisa dijadikan moderator dikarenakan status user belum complete');
+            }
         } else {
             $data = $this->responseDetail(404, true, 'User tidak ditemukan');
         }
@@ -156,7 +164,7 @@ class AdminController extends BaseController
                 <tbody><tr><td><table border="0" cellpadding="0" cellspacing="0" width="100%">
                 <tbody><tr><td align="left">
                 </td></tr></tbody></table></td></tr><tr height="16"></tr><tr><td>
-                <table bgcolor="#337AB7" border="0" cellpadding="0" cellspacing="0"
+                <table bgcolor="#11A86" border="0" cellpadding="0" cellspacing="0"
                 style="min-width: 332.0px;max-width: 600.0px;border: 1.0px solid rgb(224,224,224);
                 border-bottom: 0;" width="100%">
                 <tbody><tr><td colspan="3" height="42px"></td></tr>
@@ -203,6 +211,191 @@ class AdminController extends BaseController
             $data = $this->responseDetail(201, false, 'User tidak ditemukan');
         }
             return $data;
+    }
+
+    public function cancelTaaruf($request, $response, $args)
+    {
+        $user = new UserModel($this->db);
+        $requests = new \App\Models\Users\RequestModel($this->db);
+        $userToken = new UserToken($this->db);
+        $token = $request->getHeader('Authorization')[0];
+        $userId = $userToken->getUserId($token);
+
+        $findUser = $requests->findTwo('id_perequest', $args['perequest'], 'id_terequest', $args['terequest']);
+        
+        $find = $requests->getRequest('id_perequest', $args['perequest'], 'id_terequest', $args['terequest']);
+        // var_dump($find);die();    
+
+        if ($findUser) {
+            if ($find['blokir'] == 2) {
+                $data = $this->responseDetail(404, true, 'Taaruf sudah di cancel');
+            } else {
+            // $sendRequest = $requests->update($data);
+            $blokir = $requests->cancelTaaruf($args['perequest'], $args['terequest']);
+            $data = $this->responseDetail(200, false, 'Taaruf user berhasil di cancel', [
+                    'data' => $blokir
+                ]);
+        }
+        } else {
+            $data = $this->responseDetail(404, true, 'Data tidak ditemukan');
+        }
+        return $data;
+    }
+
+    public function getTaaruf($request, $response)
+    {
+        $user = new UserModel($this->db);
+        $userToken = new userToken($this->db);
+        $requests = new \App\Models\Users\RequestModel($this->db);
+        $token = $request->getHeader('Authorization')[0];
+        $userId = $userToken->getUserId($token);
+
+        $get = $requests->joinRequest();
+        // $gender = $user->find('gender');
+        $countUser = count($get);
+        // var_dump($countUser);die();
+        $query = $request->getQueryParams();
+        if ($get) {
+            $page = !$request->getQueryParam('page') ? 1 : $request->getQueryParam('page');
+            $getNotification = $requests->joinRequest()->setPaginate($page, 10);
+
+            if ($getNotification) {
+                $data = $this->responseDetail(200, false,  'Data taaruf user tersedia', [
+                        'data'          =>  $getNotification['data'],
+                        'pagination'    =>  $getNotification['pagination'],
+                    ]);
+            } else {
+                $data = $this->responseDetail(404, true, 'Data taaruf user tidak ditemukan');
+            }
+        } else {
+            $data = $this->responseDetail(204, false, 'Tidak ada konten');
+        }
+
+        return $data;
+    }
+
+    public function showNewUser($request, $response)
+    {
+        $user = new UserModel($this->db);
+        $userToken = new userToken($this->db);
+        $token = $request->getHeader('Authorization')[0];
+        $userId = $userToken->getUserId($token);
+
+        $get = $user->getAllNewuser();
+        // $gender = $user->find('gender');
+        $countUser = count($get);
+        // var_dump($countUser);die();
+        $query = $request->getQueryParams();
+        if ($get) {
+            $page = !$request->getQueryParam('page') ? 1 : $request->getQueryParam('page');
+            $getNotification = $user->getAllNewuser()->setPaginate($page, 5);
+
+            if ($getNotification) {
+                $data = $this->responseDetail(200, false,  'Data taaruf user tersedia', [
+                        'data'          =>  $getNotification['data'],
+                        'pagination'    =>  $getNotification['pagination'],
+                    ]);
+            } else {
+                $data = $this->responseDetail(404, true, 'Data taaruf user tidak ditemukan');
+            }
+        } else {
+            $data = $this->responseDetail(204, false, 'Tidak ada konten');
+        }
+
+        return $data;
+    }
+
+    public function cancelUser($request, $response, $args)
+    {
+        $user = new UserModel($this->db);
+        $mailer = new \App\Extensions\Mailers\Mailer();
+        $findUser = $user->find('id', $args['id']);
+
+        if ($findUser) {
+            $newUser = $user->getUser('id', $args['id']);
+            $deleteUser = $user->hardDelete($args['id']);
+            // var_dump($newUser);die();
+            '<h3>Mohon maaf</h3></a>';
+                  $content = '<html><head></head>
+                <body style="font-family: Verdana;font-size: 12.0px;">
+                <table border="0" cellpadding="0" cellspacing="0" style="max-width: 600.0px;">
+                <tbody><tr><td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tbody><tr><td align="left">
+                </td></tr></tbody></table></td></tr><tr height="16"></tr><tr><td>
+                <table bgcolor="#11A86" border="0" cellpadding="0" cellspacing="0"
+                style="min-width: 332.0px;max-width: 600.0px;border: 1.0px solid rgb(224,224,224);
+                border-bottom: 0;" width="100%">
+                <tbody><tr><td colspan="3" height="42px"></td></tr>
+                <tr><td width="32px"></td>
+                <td style="font-family: Roboto-Regular , Helvetica , Arial , sans-serif;font-size: 24.0px;
+                color: rgb(255,255,255);line-height: 1.25;"><center>Mohon Maaf Akun Match making</center></td>
+                <td width="32px"></td></tr>
+                <tr><td colspan="3" height="18px"></td></tr></tbody></table></td></tr>
+                <tr><td><table bgcolor="#FAFAFA" border="0" cellpadding="0" cellspacing="0"
+                style="min-width: 332.0px;max-width: 600.0px;border: 1.0px solid rgb(240,240,240);
+                border-bottom: 1.0px solid rgb(192,192,192);border-top: 0;" width="100%">
+                <tbody><tr height="16px"><td rowspan="3" width="32px"></td><td></td>
+                <td rowspan="3" width="32px"></td></tr>
+                <tr><td><p>Yang terhormat '.$newUser['username'].',</p>
+                <p>Mohon maaf, anda tidak diterima atau tidak di setujui oleh admin dikarenakan pendaftaran anda tidak sesuai persetujuan.</p>
+                <p>Terima kasih sudah mendaftar di Match Making.</p>
+                <p>Terima kasih, <br /><br /> Admin Match Making</p></td></tr>
+                <tr height="32px"></tr></tbody></table></td></tr>
+                <tr height="16"></tr>
+                <tr><td style="max-width: 600.0px;font-family: Roboto-Regular , Helvetica , Arial , sans-serif;
+                font-size: 10.0px;color: rgb(188,188,188);line-height: 1.5;"></td>
+                </tr><tr><td></td></tr></tbody></table></body></html>';
+
+                $mail = [
+                'subject'   =>  'Match Making - Permohonan Maaf',
+                'from'      =>  'farhan.mustqm@gmail.com',
+                'to'        =>  $newUser['email'],
+                'sender'    =>  'Match Making',
+                'receiver'  =>  $newUser['username'],
+                'content'   =>  $content,
+                ];
+
+                $mailer->send($mail);
+            $data = $this->responseDetail(200, false, 'User berhasil dihapus', [
+                'data' => $findUser
+            ]);
+        } else {
+            $data = $this->responseDetail(404, true, 'User tidak ditemukan');
+        }
+
+        return $data;
+    }
+
+    public function showRequestAll($request, $response)
+    {
+        $user = new UserModel($this->db);
+        $userToken = new userToken($this->db);
+        $requests = new \App\Models\Users\RequestModel($this->db);
+        $token = $request->getHeader('Authorization')[0];
+        $userId = $userToken->getUserId($token);
+
+        $get = $requests->joinRequestAll();
+        // $gender = $user->find('gender');
+        $countUser = count($get);
+        // var_dump($countUser);die();
+        $query = $request->getQueryParams();
+        if ($get) {
+            $page = !$request->getQueryParam('page') ? 1 : $request->getQueryParam('page');
+            $getNotification = $requests->joinRequestAll()->setPaginate($page, 10);
+
+            if ($getNotification) {
+                $data = $this->responseDetail(200, false,  'Data semua request tersedia', [
+                        'data'          =>  $getNotification['data'],
+                        'pagination'    =>  $getNotification['pagination'],
+                    ]);
+            } else {
+                $data = $this->responseDetail(404, true, 'Data request tidak ditemukan');
+            }
+        } else {
+            $data = $this->responseDetail(204, false, 'Tidak ada konten');
+        }
+
+        return $data;
     }
 }
 

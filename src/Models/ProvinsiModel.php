@@ -40,5 +40,17 @@ class ProvinsiModel extends BaseModel
         return $this;
     }
 
+    public function joinProvinsi()
+    {
+        $qb = $this->db->createQueryBuilder();
+        $this->query = $qb->select('negara.nama as negara','prov.nama')
+            ->from($this->table,'prov')
+            ->join('prov','negara', 'negara', 'prov.id_negara = negara.id');
+            // ->join('prof','provinsi', 'prov', 'prov.id = prof.provinsi')
+            // ->join('prof','negara', 'negara', 'negara.id = prof.kewarganegaraan');
+        $query = $qb->execute();
+        return $this;
+    }
+
 
 }

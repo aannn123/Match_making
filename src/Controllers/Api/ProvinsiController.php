@@ -10,12 +10,12 @@ class ProvinsiController extends BaseController
     public function getAllProvinsi($request, $response)
     {
         $provinsi = new ProvinsiModel($this->db);
-        $get = $provinsi->getAllProvinsi();
+        $get = $provinsi->joinProvinsi();
         $countProvinsi = count($get);
         $query = $request->getQueryParams();
         if ($get) {
             $page = !$request->getQueryParam('page') ? 1 : $request->getQueryParam('page');
-            $getProvinsi = $provinsi->getAllProvinsi()->setPaginate($page, 5);
+            $getProvinsi = $provinsi->joinProvinsi()->setPaginate($page, 5);
 
             if ($getProvinsi) {
                 $data = $this->responseDetail(200, false,  'Data tersedia', [

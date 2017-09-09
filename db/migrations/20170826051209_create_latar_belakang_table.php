@@ -29,7 +29,7 @@ class CreateLatarBelakangTable extends AbstractMigration
     {
         $user = $this->table('latar_belakang');
              $user->addColumn('user_id', 'integer')
-                  ->addColumn('pendidikan', 'enum', ['values' => ['sd', 'smp', 'sma', 'diploma 1', 'diploma 3', 'diploma 4', 'strata 1', 'magister', 'doktor']])
+                  ->addColumn('pendidikan', 'enum', ['values' => ['sd', 'smp', 'sma', 'diploma 1', 'diploma 3', 'diploma 4', 'strata 1', 'magister', 'doktor', 'lainya']])
                   ->addColumn('penjelasan_pendidikan', 'text')
                   ->addColumn('agama', 'enum', ['values' => ['ngaji sunnah', 'sedang hijrah', 'islam biasa']])
                   ->addColumn('penjelasan_agama', 'text')

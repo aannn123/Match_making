@@ -13,12 +13,12 @@ class KotaController extends BaseController
         $userToken = new UserToken($this->db);
         $token = $request->getHeader('Authorization')[0];
         $userId = $userToken->getUserId($token);
-        $get = $kota->getAllKota();
+        $get = $kota->joinKota();
         $countKota = count($get);
         $query = $request->getQueryParams();
         if ($get) {
             $page = !$request->getQueryParam('page') ? 1 : $request->getQueryParam('page');
-            $getKota = $kota->getAllKota()->setPaginate($page, 5);
+            $getKota = $kota->joinKota()->setPaginate($page, 5);
 
             if ($getKota) {
                 $data = $this->responseDetail(200, false,  'Data tersedia', [
