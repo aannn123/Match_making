@@ -37,21 +37,28 @@ class PoligamiController extends BaseController
 
     public function createPoligami($request, $response)
     {
+        $user = new UserModel($this->db);
         $poligami = new PoligamiModel($this->db);
         $UserToken = new UserToken($this->db);
         $token = $request->getHeader('Authorization')[0];
         $userId = $UserToken->getUserId($token);;
         // var_dump($userId);die();
+        $find = $user->getUser('id', $userId);
+        // var_dump($find);die();
         
         $this->validator->rule('required', ['kesiapan', 'penjelasan_kesiapan', 'alasan_poligami', 'kondisi_istri']);
 
         if ($this->validator->validate()) {
-            $create = $poligami->createPoligami($request->getParsedBody(), $userId);
-            // var_dump($create);die();
-            $find = $poligami->find('id', $create);
-            $data = $this->responseDetail(201, false, 'Profile berhasil dibuat', [
-                    'data' => $find,
-                ]);
+            if ($find['gender'] == 'perempuan') {
+                $data = $this->responseDetail(400, true, 'Anda tidak mempunyai akses kesini');
+            } else {    
+                $create = $poligami->createPoligami($request->getParsedBody(), $userId);
+                // var_dump($create);die();
+                $find = $poligami->find('id', $create);
+                $data = $this->responseDetail(201, false, 'Profile berhasil dibuat', [
+                        'data' => $find,
+                    ]);
+            }
         } else {
             $data = $this->responseDetail(400, true, $this->validator->errors());
         }   

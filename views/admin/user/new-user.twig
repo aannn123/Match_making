@@ -2,7 +2,7 @@
 {% block title %}Match Making{% endblock %}
 {% block wrapper %} All New User {% endblock %}
 {% block breadcrumb %} User {% endblock %}
-{% block breadcrumb_active %} All New User {% endblock %}
+{% block breadcrumb_active %} All New Member {% endblock %}
 {% block content %}
   <div class="app-content content container-fluid">
       <div class="content-wrapper">
@@ -80,8 +80,32 @@
                                 <b >Email &emsp;&emsp;&emsp;&emsp;&nbsp;:<code>{{user.email}}</code></b><br>
                                 <b >No telepon &emsp;&emsp;:<code>{{user.phone}}</code></b><br>
                                 <b >Tanggal Daftar &nbsp;:<code>{{user.created_at | date("j F Y")}}</code></b><br>
-                                <img src="{{ base_url() }}/assets/images/{{user.ktp}}" alt="">
+                                </div>
+                                <br>
+                                <div class="row match-height">
+
+                <div class="card-body">
+                    <div class="card-block">
+
+                        <ul class="nav nav-tabs nav-justified">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="active-tab" data-toggle="tab" href="#active" aria-controls="active" aria-expanded="true">Foto</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="link-tab" data-toggle="tab" href="#link" aria-controls="link" aria-expanded="false">Foto ktp</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content px-1 pt-1">
+                            <div role="tabpanel" class="tab-pane fade active in" id="active" aria-labelledby="active-tab" aria-expanded="true">
+                            <div class="img-responsive">
+                               <img src="{{ base_url() }}/assets/images/{{ user.photo }}" class="img-thumbnail" style="width:100%;height:30%" alt="">
                             </div>
+                            </div>
+                            <div class="tab-pane fade" id="link" role="tabpanel" aria-labelledby="link-tab" aria-expanded="false">
+                               <div class="img-responsive">
+                               <img src="{{ base_url() }}/assets/images/{{ user.ktp }}" class="img-thumbnail" style="width:100%;height:30%" alt="">
+                            </div>
+                            </div> 
                         </div>
                     </div>
                            

@@ -420,6 +420,29 @@ class UserController extends BaseController
                 $data =  $this->responseDetail(200, false, 'Foto berhasil diunggah', [
                     'data' => $newUser
                 ]);
+            } elseif (!empty($request->getUploadedFiles()['ktp'])) {
+                $storage = new \Upload\Storage\FileSystem('assets/images');
+                $image = new \Upload\File('ktp',$storage);
+
+                $image->setName(uniqid('img-'.date('Ymd').'-'));
+                $image->addValidations(array(
+                    new \Upload\Validation\Mimetype(array('image/png', 'image/gif',
+                    'image/jpg', 'image/jpeg')),
+                    new \Upload\Validation\Size('5M')
+                ));
+
+                $image->upload();
+                $data['ktp'] = $image->getNameWithExtension();
+
+                $user->updateData($data, $args['id']);
+                $newUser = $user->getUser('id', $args['id']);
+                if (file_exists('assets/images/'.$findUser['ktp']['ktp'])) {
+                    unlink('assets/images/'.$findUser['ktp']);die();
+                }
+                $data =  $this->responseDetail(200, false, 'Foto berhasil diunggah', [
+                    'data' => $newUser
+                ]); 
+                
 
             } else {
                 $data = $this->responseDetail(400, true, 'File foto belum dipilih');

@@ -18,6 +18,8 @@ $app->group('/admin', function() use ($app, $container) {
         $app->get('/wanita',  'App\Controllers\Web\AdminController:getAllUserWoman')->setName('admin.list.wanita.user');
         $app->get('/get-taaruf',  'App\Controllers\Web\AdminController:getTaaruf')->setName('admin.show.taaruf');
         $app->get('/get-request-all',  'App\Controllers\Web\AdminController:getAllRequest')->setName('admin.show.all.request');
+        $app->get('/get-taaruf/cancel/taaruf/{perequest}/{terequest}',  'App\Controllers\Web\AdminController:cancelTaaruf')->setName('admin.cancel.taaruf');
+
     });
 
     $app->group('/kota', function() use ($app, $container) {
@@ -26,10 +28,12 @@ $app->group('/admin', function() use ($app, $container) {
 
     $app->group('/provinsi', function() use ($app, $container) {
         $app->get('',  'App\Controllers\Web\AdminController:getAllProvinsi')->setName('admin.provinsi');
+        $app->get('/create',  'App\Controllers\Web\AdminController:createProvinsi')->setName('admin.tambah.provinsi');
     });
 
      $app->group('/negara', function() use ($app, $container) {
-        $app->get('',  'App\Controllers\Web\AdminController:getAllNegara')->setName('admin.negara');
+        $app->get('',  'App\Controllers\Web\AdminController:getAllNegara')->setName('admin.show.negara');
+        $app->post('/create',  'App\Controllers\Web\AdminController:createNegara')->setName('admin.tambah.negara');
     });
 });
 

@@ -1,8 +1,8 @@
 {% extends 'templates/default.twig' %}
 {% block title %}Match Making{% endblock %}
-{% block wrapper %} Detail User {% endblock %}
-{% block breadcrumb %} User {% endblock %}
-{% block breadcrumb_active %} New User {% endblock %}
+{% block wrapper %} Detail Member {% endblock %}
+{% block breadcrumb %} Member {% endblock %}
+{% block breadcrumb_active %} Semua Member / Detail User {% endblock %}
 {% block content %}
   <div class="app-content content container-fluid">
       <div class="content-wrapper">
@@ -13,7 +13,7 @@
     <div class="col-xs-12">
         <div class="card">
             <div class="card-header">
-                <h4 class="card-title">Detail User</h4>
+                <h4 class="card-title">Detail Member <i>{{ profil.nama_lengkap }} </i></h4>
                 <a class="heading-elements-toggle"><i class="icon-ellipsis font-medium-3"></i></a>
                 <div class="heading-elements">
                     <ul class="list-inline mb-0">
@@ -21,6 +21,7 @@
                         <li><a data-action="expand"><i class="icon-expand2"></i></a></li>
                     </ul>
                 </div>
+                 <a href="{{ base_url() }}/admin/user"><button type="button" class="btn btn-outline-primary">Kembali</button></a>
             </div>
             <div class="card">
                 <div class="card-body">
@@ -38,10 +39,12 @@
                             <li class="nav-item">
                                     <a class="nav-link" id="dropdownOpt2-tab" href="#dropdownOpt2" data-toggle="tab" aria-controls="dropdownOpt2" aria-expanded="true">Latar Belakang</a>
                             </li>
-                                <!-- </div> -->
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" id="linkOpt-tab" data-toggle="tab" href="#linkOpt" aria-controls="linkOpt">Ciri Fisik</a>
+                            </li>
+                             <li class="nav-item">
+                                <a class="nav-link" id="linkOpt1-tab" data-toggle="tab" href="#linkOpt1" aria-controls="linkOpt1">Data Poligami</a>
                             </li>
                         </ul>
                         <div class="tab-content px-1 pt-1">
@@ -50,16 +53,63 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="card-block">
-                                            <h4 class="card-title info">Data User</h4>
+                                            <h4 class="card-title info">&nbsp;&nbsp;Data User</h4>
+                                            <div class="col-md-4">
                                             <p class="card-text"><b>Username : <code>{{ user.username }}.</code></b></p>
                                             <p class="card-text"><b>Jenis Kelamin : <code>{{ user.gender }}</code></b></p>
                                             <p class="card-text"><b>Email : <code>{{ user.email }}</code></b></p>
                                             <p class="card-text"><b>Nomor Telepon : <code>{{ user.phone }}</code></b></p>
+                                            </div>
+                                            <div class="col-md-4">
+                                            <p class="card-text"><b>&emsp;&emsp;&emsp;&emsp;&emsp; Foto <br><a data-toggle="modal" data-target="#foto"><img src="{{ base_url() }}/assets/images/{{user.photo}}" style="width:70%" class="img-thumbnail" alt=""></b></a></p>
+                                            </div>
+                                            <div class="col-md-4">
+                                            <p class="card-text"><b>&emsp;&emsp;&emsp;&emsp; Foto ktp <br><a data-toggle="modal" data-target="#ktp"><img src="{{ base_url() }}/assets/images/{{user.ktp}}" style="width:70%;height;20%" class="img-thumbnail" alt=""></a></b></p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             </div>
+                            <!-- Modal foto -->
+                            <div class="modal fade text-xs-left" id="foto" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+                                      <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                          <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                              <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            <h4 class="modal-title" id="myModalLabel1">Foto Member</h4>
+                                          </div>
+                                          <div class="modal-body">
+                                          <img src="{{ base_url() }}/assets/images/{{user.photo}}" style="width:100%" class="img-thumbnail" alt="">
+                                          </div>
+                                          <div class="modal-footer">
+                                            <button type="button" class="btn grey btn-outline-secondary" data-dismiss="modal">Close</button>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                            <!-- Modal ktp member -->
+                            <div class="modal fade text-xs-left" id="ktp" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+                                      <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                          <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                              <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            <h4 class="modal-title" id="myModalLabel1">Foto KTP member</h4>
+                                          </div>
+                                          <div class="modal-body">
+                                          <img src="{{ base_url() }}/assets/images/{{user.ktp}}" style="width:100%" class="img-thumbnail" alt="">
+                                          </div>
+                                          <div class="modal-footer">
+                                            <button type="button" class="btn grey btn-outline-secondary" data-dismiss="modal">Close</button>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    
                             <div class="tab-pane fade" id="link" role="tabpanel" aria-labelledby="link-tab" aria-expanded="false">
                                 <div class="col-lg-12 col-md-12">
                                 <div class="card">
@@ -155,14 +205,33 @@
                                             <p class="card-text"><b>Ciri Fisik Lain: <code>{{ fisik.ciri_fisik_lain }}.</code></b></p>
                                             </div>
                                         </div>
+                                    </div>
+                                <div class="tab-pane fade" id="linkOpt1" role="tabpanel" aria-labelledby="linkOpt1-tab" aria-expanded="false">
+                                <div class="card-block">
+                                            <h4 class="card-title info">&nbsp;&nbsp;Data Poligami</h4>
+                                            <div class="col-md-6">
+                                            {% if user.gender == 'laki-laki' %}
+                                            <p class="card-text"><b>Siap Berpoligami : <code>{{ poligami.kesiapan }}.</code></b></p>
+                                            <p class="card-text"><b>Penjelasan : <code>{{ poligami.penjelasan_kesiapan }}.</code></b></p>
+                                            {% if poligami.kesiapan == 'siap' %}
+                                            <p class="card-text"><b>Alasan Poligami : <code>{{ poligami.alasan_poligami }}.</code></b></p>
+                                            <p class="card-text"><b>Kondisi Istri : <code>{{ poligami.kondisi_istri }}.</code></b></p>
+                                            {% endif %}
+                                            {% endif %}
+                                           {% if user.gender == 'perempuan' %}
+                                            <p class="card-text"><b>Siap Menikan Dengan Pria Beristri : <code>{{ dipoligami.kesiapan }}.</code></b></p>
+                                            <p class="card-text"><b>Penjelasan : <code>{{ dipoligami.penjelasan_kesiapan }}.</code></b></p>
+                                            {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</section>
+            </section>
 
                 </div>
             </div>

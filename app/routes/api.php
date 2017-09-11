@@ -18,14 +18,14 @@ $app->group('/api', function() use ($app, $container) {
         $app->get('/approveUser/{id}', 'App\Controllers\Api\AdminController:approveUser')->setName('admin.approve.user');
         $app->get('/user/cancel/{id}', 'App\Controllers\Api\AdminController:cancelUser')->setName('admin.cancel.user');
         $app->get('/get-taaruf', 'App\Controllers\Api\AdminController:getTaaruf')->setName('admin.get.taaruf');
-        $app->get('/get-taaruf/cancel/{perequest}/{terequest}', 'App\Controllers\Api\AdminController:cancelTaaruf');
+        $app->get('/get-taaruf/cancel/{perequest}/{terequest}', 'App\Controllers\Api\AdminController:cancelTaaruf')->setName('user.cancel.proses');
         $app->get('/new-user', 'App\Controllers\Api\AdminController:showNewUser')->setName('admin.new.user');
         $app->get('/show-request-all', 'App\Controllers\Api\AdminController:showRequestAll')->setName('admin.request.all');
         
 
         $app->group('/negara', function() use ($app, $container) {
             $app->get('', 'App\Controllers\Api\NegaraController:getAllNegara')->setName('admin.negara');
-            $app->post('/create', 'App\Controllers\Api\NegaraController:createNegara');
+            $app->post('/create', 'App\Controllers\Api\NegaraController:createNegara')->setName('admin.create.negara');
             $app->put('/update/{id}', 'App\Controllers\Api\NegaraController:updateNegara');
             $app->delete('/delete/{id}', 'App\Controllers\Api\NegaraController:delete');
             $app->get('/find/{id}', 'App\Controllers\Api\NegaraController:findNegara');
@@ -33,7 +33,7 @@ $app->group('/api', function() use ($app, $container) {
 
         $app->group('/provinsi', function() use ($app, $container) {
             $app->get('', 'App\Controllers\Api\ProvinsiController:getAllprovinsi')->setName('admin.provinsi');
-            $app->post('/create/{id}', 'App\Controllers\Api\ProvinsiController:createProvinsi');
+            $app->post('/create/{id}', 'App\Controllers\Api\ProvinsiController:createProvinsi')->setName('admin.create.provinsi');
             $app->put('/update/{id}', 'App\Controllers\Api\ProvinsiController:updateProvinsi');
             $app->get('/find/{id}', 'App\Controllers\Api\ProvinsiController:findProvinsi');
             $app->delete('/delete/{id}', 'App\Controllers\Api\ProvinsiController:deleteProvinsi');
@@ -99,7 +99,15 @@ $app->group('/api', function() use ($app, $container) {
             $app->get('', 'App\Controllers\Api\Users\Poligami\PoligamiController:getAll');
             $app->post('/create', 'App\Controllers\Api\Users\Poligami\PoligamiController:createPoligami');
             $app->put('/update', 'App\Controllers\Api\Users\Poligami\PoligamiController:updatePoligami');
-            $app->get('/find/{id}', 'App\Controllers\Api\Users\Poligami\PoligamiController:findData');
+            $app->get('/find/{id}', 'App\Controllers\Api\Users\Poligami\PoligamiController:findData')->setName('user.find.poligami');
+
+        });
+
+        $app->group('/dipoligami', function() use ($app, $container) {
+            $app->get('', 'App\Controllers\Api\Users\Poligami\DipoligamiController:getAll');
+            $app->post('/create', 'App\Controllers\Api\Users\Poligami\DipoligamiController:createDiPoligami');
+            $app->put('/update', 'App\Controllers\Api\Users\Poligami\DipoligamiController:updateDiPoligami');
+            $app->get('/find/{id}', 'App\Controllers\Api\Users\Poligami\DipoligamiController:findData')->setName('user.find.dipoligami');
 
         });
 

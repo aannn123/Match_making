@@ -14,6 +14,34 @@
         <div class="card">
             <div class="card-header">
                 <h4 class="card-title">Semua data negara</h4>
+                <div class="card-body collapse in">
+                    <button type="button" class="btn btn-outline-primary"data-toggle="modal" data-target="#default">Create Negara</button>
+                    <div class="card-block">
+                    <!-- Modal -->
+                    <div class="modal fade text-xs-left" id="default" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h4 class="modal-title" id="myModalLabel1"> Create Negara</h4>
+                          </div>
+                          <div class="modal-body">
+                            <form action="{{ path_for('admin.tambah.negara') }}" method="POST">
+
+                                <div class="form-group">
+                                    <label for="complaintinput6">Nama Negara</label>
+                                    <input type="text" id="complaintinput6" class="form-control round" placeholder="Nama Negara" name="nama">
+                                </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn grey btn-outline-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-outline-primary">Save changes</button>
+                          </div>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
                 <a class="heading-elements-toggle"><i class="icon-ellipsis font-medium-3"></i></a>
                 <div class="heading-elements">
                     <ul class="list-inline mb-0">
@@ -32,7 +60,7 @@
                             <tr>
                                 <th>No</th>
                                 <th>Negara</th>
-                                <th>Option</th>
+                                <th class="">Option</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -42,13 +70,12 @@
                                 <td>{{provinsi.nama}}</td>
                                 <td>
                                     <a href="" data-toggle="tooltip" data-placement="top" title="Delete"><i class="icon-times"></i></a>
-                                    <a href="" style="color: #1a53ff" data-toggle="tooltip" data-placement="top" title="View Detail"><i class="icon-eye4"></i></a>
-                                    <a href="" style="color: #1a53ff" data-toggle="tooltip" data-placement="top" title="Add kota"><i class="icon-plus"></i></a>
                                 </td>
                             </tr>
                             {% endfor %}
                         </tbody>
                     </table>
+
                         <div class="text-xs-right mb-3">
                             <nav aria-label="Page navigation">
                                 <ul class="pagination">

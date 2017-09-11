@@ -239,7 +239,39 @@ class AdminController extends BaseController
                             }
 
                             $fisik = json_decode($result4->getBody()->getContents(), true);
-                            // var_dump($fisik);die();
+
+                                try {
+                                $result5 = $this->client->request('GET',
+                                $this->router->pathFor('user.find.poligami', ['id' => $args['id']]), [
+                                        'query' => [
+                                            'perpage' => 9,
+                                            'page'    => $request->getQueryParam('page')
+                                        ]
+                                    ]);
+
+                    
+                                } catch (GuzzleException $e) {
+                                    $result5 = $e->getResponse();
+                                }
+
+                                $poligami = json_decode($result5->getBody()->getContents(), true);
+
+                                    try {
+                                    $result6 = $this->client->request('GET',
+                                    $this->router->pathFor('user.find.dipoligami', ['id' => $args['id']]), [
+                                            'query' => [
+                                                'perpage' => 9,
+                                                'page'    => $request->getQueryParam('page')
+                                            ]
+                                        ]);
+
+                        
+                                    } catch (GuzzleException $e) {
+                                        $result6 = $e->getResponse();
+                                    }
+
+                                    $dipoligami = json_decode($result6->getBody()->getContents(), true);
+                                    // var_dump($dipoligami);die();
         } catch (GuzzleException $e) {
               $result = $e->getResponse();
              }
@@ -253,6 +285,8 @@ class AdminController extends BaseController
             'keseharian' => $keseharian['data'],
             'latar' => $latar['data'],
             'fisik' => $fisik['data'],
+            'poligami' => $poligami['data'],
+            'dipoligami' => $dipoligami['data'],
             'pagination'    => $data['pagination'],
         ]);
     }
@@ -431,4 +465,97 @@ class AdminController extends BaseController
             'pagination'    =>  $data['pagination']
         ]);    // 
     } 
+
+    public function cancelTaaruf(Request $request, Response $response, $args)
+    {
+         try {
+            $result = $this->client->request('GET',
+            $this->router->pathFor('user.cancel.proses', ['perequest' => $args['perequest'], 'terequest' => $args['terequest']]), [
+                 'query' => [
+                     'perpage' => 10,
+                     'page' => $request->getQueryParam('page'),
+                     'id' => $_SESSION['login']['id']
+            ]]);
+            // $content = json_decode($result->getBody()->getContents());
+        } catch (GuzzleException $e) {
+            $result = $e->getResponse();
+        }
+        $data = json_decode($result->getBody()->getContents(), true);
+        // var_dump($data);die();
+        if ($data['error'] == false) {
+            $this->flash->addMessage('success', $data['message']);
+            return $response->withRedirect($this->router->pathFor('admin.show.taaruf'));
+        } else {
+            $this->flash->addMessage('error', $data['message']);
+            return $response->withRedirect($this->router->pathFor('admin.show.taaruf'));
+        }
+    }
+
+    public function createNegara(Request $request, Response $response)
+    {
+        try {
+            $result = $this->client->request('POST',  $this->router->pathFor('admin.create.negara'),
+                ['form_params' => [
+                    'nama'          => $request->getParam('nama'),
+                ]
+            ]);
+        } catch (GuzzleException $e) {
+            $result = $e->getResponse();
+        }
+
+        $content = $result->getBody()->getContents();
+        $data = json_decode($content, true);
+
+        if ($data['error'] == false) {
+            $this->flash->addMessage('success', $data['message']);
+            return $response->withRedirect($this->router->pathFor('admin.show.negara'));
+        } else {
+            $this->flash->addMessage('error', $data['message']);
+            return $response->withRedirect($this->router->pathFor('admin.show.negara'));
+        }
+    }
+
+    public function createProvinsi(Request $request, Response $response, $args)
+    {
+        try {
+            $result = $this->client->request('POST',  $this->router->pathFor('admin.create.provinsi', ['id' => $args['id']]),
+                ['form_params' => [
+                    'nama'          => $request->getParam('nama'),
+                    'id_provinsi'          => $request->getParam('id_provinsi'),
+                ]
+            ]);
+
+
+             try {
+                $result1 = $this->client->request('GET',
+                $this->router->pathFor('admin.negara'), [
+                     'query' => [
+                         'perpage' => 10,
+                         'page' => $request->getQueryParam('page'),
+                ]]);
+                // $content = json_decode($result1->getBody()->getContents());
+            } catch (GuzzleException $e) {
+                $result1 = $e->getResponse();
+            }
+
+                $negara = json_decode($result1->getBody()->getContents(), true);
+                var_dump($negara);die();
+        } catch (GuzzleException $e) {
+            $result = $e->getResponse();
+        }
+
+        $content = $result->getBody()->getContents();
+        $data = json_decode($content, true);
+return $this->view->render($response, 'admin/crud/provinsi/provinsi.twig', [
+            'data'          =>  $data['data'] ,
+            'pagination'    =>  $data['pagination']
+        ]);    
+        // if ($data['error'] == false) {
+        //     $this->flash->addMessage('success', $data['message']);
+        //     return $response->withRedirect($this->router->pathFor('admin.show.negara'));
+        // } else {
+        //     $this->flash->addMessage('error', $data['message']);
+        //     return $response->withRedirect($this->router->pathFor('admin.show.negara'));
+        // }
+    }
 }

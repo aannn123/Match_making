@@ -2,7 +2,7 @@
 {% block title %}Match Making{% endblock %}
 {% block wrapper %} All User man {% endblock %}
 {% block breadcrumb %} User {% endblock %}
-{% block breadcrumb_active %} List user ikhwan {% endblock %}
+{% block breadcrumb_active %} List member ikhwan {% endblock %}
 {% block content %}
   <div class="app-content content container-fluid">
       <div class="content-wrapper">
@@ -48,9 +48,16 @@
                                 <td>{{user.gender}}</td>
                                 <td>{{user.phone}}</td>
                                 <td>
+                                 {% if user.role == 0 %}
+                                   <span class="tag tag-info" style="border-radius:10%">User</span>
+                                {% elseif user.role == 1 %}
+                                   <span class="tag tag-primary" style="border-radius:10%">Admin</span>
+                                {% elseif user.role == 2 %}
+                                   <span class="tag tag-success" style="border-radius:10%">Moderator</span>
+                                {% endif %}
                                 </td>
                                 <td>
-                                    <a href="" data-toggle="tooltip" data-placement="top" title="Set Moderator"><i class="icon-checkmark2"></i></a>
+                                    <a href="{{ path_for('admin.setModerator', {'id':user.id}) }}" data-toggle="tooltip" data-placement="top" title="Set Moderator"><i class="icon-checkmark2"></i></a>
                                     <a href="" style="color: #1a53ff" data-toggle="tooltip" data-placement="top" title="View Detail"><i class="icon-eye4"></i></a>
                                 </td>
                             </tr>

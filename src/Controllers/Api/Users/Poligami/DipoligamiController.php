@@ -35,30 +35,36 @@ class DipoligamiController extends BaseController
         return $data;
     }
 
-    public function createPoligami($request, $response)
+    public function createDiPoligami($request, $response)
     {
+        $user = new UserModel($this->db);
         $poligami = new DipoligamiModel($this->db);
         $UserToken = new UserToken($this->db);
         $token = $request->getHeader('Authorization')[0];
         $userId = $UserToken->getUserId($token);;
         // var_dump($userId);die();
-        
-        $this->validator->rule('required', ['kesiapan', 'penjelasan_kesiapan', 'alasan_poligami', 'kondisi_istri']);
+        $find = $user->getUser('id', $userId);
+        // var_dump($find['gender']);die();
+        $this->validator->rule('required', ['kesiapan', 'penjelasan_kesiapan']);
 
         if ($this->validator->validate()) {
-            $create = $poligami->createPoligami($request->getParsedBody(), $userId);
-            // var_dump($create);die();
-            $find = $poligami->find('id', $create);
-            $data = $this->responseDetail(201, false, 'Profile berhasil dibuat', [
-                    'data' => $find,
-                ]);
+            if ($find['gender'] == 'laki-laki') {
+                $data = $this->responseDetail(400, true, 'Anda tidak mempunyai akses kesini');
+            } else {
+                $create = $poligami->createDiPoligami($request->getParsedBody(), $userId);
+                // var_dump($create);die();
+                $find = $poligami->find('id', $create);
+                $data = $this->responseDetail(201, false, 'Profile berhasil dibuat', [
+                        'data' => $find,
+                    ]);
+            }
         } else {
             $data = $this->responseDetail(400, true, $this->validator->errors());
         }   
             return $data;
     }
 
-    public function updatePoligami($request, $response, $args)
+    public function updateDiPoligami($request, $response, $args)
     {
         $user = new UserModel($this->db);
         $userToken = new UserToken($this->db);
@@ -72,7 +78,7 @@ class DipoligamiController extends BaseController
             $datainput['user_id'] = $userId['id'];
 
             try {
-                $poligami->updatePoligami($datainput);
+                $poligami->updateDiPoligami($datainput);
                 $find       = $poligami->findWithoutDelete('user_id', $userId['id']);
 
                 $data = $this->responseDetail(200, false, 'Data telah terupdate', [
