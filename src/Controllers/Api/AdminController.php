@@ -163,6 +163,7 @@ class AdminController extends BaseController
                 // var_dump($userToken);die();
 
                 $keyToken = $userToken['token'];
+
                 // $activateUrl = '< a href = '.$request->getUri()->getBaseUrl()."/activateaccount/".$keyToken.'>;
 
                  $activateUrl = '<a href ='.$base ."/activateaccount/".$keyToken.'>
