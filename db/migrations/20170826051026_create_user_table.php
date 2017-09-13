@@ -38,7 +38,7 @@ class CreateUserTable extends AbstractMigration
                  ->addColumn('ktp', 'string')
                  ->addColumn('role', 'integer', ['limit' => 3, 'default' => 0])
                  ->addColumn('status', 'string', ['default' => 0])
-                 ->addColumn('accepted_by', 'integer')
+                 ->addColumn('accepted_by', 'integer', ['default' => 0])
                  ->addColumn('last_online', 'timestamp')
                  ->addColumn('created_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
                  ->addColumn('updated_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP','update' => 'CURRENT_TIMESTAMP'])

@@ -68,7 +68,7 @@ $container['logger'] = function ($c) {
 };
 
 $container['client'] = function ($container) {
-   $settings = $container->get('settings')['reporting'];
+	   $settings = $container->get('settings')['reporting'];
 
    return new GuzzleHttp\Client([
        'base_uri' => $settings['base_uri'],

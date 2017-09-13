@@ -10,5 +10,8 @@ use GuzzleHttp\Subscriber\Oauth\Oauth1;
 
 class UserController extends BaseController
 {
-    public function register()
+    public function getRegister(Request $request, Response $response)
+    {
+        return $this->view->render($response, 'auth/register.twig');
+    }
 }

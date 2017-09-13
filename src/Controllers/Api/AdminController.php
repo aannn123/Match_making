@@ -1,10 +1,11 @@
-<?php 
+<?php
 
 namespace App\Controllers\Api;
 
 use App\Models\Users\UserModel;
 use App\Models\Users\UserToken;
 use App\Models\Users\ProfilModel;
+use App\Models\Users\RegisterModel;
 use App\Models\Users\KeseharianModel;
 use App\Models\Users\LatarBelakangModel;
 use App\Models\Users\CiriFisikController;
@@ -13,7 +14,7 @@ class AdminController extends BaseController
 {
     public function showUserPria($request, $response)
     {
-        
+
     }
 
     public function showUserWanita($request, $response)
@@ -116,7 +117,7 @@ class AdminController extends BaseController
         if ($findUser) {
             if ($user['role'] == 2) {
                 $data = $this->responseDetail(400, false, 'User sudah menjadi moderator');
-                
+
             } elseif($user['role'] == 0 && $user['status'] == 2) {
                 $setModerator = $users->setModerator($args['id']);
                 $find = $users->find('id', $setModerator);
@@ -141,11 +142,20 @@ class AdminController extends BaseController
         $mailer = new \App\Extensions\Mailers\Mailer();
         $token = $request->getHeader('Authorization')[0];
         $userId = $userToken->getUserId($token);
+        $accept = $request->getQueryParam('accepted_by');
 
         $findUser = $user->find('id', $args['id']);
-        // var_dump($findUser);die();
+        $users = $user->getUser('id', $args['id']);
+
         if ($findUser) {
+            if ($users['status'] == 1) {
+                $data = $this->responseDetail(404, true, 'User sudah di approve');
+            } elseif ($users['role'] == 1 || $users['role'] == 2 ) {
+                $data = $this->responseDetail(404, true, 'Dia bukan member');
+            } else {
             $setUser = $user->setApproveUser($args['id']);
+            // $acceptBy = $user->acceptedBy($userId['id'], $args['id']);
+            // var_dump($acceptBy);die();
             $newUser = $user->getUser('id', $args['id']);
                 $token = md5(openssl_random_pseudo_bytes(8));
                 $tokenId = $registers->setToken($newUser['id'] , $token);
@@ -207,6 +217,7 @@ class AdminController extends BaseController
                 $data = $this->responseDetail(201, false, 'approve user berhasil', [
                         'data' => $findUser
                     ]);
+                }
         } else {
             $data = $this->responseDetail(201, false, 'User tidak ditemukan');
         }
@@ -222,9 +233,9 @@ class AdminController extends BaseController
         $userId = $userToken->getUserId($token);
 
         $findUser = $requests->findTwo('id_perequest', $args['perequest'], 'id_terequest', $args['terequest']);
-        
+
         $find = $requests->getRequest('id_perequest', $args['perequest'], 'id_terequest', $args['terequest']);
-        // var_dump($find);die();    
+        // var_dump($find);die();
 
         if ($findUser) {
             if ($find['blokir'] == 2) {
@@ -308,6 +319,7 @@ class AdminController extends BaseController
     public function cancelUser($request, $response, $args)
     {
         $user = new UserModel($this->db);
+        $register = new \App\Models\Users\RegisterModel($db);
         $mailer = new \App\Extensions\Mailers\Mailer();
         $findUser = $user->find('id', $args['id']);
 
@@ -398,4 +410,3 @@ class AdminController extends BaseController
         return $data;
     }
 }
-

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Controllers\Web;
 
@@ -30,7 +30,7 @@ class AdminController extends BaseController
         return $this->view->render($response, 'admin/user/all-user.twig', [
             'data'          =>  $data['data'] ,
             'pagination'    =>  $data['pagination']
-        ]);    // 
+        ]);    //
     }
 
     public function getAllNewUser(Request $request,Response $response)
@@ -48,11 +48,11 @@ class AdminController extends BaseController
             $result = $e->getResponse();
         }
         $data = json_decode($result->getBody()->getContents(), true);
-        // var_dump($data);die();
+        // var_dump($data['data']);die();
         return $this->view->render($response, 'admin/user/new-user.twig', [
             'data'          =>  $data['data'] ,
             'pagination'    =>  $data['pagination']
-        ]);    // 
+        ]);    //
     }
 
     public function getAllUserMan(Request $request,Response $response)
@@ -74,7 +74,7 @@ class AdminController extends BaseController
         return $this->view->render($response, 'admin/user/user-man.twig', [
             'data'          =>  $data['data'] ,
             'pagination'    =>  $data['pagination']
-        ]);    // 
+        ]);    //
     }
 
     public function getAllUserWoman(Request $request,Response $response)
@@ -96,7 +96,7 @@ class AdminController extends BaseController
         return $this->view->render($response, 'admin/user/user-woman.twig', [
             'data'          =>  $data['data'] ,
             'pagination'    =>  $data['pagination']
-        ]);    // 
+        ]);    //
     }
 
     public function getAllKota(Request $request, Response $response)
@@ -118,7 +118,7 @@ class AdminController extends BaseController
         return $this->view->render($response, 'admin/crud/kota/kota.twig', [
             'data'          =>  $data['data'] ,
             'pagination'    =>  $data['pagination']
-        ]);    // 
+        ]);    //
     }
 
     public function getAllProvinsi(Request $request, Response $response)
@@ -140,7 +140,7 @@ class AdminController extends BaseController
         return $this->view->render($response, 'admin/crud/provinsi/provinsi.twig', [
             'data'          =>  $data['data'] ,
             'pagination'    =>  $data['pagination']
-        ]);    // 
+        ]);    //
     }
 
     public function getAllNegara(Request $request, Response $response)
@@ -162,7 +162,7 @@ class AdminController extends BaseController
         return $this->view->render($response, 'admin/crud/negara/negara.twig', [
             'data'          =>  $data['data'] ,
             'pagination'    =>  $data['pagination']
-        ]);    // 
+        ]);    //
     }
 
     public function getUserDetail(Request $request, Response $response, $args)
@@ -185,7 +185,7 @@ class AdminController extends BaseController
                         ]
                     ]);
 
-    
+
                 } catch (GuzzleException $e) {
                     $result2 = $e->getResponse();
                 }
@@ -201,7 +201,7 @@ class AdminController extends BaseController
                             ]
                         ]);
 
-        
+
                     } catch (GuzzleException $e) {
                         $result3 = $e->getResponse();
                     }
@@ -217,7 +217,7 @@ class AdminController extends BaseController
                                 ]
                             ]);
 
-            
+
                         } catch (GuzzleException $e) {
                             $result3 = $e->getResponse();
                         }
@@ -233,7 +233,7 @@ class AdminController extends BaseController
                                     ]
                                 ]);
 
-                
+
                             } catch (GuzzleException $e) {
                                 $result4 = $e->getResponse();
                             }
@@ -249,7 +249,7 @@ class AdminController extends BaseController
                                         ]
                                     ]);
 
-                    
+
                                 } catch (GuzzleException $e) {
                                     $result5 = $e->getResponse();
                                 }
@@ -265,7 +265,7 @@ class AdminController extends BaseController
                                             ]
                                         ]);
 
-                        
+
                                     } catch (GuzzleException $e) {
                                         $result6 = $e->getResponse();
                                     }
@@ -293,20 +293,19 @@ class AdminController extends BaseController
 
     public function approveUser(Request $request, Response $response, $args)
     {
+        // var_dump($_SESSION['login']);die();
         try {
             $result = $this->client->request('GET',
             $this->router->pathFor('admin.approve.user', ['id' => $args['id']]), [
                  'query' => [
-                     'perpage' => 10,
-                     'page' => $request->getQueryParam('page'),
-                     'id' => $_SESSION['login']['id']
+                     'accepted_by' => $_SESSION['login']['id']
             ]]);
             // $content = json_decode($result->getBody()->getContents());
         } catch (GuzzleException $e) {
             $result = $e->getResponse();
         }
         $data = json_decode($result->getBody()->getContents(), true);
-        // var_dump($data);die();
+        // var_dump($result);die();
         if ($data['error'] == false) {
             $this->flash->addMessage('success', $data['message']);
             return $response->withRedirect($this->router->pathFor('admin.new.user.all'));
@@ -346,50 +345,84 @@ class AdminController extends BaseController
         return  $this->view->render($response, 'auth/login.twig');
     }
 
-    public function login(Request $request, Response $response, $args)
-    {
-         try {
-            $result = $this->client->request('POST',
-            $this->router->pathFor('api.user.login'),
-                ['form_params' => [
-                    'username' => $request->getParam('username'),
-                    'password' => $request->getParam('password')
-                ]
-            ]);
-        } catch (GuzzleException $e) {
-            $result = $e->getResponse();
-        }
-        $data = json_decode($result->getBody()->getContents(), true);
-        // var_dump($data);die();
-        if ($data['code'] == 200 ) {
-             $_SESSION['login'] = $data['data'];
-            if ($_SESSION['login']['status'] == 0) {
-                $this->flash->addMessage('warning', $data['message']);
-                return $response->withRedirect($this->router->pathFor('admin.login'));
-            } elseif($_SESSION['login']['status'] == 1) {
-                $this->flash->addMessage('warning', $data['message']);
-                return $response->withRedirect($this->router->pathFor('admin.login'));
-            } elseif($_SESSION['login']['status'] == 2 && $_SESSION['login']['role'] == 1) {
-                $this->flash->addMessage('success', 'Selamat datang '. $_SESSION['login']['username']);
-                return $response->withRedirect($this->router->pathFor('admin.home'));
-            } else {
-                $this->flash->addMessage('warning',
-                'Anda bukan admin');
-                return $response->withRedirect($this->router->pathFor('admin.login'));
-            }
-        } else {
-            $this->flash->addMessage('warning', 'Username atau password tidak cocok');
-            return $response->withRedirect($this->router->pathFor('admin.login'));
-        }
-    }
+    // public function login(Request $request, Response $response, $args)
+    // {
+    //      try {
+    //         $result = $this->client->request('POST',
+    //         $this->router->pathFor('api.user.login'),
+    //             ['form_params' => [
+    //                 'username' => $request->getParam('username'),
+    //                 'password' => $request->getParam('password')
+    //             ]
+    //         ]);
+    //     } catch (GuzzleException $e) {
+    //         $result = $e->getResponse();
+    //     }
+    //
+    //     $data = json_decode($result->getBody()->getContents(), true);
+    //     // var_dump($_SESSION['login']['role'] == 1 && $_SESSION['login']['status'] == 0 && $data['code'] == 200);die();
+    //     if ($data['code'] == 200 ) {
+    //          $_SESSION['login'] = $data['data'];
+    //         //  var_dump($_SESSION['login'] = $data['data']);die();
+    //         if ($_SESSION['login']['status'] == 0) {
+    //             $this->flash->addMessage('warning', $data['message']);
+    //             return $response->withRedirect($this->router->pathFor('admin.login'));
+    //         } elseif($_SESSION['login']['status'] == 1) {
+    //             $this->flash->addMessage('warning', $data['message']);
+    //             return $response->withRedirect($this->router->pathFor('admin.login'));
+    //         } elseif($_SESSION['login']['role'] == 1 && $_SESSION['login']['status'] == 0) {
+    //             $this->flash->addMessage('success', 'Selamat datang '. $_SESSION['login']['username']);
+    //             return $response->withRedirect($this->router->pathFor('admin.home'));
+    //         } else {
+    //             $this->flash->addMessage('warning',
+    //             'Anda bukan admin');
+    //             return $response->withRedirect($this->router->pathFor('admin.login'));
+    //         }
+    //     } else {
+    //         // $this->flash->addMessage('warning', 'Username atau password tidak cocok');
+    //         return $response->withRedirect($this->router->pathFor('admin.login'));
+    //     }
+    // }
+
+    public function loginAdmin(Request $request, Response $response, $args)
+       {
+            try {
+               $result = $this->client->request('POST',
+               $this->router->pathFor('api.user.login'),
+                   ['form_params' => [
+                       'username' => $request->getParam('username'),
+                       'password' => $request->getParam('password')
+                   ]
+               ]);
+           } catch (GuzzleException $e) {
+               $result = $e->getResponse();
+           }
+           $data = json_decode($result->getBody()->getContents(), true);
+        //    var_dump($data['data']);die();
+
+           if ($data['code'] == 200 ) {
+                $_SESSION['login'] = $data['data'];
+                // var_dump($_SESSION['login']['role'] == 1);die();
+               if ($_SESSION['login']['role'] == 1) {
+                   $this->flash->addMessage('success', 'Selamat datang '. $_SESSION['login']['username']);
+                   return $response->withRedirect($this->router->pathFor('admin.home'));
+               } else {
+                   $this->flash->addMessage('warning', 'Anda bukan admin');
+                   return $response->withRedirect($this->router->pathFor('admin.login'));
+               }
+           } else {
+               $this->flash->addMessage('warning', 'Username atau password tidak cocok');
+               return $response->withRedirect($this->router->pathFor('admin.login'));
+           }
+       }
 
     public function logout(Request $request, Response $response)
     {
-       if ($_SESSION['login']['role'] == 0) {
+       if ($_SESSION['login']['role'] == 1) {
             session_destroy();
             return $response->withRedirect($this->router->pathFor('admin.login'));
 
-        } elseif ($_SESSION['login']['role'] == 1) {
+        } elseif ($_SESSION['login']['role'] == 2) {
             session_destroy();
             return $response->withRedirect($this->router->pathFor('admin.login'));
         }
@@ -440,7 +473,7 @@ class AdminController extends BaseController
         return $this->view->render($response, 'admin/request/taaruf.twig', [
             'data'          =>  $data['data'] ,
             'pagination'    =>  $data['pagination']
-        ]);    // 
+        ]);    //
     }
 
     public function getAllRequest(Request $request, Response $response)
@@ -463,8 +496,8 @@ class AdminController extends BaseController
         return $this->view->render($response, 'admin/request/request-all.twig', [
             'data'          =>  $data['data'] ,
             'pagination'    =>  $data['pagination']
-        ]);    // 
-    } 
+        ]);    //
+    }
 
     public function cancelTaaruf(Request $request, Response $response, $args)
     {
@@ -549,7 +582,7 @@ class AdminController extends BaseController
 return $this->view->render($response, 'admin/crud/provinsi/provinsi.twig', [
             'data'          =>  $data['data'] ,
             'pagination'    =>  $data['pagination']
-        ]);    
+        ]);
         // if ($data['error'] == false) {
         //     $this->flash->addMessage('success', $data['message']);
         //     return $response->withRedirect($this->router->pathFor('admin.show.negara'));

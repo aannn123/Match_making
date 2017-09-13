@@ -1,6 +1,8 @@
 <?php 
 
-namespace App\Middleware\web;
+namespace App\Middlewares\web;
+
+use Slim\Container;
 
 abstract class BaseMiddleware
 {

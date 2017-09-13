@@ -2,6 +2,18 @@
       <!-- main menu content-->
       <div class="main-menu-content">
         <ul id="main-menu-navigation" data-menu="menu-navigation" class="navigation navigation-main">
+        <li><a>
+          {% if (login.role == 2) and (login.gender == 'laki-laki') %}
+              <i class=""></i><span><b class="tag tag-info">Moderator</b></span>
+          {% elseif (login.role == 2) and (login.gender == 'perempuan') %}
+              <i class=""></i><span><b class="tag tag-primary">Moderator</b></span>
+          {% elseif (login.role == 1) and (login.gender == 'laki-laki') %}
+              <i class=""></i><span><b class="tag tag-info">Admin</b></span>
+          {% elseif (login.role == 1) and (login.gender == 'perempuan') %}
+              <i class=""></i><span><b class="tag tag-primary">Admin</b></span>
+           {% endif %}
+        </li></a>
+        {% if login.role == 1 %}
           <li class=" nav-item"><a href="{{ base_url() }}/admin/home"><i class="icon-home3"></i><span data-i18n="nav.dash.main" class="menu-title">Home</span></a>
           </li>
           <li class=" nav-item"><a href="#"><i class="icon-users"></i><span data-i18n="nav.page_layouts.main" class="menu-title">Member</span></a>
@@ -42,8 +54,17 @@
           </li>
           <li class=" nav-item"><a href="{{ base_url() }}/admin/user/get-taaruf"><i class="icon-support"></i><span class="menu-title">Request</span></a>
           </li>
-          <li class=" nav-item"><a href="{{ base_url() }}/admin/user/get-taaruf"><i class="icon-document-text"></i><span class="menu-title">User Proses</span></a>
+          <li class=" nav-item"><a href="{{ base_url() }}/admin/user/get-taaruf"><i class="icon-man-woman"></i><span class="menu-title">User Proses</span></a>
           </li>
-
+          {% endif %}
+      {% if login.role == 2 %}
+      <li class=" nav-item"><a href="{{ base_url() }}/admin/home"><i class="icon-home3"></i><span data-i18n="nav.page_layouts.main" class="menu-title">Home</span></a>
+      <li class=" nav-item"><a href="{{ base_url() }}/admin/user/new"><i class="icon-users"></i><span data-i18n="nav.dash.main" class="menu-title">New Member</span></a>
+      </li>
+      <li class=" nav-item"><a href="{{ base_url() }}/admin/user/get-request-all"><i class="icon-ios-gear"></i><span data-i18n="nav.dash.main" class="menu-title">Member Request</span></a>
+      </li>
+      <li class=" nav-item"><a href="{{ base_url() }}/admin/user/get-taaruf"><i class="icon-man-woman"></i><span data-i18n="nav.dash.main" class="menu-title">Member Taaruf</span></a>
+      </li>
+      {% endif %}
         </ul>
-      </div>    
+      </div>

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Controllers\Api\Users;
 
@@ -23,7 +23,7 @@ class UserController extends BaseController
         $query = $request->getQueryParams();
         if ($get) {
             $page = !$request->getQueryParam('page') ? 1 : $request->getQueryParam('page');
-            $getUser = $user->getAllData()->setPaginate($page, 10);
+            $getUser = $user->getAllData()->setPaginate($page, 20);
 
             if ($getUser) {
                 $data = $this->responseDetail(200, false,  'Data tersedia', [
@@ -83,7 +83,7 @@ class UserController extends BaseController
             $data = $this->responseDetail(404, true, 'User tidak ditemukan');
         }
 
-        return $data; 
+        return $data;
     }
 
     // Method show user man
@@ -212,17 +212,12 @@ class UserController extends BaseController
         $user = $users->getUser('username', $request->getParam('username'));
 
         // $findStatus = $users->find('status', 0);
-        // var_dump($user['status == 1']);die();
+        // var_dump($user);die();
         if (empty($user)) {
             $data = $this->responseDetail(401, true, 'Username tidak terdaftar');
         } else {
             $check = password_verify($request->getParam('password'), $login['password']);
             if ($check) {
-                if ($user['status'] == 0) {
-                    $data = $this->responseDetail(400, true, 'Silahkan menunggu persetujuan admin');
-                } elseif ($user['status'] == 1) {
-                    $data = $this->responseDetail(400, true, 'Akun sudah di setujui oleh admin, silahkan verifikasi email anda');
-                } else {    
                 $token = new UserToken($this->db);
 
                 $token->setToken($login['id']);
@@ -231,6 +226,23 @@ class UserController extends BaseController
                 $key = [
                 'key_token' => $getToken['token'],
                 ];
+                if ($user['role'] == 1) {
+                    $data = $this->responseDetail(200, false, 'Admin Berhasi Login', [
+                        'data'   => $user,
+                        'key'     => $key
+                    ]);
+                } elseif ($user['role'] == 2 && $user['status'] == 2) {
+                    $data = $this->responseDetail(200, false, 'Moderator Berhasil Login', [
+                        'data'   => $user,
+                        'key'     => $key
+                    ]);
+                } elseif ($user['status'] == 1) {
+                    $data = $this->responseDetail(400, true, 'Akun sudah di setujui oleh admin, silahkan verifikasi email anda');
+                //  Login Admin
+                } elseif ($user['status'] == 0 ) {
+                    $data = $this->responseDetail(400, true, 'Silahkan menunggu persetujuan admin');
+                } else {
+
 
                 $data = $this->responseDetail(200, false, 'Login berhasil', [
                     'data'   => $user,
@@ -243,6 +255,47 @@ class UserController extends BaseController
         }
         return $data;
     }
+
+    // public function login($request, $response)
+    // {
+    //     $users = new UserModel($this->db);
+    //
+    //     $login = $users->find('username', $request->getParam('username'));
+    //     $user = $users->getUser('username', $request->getParam('username'));
+    //
+    //     // $findStatus = $users->find('status', 0);
+    //     // var_dump($user['status == 1']);die();
+    //     if (empty($user)) {
+    //         $data = $this->responseDetail(401, true, 'Username tidak terdaftar');
+    //     } else {
+    //         $check = password_verify($request->getParam('password'), $login['password']);
+    //         if ($check) {
+    //             if ($user['status'] == 0) {
+    //                 $data = $this->responseDetail(400, true, 'Silahkan menunggu persetujuan admin');
+    //             } elseif ($user['status'] == 1) {
+    //                 $data = $this->responseDetail(400, true, 'Akun sudah di setujui oleh admin, silahkan verifikasi email anda');
+    //             } else {
+    //             $token = new UserToken($this->db);
+    //
+    //             $token->setToken($login['id']);
+    //             $getToken = $token->find('user_id', $login['id']);
+    //
+    //             $key = [
+    //             'key_token' => $getToken['token'],
+    //             ];
+    //
+    //             $data = $this->responseDetail(200, false, 'Login berhasil', [
+    //                 'data'   => $user,
+    //                 'key'     => $key
+    //             ]);
+    //                 }
+    //             } else {
+    //                 $data = $this->responseDetail(401, true, 'Password salah');
+    //             }
+    //     }
+    //     return $data;
+    // }
+
     public function forgotPassword($request, $response)
     {
         $users = new UserModel($this->db);
@@ -384,7 +437,7 @@ class UserController extends BaseController
     // Method restore user
     public function restore($requst, $response, $args)
     {
-        
+
     }
 
     public function postImage($request, $response, $args)
@@ -441,8 +494,8 @@ class UserController extends BaseController
                 }
                 $data =  $this->responseDetail(200, false, 'Foto berhasil diunggah', [
                     'data' => $newUser
-                ]); 
-                
+                ]);
+
 
             } else {
                 $data = $this->responseDetail(400, true, 'File foto belum dipilih');
@@ -453,7 +506,7 @@ class UserController extends BaseController
 
             $data =  $this->responseDetail(400, true, $errors);
         }
-            return $data;   
+            return $data;
     }
 
     public function searchUser($request, $response)
@@ -493,9 +546,9 @@ class UserController extends BaseController
         // var_dump($find['role']);die();
         $data = [
             'id_terequest'  =>  $args['id'],
-            'id_perequest' => $userId,  
+            'id_perequest' => $userId,
         ];
-        
+
         if ($findUser) {
             $data = $this->responseDetail(404, true, 'Data tidak ditemukan');
         } else {
@@ -521,9 +574,9 @@ class UserController extends BaseController
         // var_dump($find['blokir']);die();
         if ($findUser) {
             if ($find['status'] == 2) {
-                $data = $this->responseDetail(200, false, 'Request sudah diterima');  
+                $data = $this->responseDetail(200, false, 'Request sudah diterima');
             } elseif ($find['blokir'] == 1) {
-                $data = $this->responseDetail(200, false, 'Request tidak bisa di approve');  
+                $data = $this->responseDetail(200, false, 'Request tidak bisa di approve');
             } else {
                 $approve = $requests->approveUser($args['id'], $args['id']);
                 $finds = $requests->find('id_perequest', $approve);
@@ -614,7 +667,7 @@ class UserController extends BaseController
         $findUser = $requests->findTwo('id_terequest', $userId, 'id_perequest', $args['id']);
         $find = $requests->getRequest('id_perequest', $args['id']);
 
-        // var_dump($find['blokir']);die();    
+        // var_dump($find['blokir']);die();
         if ($findUser) {
             if ($find['blokir'] == 1) {
                 $data = $this->responseDetail(404, true, 'Request sudah di tolak');
@@ -675,4 +728,4 @@ class UserController extends BaseController
     }
 
 }
-// 
+//

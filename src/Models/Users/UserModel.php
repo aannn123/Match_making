@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Models\Users;
 
@@ -151,12 +151,13 @@ class UserModel extends BaseModel
         ->execute();
     }
 
-    public function acceptedBy($id)
+    public function acceptedBy($id, $user)
     {
+        // var_dump($user);
         $qb = $this->db->createQueryBuilder();
         $qb->update($this->table)
-        ->set('accepted_by', 11 )
-        ->where('id = ' . $id)
+        ->set('accepted_by', $id)
+        ->where('id = ' . $user)
         ->execute();
     }
 }

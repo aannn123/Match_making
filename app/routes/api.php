@@ -1,6 +1,4 @@
-<?php 
-
-
+<?php
 
 $app->group('/api', function() use ($app, $container) {
     $app->get('/activateaccount/{token}', 'App\Controllers\Api\Users\UserController:activateAccount')->setName('api.activate');
@@ -21,7 +19,7 @@ $app->group('/api', function() use ($app, $container) {
         $app->get('/get-taaruf/cancel/{perequest}/{terequest}', 'App\Controllers\Api\AdminController:cancelTaaruf')->setName('user.cancel.proses');
         $app->get('/new-user', 'App\Controllers\Api\AdminController:showNewUser')->setName('admin.new.user');
         $app->get('/show-request-all', 'App\Controllers\Api\AdminController:showRequestAll')->setName('admin.request.all');
-        
+
 
         $app->group('/negara', function() use ($app, $container) {
             $app->get('', 'App\Controllers\Api\NegaraController:getAllNegara')->setName('admin.negara');
@@ -73,9 +71,9 @@ $app->group('/api', function() use ($app, $container) {
             $app->get('/show/pria', 'App\Controllers\Api\Users\CiriFisikController:getAllFisikPria');
             $app->get('/show/wanita', 'App\Controllers\Api\Users\CiriFisikController:getAllFisikWanita');
             $app->post('/create/pria', 'App\Controllers\Api\Users\CiriFisikController:createCiriFisikPria');
-            $app->post('/create/wanita', 'App\Controllers\Api\Users\CiriFisikController:createCiriFisikWanita');            
-            $app->put('/update/pria', 'App\Controllers\Api\Users\CiriFisikController:updateFisikPria');   
-            $app->put('/update/wanita', 'App\Controllers\Api\Users\CiriFisikController:updateFisikWanita');  
+            $app->post('/create/wanita', 'App\Controllers\Api\Users\CiriFisikController:createCiriFisikWanita');
+            $app->put('/update/pria', 'App\Controllers\Api\Users\CiriFisikController:updateFisikPria');
+            $app->put('/update/wanita', 'App\Controllers\Api\Users\CiriFisikController:updateFisikWanita');
             $app->get('/find/{id}', 'App\Controllers\Api\Users\CiriFisikController:findData')->setName('user.find.ciri-fisik');
 
         });

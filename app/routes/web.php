@@ -1,12 +1,15 @@
-<?php 
+<?php
 
 $app->get('/home', 'App\Controllers\Web\HomeController:index')->setName('home');
 $app->get('/admin', 'App\Controllers\Web\AdminController:getLogin')->setName('admin.login');
-$app->post('/admin', 'App\Controllers\Web\AdminController:login')->setName('post.login');
+$app->post('/admin', 'App\Controllers\Web\AdminController:loginAdmin')->setName('post.login');
 $app->get('/logout', 'App\Controllers\Web\AdminController:logout')->setName('logout');
+$app->get('/register', 'App\Controllers\Web\UserController:getRegister');
+
+$app->group('', function() use ($app, $container) {
 
 $app->group('/admin', function() use ($app, $container) {
-        $app->get('/home', 'App\Controllers\Web\HomeController:index')->setName('admin.home');
+    $app->get('/home', 'App\Controllers\Web\HomeController:index')->setName('admin.home');
     $app->group('/user', function() use ($app, $container) {
         $app->get('',  'App\Controllers\Web\AdminController:getAllUser')->setName('admin.user');
         $app->get('/setModerator/{id}',  'App\Controllers\Web\AdminController:setModerator')->setName('admin.setModerator.user');
@@ -35,5 +38,9 @@ $app->group('/admin', function() use ($app, $container) {
         $app->get('',  'App\Controllers\Web\AdminController:getAllNegara')->setName('admin.show.negara');
         $app->post('/create',  'App\Controllers\Web\AdminController:createNegara')->setName('admin.tambah.negara');
     });
-});
+})->add(new \App\Middlewares\web\AdminMiddleware($container));
 
+    $app->group('/user', function() use ($app, $container) {
+    });
+
+})->add(new \App\Middlewares\web\AuthMiddleware($container));
