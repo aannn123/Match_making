@@ -1,45 +1,87 @@
-<!-- Alert succes -->
-{% if flash.getMessage('success') %}
-<div class="col-xl-6 col-lg-12">
-    <div class="alert alert-success alert-dismissible fade in mb-2" role="alert">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-        <strong>Success!</strong> &nbsp;{{ flash.getMessage('success') | first }}
-    </div>
-</div>
-{% endif %}   
-<!-- Alert error -->
-{% if flash.getMessage('error') %}
-<div class="col-xl-6 col-lg-12">
-    <div class="alert alert-danger alert-dismissible fade in mb-2" role="alert">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-        <strong>Error!</strong> &nbsp;{{ flash.getMessage('error') | first }}
-    </div>
-</div>
-{% endif %}   
-<!-- Alert warning -->
-{% if flash.getMessage('warning') %}
-<div class="col-xl-12 col-lg-12">
-    <div class="alert alert-warning alert-dismissible fade in mb-2" role="alert">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-        <strong>Warning!</strong> &nbsp;{{ flash.getMessage('warning') | first }}
-    </div>
-</div>
-{% endif %}   
-
-<!-- Alert info -->
 {% if flash.getMessage('info') %}
-<div class="col-xl-6 col-lg-12">
-    <div class="alert alert-info alert-dismissible fade in mb-2" role="alert">
+
+<center><div class="alert alert-info alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span></button>
+        <span class="glyphicon glyphicon-bell"></span>
+        <strong> Info ! </strong> <i>Data tidak boleh kosong</i>
+        <span class="glyphicon glyphicon-bell"></center>
+            <strong>{{ flash.getMessage('info') | first }}</strong>
+        </div>
+
+        {% endif %}
+
+        {% if flash.getMessage('error') %}
+
+        <center><div class="alert alert-danger alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span></button>
+                <strong><span class="glyphicon glyphicon-remove"></span>
+                    {{ flash.getMessage('error') | first }}
+                    <span class="glyphicon glyphicon-remove"></span>
+                </strong>
+            </div>
+        </center>
+    {% endif %}
+
+    {% if flash.getMessage('warning') %}
+
+    <center> <div class="alert alert-warning alert-dismissible" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-        <strong>Info!</strong> &nbsp;{{ flash.getMessage('info') | first }}
+            <span aria-hidden="true">&times;</span></button>
+            <strong><span class="glyphicon glyphicon-warning-sign"></span></strong>
+                 Error! {{ flash.getMessage('warning') | first }}
+        </div></center>
+
+    {% endif %}
+
+    {% if flash.getMessage('success') %}
+
+    <center><div class="alert alert-success alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+            <strong><span class="glyphicon glyphicon-check"></span></strong>
+            {{ flash.getMessage('success') | first }}
+
+            <strong><span class="glyphicon glyphicon-check"></strong>
+        </div></center>
+{% endif %}
+
+<!-- Alert Material -->
+{% if flash.getMessage('success_material') %}
+    <div class="card-panel green lighten-4 green-text text-darken-4"><b>Success! </b>{{ flash.getMessage('success_material') | first }}.
+    <span class="pull-right"><i class="material-icons prefix">close</i></span>
+    </div>      
+{% endif %}
+
+{% if flash.getMessage('error_material') %}
+    <div class="card-panel red lighten-4 red-text text-darken-4"><b>Error! </b>{{ flash.getMessage('error_material') | first }}. 
+    <span class="pull-right"><i class="material-icons prefix">close</i></span>
+    </div>      
+{% endif %}
+
+{% if flash.getMessage('warning_material') %}
+    <div class="card-panel yellow lighten-4 yellow-text text-darken-4"><b>Warning! </b>{{ flash.getMessage('warning_material') | first }}.
+    <span class="pull-right"><i class="material-icons prefix">close</i></span>
+    </div>      
+{% endif %}
+
+{% if flash.getMessage('info_material') %}
+    <div class="card-panel blue lighten-4 blue-text text-darken-4"><b>Info! </b>{{ flash.getMessage('info_material') | first }}.
+    <span class="pull-right"><i class="material-icons prefix">close</i></span>
     </div>
-</div>
-{% endif %}   
+{% endif %}
+
+<script>
+    window.setTimeout(function() {
+    $(".alert-dismissible").fadeTo(700, 0).slideUp(700, function(){
+        $(this).remove();
+    });
+}, 3700);
+
+window.setTimeout(function() {
+    $(".card-panel").fadeTo(700, 0).slideUp(700, function(){
+        $(this).remove();
+    });
+}, 3700);
+</script>

@@ -14,7 +14,7 @@
         <div class="card">
             <div class="card-header">
                 <h4 class="card-title">Semua data provinsi</h4>
-                <button type="button" class="btn btn-outline-primary"data-toggle="modal" data-target="#default">Create Provinsi</button>
+                <button type="button" class="btn btn-outline-primary"data-toggle="modal" data-target="#default">Tambah Provinsi</button>
                 <a class="heading-elements-toggle"><i class="icon-ellipsis font-medium-3"></i></a>
                 <div class="heading-elements">
                     <ul class="list-inline mb-0">
@@ -45,8 +45,6 @@
                                 <td>{{provinsi.nama}}</td>
                                 <td>
                                     <a href="" data-toggle="tooltip" data-placement="top" title="Delete"><i class="icon-times"></i></a>
-                                    <a href="" style="color: #1a53ff" data-toggle="tooltip" data-placement="top" title="View Detail"><i class="icon-eye4"></i></a>
-                                    <a href="" style="color: #1a53ff" data-toggle="tooltip" data-placement="top" title="Add kota"><i class="icon-plus"></i></a>
                                 </td>
                             </tr>
                             {% endfor %}
@@ -66,13 +64,14 @@
                             <form action="{{ path_for('admin.tambah.provinsi') }}" method="POST">
                                 <div class="form-group">
                                 <label for="complaintinput6">Nama Negara</label>
-                                    <select name="i_provinsi" id="complaintinput6" class="form-control round" >
+                                    <select name="id_negara" id="complaintinput6" class="form-control round" >
+                                        <option value="">Select Negara</option>
                                         {% for negara in negara %}
                                         <option value="{{negara.id}}">{{negara.nama}}</option>
                                         {% endfor %}
                                     </select>
                                     <label for="complaintinput6">Nama Provins</label>
-                                    <input type="text" id="complaintinput6" class="form-control round" placeholder="Nama Negara" name="nama">
+                                    <input type="text" id="complaintinput6" class="form-control round" placeholder="Nama Provinsi" name="nama">
                                 </div>
                           <div class="modal-footer">
                             <button type="button" class="btn grey btn-outline-secondary" data-dismiss="modal">Close</button>
@@ -82,7 +81,7 @@
                           </div>
                         </div>
                       </div>
-                        <div class="text-xs-right mb-3">
+                       <!--  <div class="text-xs-right mb-3">
                             <nav aria-label="Page navigation">
                                 <ul class="pagination">
                                     <li class="page-item">
@@ -106,7 +105,7 @@
                             </nav>
                         </div>
                     </div>
-           
+            -->
                                 </div>
                             </div>
                         </div>

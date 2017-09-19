@@ -116,7 +116,7 @@ class AdminController extends BaseController
         // var_dump($user['role']);die();
         if ($findUser) {
             if ($user['role'] == 2) {
-                $data = $this->responseDetail(400, false, 'User sudah menjadi moderator');
+                $data = $this->responseDetail(400, true, 'User sudah menjadi moderator');
 
             } elseif($user['role'] == 0 && $user['status'] == 2) {
                 $setModerator = $users->setModerator($args['id']);
@@ -142,11 +142,10 @@ class AdminController extends BaseController
         $mailer = new \App\Extensions\Mailers\Mailer();
         $token = $request->getHeader('Authorization')[0];
         $userId = $userToken->getUserId($token);
-        $accept = $request->getQueryParam('accepted_by');
 
         $findUser = $user->find('id', $args['id']);
         $users = $user->getUser('id', $args['id']);
-
+        // var_dump($findUser);die();
         if ($findUser) {
             if ($users['status'] == 1) {
                 $data = $this->responseDetail(404, true, 'User sudah di approve');
@@ -154,7 +153,7 @@ class AdminController extends BaseController
                 $data = $this->responseDetail(404, true, 'Dia bukan member');
             } else {
             $setUser = $user->setApproveUser($args['id']);
-            // $acceptBy = $user->acceptedBy($userId['id'], $args['id']);
+            $responseUser = $user->find('id', $args['id']);
             // var_dump($acceptBy);die();
             $newUser = $user->getUser('id', $args['id']);
                 $token = md5(openssl_random_pseudo_bytes(8));
@@ -215,12 +214,12 @@ class AdminController extends BaseController
                 ];
 
                 $mailer->send($mail);
-                $data = $this->responseDetail(201, false, 'approve user berhasil', [
-                        'data' => $findUser
+                $data = $this->responseDetail(200, false, 'approve user berhasil', [
+                        'data' => $responseUser
                     ]);
                 }
         } else {
-            $data = $this->responseDetail(201, false, 'User tidak ditemukan');
+            $data = $this->responseDetail(404, true, 'User tidak ditemukan');
         }
             return $data;
     }
@@ -233,25 +232,46 @@ class AdminController extends BaseController
         $token = $request->getHeader('Authorization')[0];
         $userId = $userToken->getUserId($token);
 
-        $findUser = $requests->findTwo('id_perequest', $args['perequest'], 'id_terequest', $args['terequest']);
+        $findUser = $requests->find('id', $args['id']);
 
         $find = $requests->getRequest('id_perequest', $args['perequest'], 'id_terequest', $args['terequest']);
-        // var_dump($find);die();
 
         if ($findUser) {
             if ($find['blokir'] == 2) {
                 $data = $this->responseDetail(404, true, 'Taaruf sudah di cancel');
-            } else {
-            // $sendRequest = $requests->update($data);
-            $blokir = $requests->cancelTaaruf($args['perequest'], $args['terequest']);
+            } else {    
+            $blokir = $requests->cancelTaaruf($args['id']);
+            $findUser = $requests->findTwoRequest('perequest', $args['perequest'], 'terequest', $args['terequest']);
+
             $data = $this->responseDetail(200, false, 'Taaruf user berhasil di cancel', [
-                    'data' => $blokir
+                    'data' => $findUser
                 ]);
         }
         } else {
             $data = $this->responseDetail(404, true, 'Data tidak ditemukan');
         }
         return $data;
+    }
+
+    public function findTaaruf($request, $response, $args)
+    {
+        $user = new UserModel($this->db);
+        $requests = new \App\Models\Users\RequestModel($this->db);
+        $userToken = new UserToken($this->db);
+        $token = $request->getHeader('Authorization')[0];
+        $userId = $userToken->getUserId($token);
+
+        $findUser = $requests->findTwoRequest('perequest', $args['perequest'], 'terequest', $args['terequest']);
+
+        if ($findUser) {
+            $data = $this->responseDetail(200, false, 'User Taaruf tersedia' ,
+                [
+                   'data' => $findUser 
+            ]);           
+        } else {
+            $data = $this->responseDetail(404, true, 'Data tidak ditemukan');
+        }
+            return $data;
     }
 
     public function getTaaruf($request, $response)
@@ -410,4 +430,5 @@ class AdminController extends BaseController
 
         return $data;
     }
+
 }

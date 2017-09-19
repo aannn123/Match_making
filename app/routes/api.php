@@ -7,18 +7,22 @@ $app->group('/api', function() use ($app, $container) {
     $app->post('/register', 'App\Controllers\Api\Users\UserController:register')->setName('register');
     $app->post('/{id}/register/change-image', 'App\Controllers\Api\Users\UserController:postImage')->setname('api.user.image');
     $app->post('/login', 'App\Controllers\Api\Users\UserController:login')->setname('api.user.login');
-    $app->post('/reset', 'App\Controllers\Api\Users\UserController:forgotPassword')->setName('api.reset');
+    $app->post('/reset', 'App\Controllers\Api\Users\UserController:forgotPassword')->setName('api.forgot.password');
     $app->get('/password/reset/{token}', 'App\Controllers\Api\Users\UserController:getResetPassword')->setName('api.get.reset');
     $app->post('/password/reset', 'App\Controllers\Api\Users\UserController:resetPassword')->setName('api.reset.password');
+    $app->get('/test', 'App\Controllers\Api\AdminController:test')->setName('test');
 
     $app->group('/admin', function() use ($app, $container) {
         $app->get('/setModerator/{id}', 'App\Controllers\Api\AdminController:setModerator')->setName('admin.setModerator');
         $app->get('/approveUser/{id}', 'App\Controllers\Api\AdminController:approveUser')->setName('admin.approve.user');
         $app->get('/user/cancel/{id}', 'App\Controllers\Api\AdminController:cancelUser')->setName('admin.cancel.user');
         $app->get('/get-taaruf', 'App\Controllers\Api\AdminController:getTaaruf')->setName('admin.get.taaruf');
-        $app->get('/get-taaruf/cancel/{perequest}/{terequest}', 'App\Controllers\Api\AdminController:cancelTaaruf')->setName('user.cancel.proses');
+        $app->get('/get-taaruf/cancel/{id}', 'App\Controllers\Api\AdminController:cancelTaaruf')->setName('admin.cancel.proses');
         $app->get('/new-user', 'App\Controllers\Api\AdminController:showNewUser')->setName('admin.new.user');
         $app->get('/show-request-all', 'App\Controllers\Api\AdminController:showRequestAll')->setName('admin.request.all');
+        $app->get('/find/taaruf/{perequest}/{terequest}', 'App\Controllers\Api\AdminController:findTaaruf')->setName('admin.find.taaruf');
+        $app->post('/search', 'App\Controllers\Api\Users\UserController:searchUserAll')->setName('api.search.user.all');
+
 
 
         $app->group('/negara', function() use ($app, $container) {
@@ -31,7 +35,7 @@ $app->group('/api', function() use ($app, $container) {
 
         $app->group('/provinsi', function() use ($app, $container) {
             $app->get('', 'App\Controllers\Api\ProvinsiController:getAllprovinsi')->setName('admin.provinsi');
-            $app->post('/create/{id}', 'App\Controllers\Api\ProvinsiController:createProvinsi')->setName('admin.create.provinsi');
+            $app->post('/create', 'App\Controllers\Api\ProvinsiController:createProvinsi')->setName('admin.create.provinsi');
             $app->put('/update/{id}', 'App\Controllers\Api\ProvinsiController:updateProvinsi');
             $app->get('/find/{id}', 'App\Controllers\Api\ProvinsiController:findProvinsi');
             $app->delete('/delete/{id}', 'App\Controllers\Api\ProvinsiController:deleteProvinsi');
@@ -39,7 +43,7 @@ $app->group('/api', function() use ($app, $container) {
 
         $app->group('/kota', function() use ($app, $container) {
             $app->get('', 'App\Controllers\Api\KotaController:getAllKota')->setName('api.admin.kota');
-            $app->post('/create', 'App\Controllers\Api\KotaController:createkota');
+            $app->post('/create', 'App\Controllers\Api\KotaController:createkota')->setName('admin.create.kota');
             $app->put('/update/{id}', 'App\Controllers\Api\KotaController:updateKota');
             $app->get('/find/{id}', 'App\Controllers\Api\KotaController:findKota');
             $app->delete('/delete/{id}', 'App\Controllers\Api\KotaController:deleteKota');

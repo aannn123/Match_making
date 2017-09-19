@@ -43,7 +43,7 @@ class RequestModel extends BaseModel
         $qb = $this->db->createQueryBuilder();
         $qb->update($this->table)
         ->set('blokir', 2)
-        ->where('status = 2 && id_perequest =' . $id)
+        ->where('status = 2 && id =' . $id)
         ->execute();
     }
 
@@ -144,5 +144,21 @@ class RequestModel extends BaseModel
             ->join('req','users', 'user1', 'req.id_terequest = user1.id');
         $query = $qb->execute()->fetch();
         return $this;
+    }
+
+    public function findTwoRequest($column1, $val1, $column2, $val2)
+    {
+        $param1 = ':'.$column1;
+        $param2 = ':'.$column2;
+        $qb = $this->db->createQueryBuilder();
+        $qb->select('req.id', 'user.username as perequest', 'user1.username as terequest', 'req.status as request_status', 'req.blokir', 'req.created_at', 'req.updated_at')
+            ->from($this->table,'req')
+            ->join('req','users', 'user', 'req.id_perequest = user.id')
+            ->join('req','users', 'user1', 'req.id_terequest = user1.id')
+            ->setParameter($param1, $val1)
+            ->setParameter($param2, $val2)
+            ->where('user.username = :perequest' .'&&'. 'user1.username = :terequest');
+        $result = $qb->execute();
+        return $result->fetchAll();
     }
 }

@@ -20,16 +20,31 @@ class AdminController extends BaseController
                      'page' => $request->getQueryParam('page'),
                      'id' => $_SESSION['login']['id']
             ]]);
-            // $content = json_decode($result->getBody()->getContents());
+
+                try {
+                $search = $this->client->request('POST',  $this->router->pathFor('api.search.user.all'),
+                    ['form_params' => [
+                        'search'          => $request->getParam('search'),
+                    ]
+                ]);
+            } catch (GuzzleException $e) {
+                $search = $e->getResponse();
+            }
+
+        $content = $search->getBody()->getContents();
+        $searchUser = json_decode($content, true);
+        //     // $content = json_decode($result->getBody()->getContents());
         } catch (GuzzleException $e) {
             $result = $e->getResponse();
         }
         $data = json_decode($result->getBody()->getContents(), true);
-        // var_dump($data);die();
+        // var_dump($data['data']);die();
         $this->flash->addMessage('succes', 'sadasdsa');
+        // var_dump($searchUser['data']['user']);die;
+
         return $this->view->render($response, 'admin/user/all-user.twig', [
-            'data'          =>  $data['data'] ,
-            'pagination'    =>  $data['pagination']
+            'data'          =>  $searchUser['data'],
+            // 'pagination'    =>  $data['pagination']
         ]);    //
     }
 
@@ -115,10 +130,51 @@ class AdminController extends BaseController
         }
         $data = json_decode($result->getBody()->getContents(), true);
         // var_dump($data);die();
-        return $this->view->render($response, 'admin/crud/kota/kota.twig', [
+        
+
+             try {
+                $result1 = $this->client->request('GET',
+                $this->router->pathFor('admin.provinsi'), [
+                     'query' => [
+                         'perpage' => 10,
+                         'page' => $request->getQueryParam('page'),
+                         'id' => $_SESSION['login']['id']
+                ]]);
+            } catch (GuzzleException $e) {
+                $result1 = $e->getResponse();
+            }
+            $provinsi = json_decode($result1->getBody()->getContents(), true); 
+    // var_dump($provinsi);die;
+          return $this->view->render($response, 'admin/crud/kota/kota.twig', [
             'data'          =>  $data['data'] ,
+            'provinsi'          =>  $provinsi['data'] ,
             'pagination'    =>  $data['pagination']
         ]);    //
+    }
+
+    public function createKota(Request $request, Response $response)
+    {
+        try {
+            $result = $this->client->request('POST',  $this->router->pathFor('admin.create.kota'),
+                ['form_params' => [
+                    'id_provinsi'   => $request->getParam('id_provinsi'),
+                    'nama'          => $request->getParam('nama'),
+                ]
+            ]);
+        } catch (GuzzleException $e) {
+            $result = $e->getResponse();
+        }
+
+        $content = $result->getBody()->getContents();
+        $data = json_decode($content, true);
+        var_dump($data);die;
+        if ($data['error'] == false) {
+            $this->flash->addMessage('success', $data['message']);
+            return $response->withRedirect($this->router->pathFor('admin.show.kota'));
+        } else {
+            $this->flash->addMessage('error', $data['message']);
+            return $response->withRedirect($this->router->pathFor('admin.show.kota'));
+        }
     }
 
     public function getAllProvinsi(Request $request, Response $response)
@@ -131,14 +187,31 @@ class AdminController extends BaseController
                      'page' => $request->getQueryParam('page'),
                      'id' => $_SESSION['login']['id']
             ]]);
-            // $content = json_decode($result->getBody()->getContents());
+
+            // var_dump($negara);die;
         } catch (GuzzleException $e) {
             $result = $e->getResponse();
         }
         $data = json_decode($result->getBody()->getContents(), true);
         // var_dump($data);die();
+        
+         try {
+                $result = $this->client->request('GET',
+                $this->router->pathFor('admin.negara'), [
+                     'query' => [
+                         'perpage' => 10,
+                         'page' => $request->getQueryParam('page'),
+                         'id' => $_SESSION['login']['id']
+                ]]);
+            // $content = json_decode($result->getBody()->getContents());
+            } catch (GuzzleException $e) {
+                $result = $e->getResponse();
+            }
+            $negara = json_decode($result->getBody()->getContents(), true); 
+        
         return $this->view->render($response, 'admin/crud/provinsi/provinsi.twig', [
             'data'          =>  $data['data'] ,
+            'negara'          =>  $negara['data'] ,
             'pagination'    =>  $data['pagination']
         ]);    //
     }
@@ -305,12 +378,12 @@ class AdminController extends BaseController
             $result = $e->getResponse();
         }
         $data = json_decode($result->getBody()->getContents(), true);
-        // var_dump($result);die();
-        if ($data['error'] == false) {
+        // print_r($data);die();
+        if ($data['error'] == 404) {
             $this->flash->addMessage('success', $data['message']);
             return $response->withRedirect($this->router->pathFor('admin.new.user.all'));
         } else {
-            $this->flash->addMessage('error', $data['message']);
+            $this->flash->addMessage('success', $data['message']);
             return $response->withRedirect($this->router->pathFor('admin.new.user.all'));
         }
     }
@@ -344,45 +417,6 @@ class AdminController extends BaseController
     {
         return  $this->view->render($response, 'auth/login.twig');
     }
-
-    // public function login(Request $request, Response $response, $args)
-    // {
-    //      try {
-    //         $result = $this->client->request('POST',
-    //         $this->router->pathFor('api.user.login'),
-    //             ['form_params' => [
-    //                 'username' => $request->getParam('username'),
-    //                 'password' => $request->getParam('password')
-    //             ]
-    //         ]);
-    //     } catch (GuzzleException $e) {
-    //         $result = $e->getResponse();
-    //     }
-    //
-    //     $data = json_decode($result->getBody()->getContents(), true);
-    //     // var_dump($_SESSION['login']['role'] == 1 && $_SESSION['login']['status'] == 0 && $data['code'] == 200);die();
-    //     if ($data['code'] == 200 ) {
-    //          $_SESSION['login'] = $data['data'];
-    //         //  var_dump($_SESSION['login'] = $data['data']);die();
-    //         if ($_SESSION['login']['status'] == 0) {
-    //             $this->flash->addMessage('warning', $data['message']);
-    //             return $response->withRedirect($this->router->pathFor('admin.login'));
-    //         } elseif($_SESSION['login']['status'] == 1) {
-    //             $this->flash->addMessage('warning', $data['message']);
-    //             return $response->withRedirect($this->router->pathFor('admin.login'));
-    //         } elseif($_SESSION['login']['role'] == 1 && $_SESSION['login']['status'] == 0) {
-    //             $this->flash->addMessage('success', 'Selamat datang '. $_SESSION['login']['username']);
-    //             return $response->withRedirect($this->router->pathFor('admin.home'));
-    //         } else {
-    //             $this->flash->addMessage('warning',
-    //             'Anda bukan admin');
-    //             return $response->withRedirect($this->router->pathFor('admin.login'));
-    //         }
-    //     } else {
-    //         // $this->flash->addMessage('warning', 'Username atau password tidak cocok');
-    //         return $response->withRedirect($this->router->pathFor('admin.login'));
-    //     }
-    // }
 
     public function loginAdmin(Request $request, Response $response, $args)
        {
@@ -503,7 +537,7 @@ class AdminController extends BaseController
     {
          try {
             $result = $this->client->request('GET',
-            $this->router->pathFor('user.cancel.proses', ['perequest' => $args['perequest'], 'terequest' => $args['terequest']]), [
+            $this->router->pathFor('admin.cancel.proses', ['id' => $args['id']]), [
                  'query' => [
                      'perpage' => 10,
                      'page' => $request->getQueryParam('page'),
@@ -515,6 +549,31 @@ class AdminController extends BaseController
         }
         $data = json_decode($result->getBody()->getContents(), true);
         // var_dump($data);die();
+        if ($data['error'] == false) {
+            $this->flash->addMessage('success', $data['message']);
+            return $response->withRedirect($this->router->pathFor('admin.show.taaruf'));
+        } else {
+            $this->flash->addMessage('error', $data['message']);
+            return $response->withRedirect($this->router->pathFor('admin.show.taaruf'));
+        }
+    }
+
+    public function findTaaruf(Request $request, Response $response, $args)
+    {
+         try {
+            $result = $this->client->request('GET',
+            $this->router->pathFor('admin.find.taaruf', ['perequest' => $args['perequest'], 'terequest' => $args['terequest']]), [
+                 'query' => [
+                     'perpage' => 10,
+                     'page' => $request->getQueryParam('page'),
+                     'id' => $_SESSION['login']['id']
+            ]]);
+            // $content = json_decode($result->getBody()->getContents());
+        } catch (GuzzleException $e) {
+            $result = $e->getResponse();
+        }
+        $data = json_decode($result->getBody()->getContents(), true);
+        var_dump($data);die();
         if ($data['error'] == false) {
             $this->flash->addMessage('success', $data['message']);
             return $response->withRedirect($this->router->pathFor('admin.show.taaruf'));
@@ -551,44 +610,72 @@ class AdminController extends BaseController
     public function createProvinsi(Request $request, Response $response, $args)
     {
         try {
-            $result = $this->client->request('POST',  $this->router->pathFor('admin.create.provinsi', ['id' => $args['id']]),
+            $result = $this->client->request('POST',  $this->router->pathFor('admin.create.provinsi'),
                 ['form_params' => [
                     'nama'          => $request->getParam('nama'),
-                    'id_provinsi'          => $request->getParam('id_provinsi'),
+                    'id_negara'          => $request->getParam('id_negara'),
                 ]
             ]);
 
+        } catch (GuzzleException $e) {
+            $result = $e->getResponse();
+        }
 
-             try {
-                $result1 = $this->client->request('GET',
-                $this->router->pathFor('admin.negara'), [
-                     'query' => [
-                         'perpage' => 10,
-                         'page' => $request->getQueryParam('page'),
-                ]]);
-                // $content = json_decode($result1->getBody()->getContents());
-            } catch (GuzzleException $e) {
-                $result1 = $e->getResponse();
-            }
+        $data = json_decode($result->getBody()->getContents(), true);
+        // var_dump($data);die;
+         if ($data['error'] == 201) {
+            $this->flash->addMessage('error', $data['message']);
+            return $response->withRedirect($this->router->pathFor('admin.show.provinsi'));
+        } else {
+            $this->flash->addMessage('success', $data['message']);
+            return $response->withRedirect($this->router->pathFor('admin.show.provinsi'));
+        }
+    }
 
-                $negara = json_decode($result1->getBody()->getContents(), true);
-                var_dump($negara);die();
+    public function searchUser(Request $request, Response $response)
+    {
+        try {
+            $result = $this->client->request('POST',  $this->router->pathFor('api.search.user.all'),
+                ['form_params' => [
+                    'search'          => $request->getParam('search'),
+                ]
+            ]);
         } catch (GuzzleException $e) {
             $result = $e->getResponse();
         }
 
         $content = $result->getBody()->getContents();
         $data = json_decode($content, true);
-return $this->view->render($response, 'admin/crud/provinsi/provinsi.twig', [
+        // var_dump($data);die;
+        $this->flash->addMessage('succes', 'yoi');
+        if (empty($result)) {
+            // var_dump('ok');die;
+            return $this->view->render($response, 'admin/user/all-user.twig', [
             'data'          =>  $data['data'] ,
             'pagination'    =>  $data['pagination']
-        ]);
-        // if ($data['error'] == false) {
-        //     $this->flash->addMessage('success', $data['message']);
-        //     return $response->withRedirect($this->router->pathFor('admin.show.negara'));
-        // } else {
-        //     $this->flash->addMessage('error', $data['message']);
-        //     return $response->withRedirect($this->router->pathFor('admin.show.negara'));
+        ]);  
+            
+        } else {
+            // var_dump($data);die;
+            return $this->view->render($response, 'admin/user/result-search.twig', [
+            'data'          =>  $data['data'] ,
+            'pagination'    =>  $data['pagination']
+        ]);  
+
+        }
+
+
+        // try {
+        //     $result = $this->client->request('POST',
+        //                 $this->router->pathFor('api.search.user.all'));
+        //     $content = json_decode($client->getBody()->getContents());
+        // } catch (GuzzleException $e) {
+        //     $result = $e->getResponse();
+        //     $this->flash->addMessage(404, 'Data tidak ditemukan');
         // }
+        //     $data = json_decode($result->getBody()->getContents(), true);
+          
+        //     var_dump($data);die;
+        // return $this->view->render($response, 'admin/user/result-search.twig');
     }
 }

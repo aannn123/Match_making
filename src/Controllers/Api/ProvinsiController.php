@@ -15,7 +15,7 @@ class ProvinsiController extends BaseController
         $query = $request->getQueryParams();
         if ($get) {
             $page = !$request->getQueryParam('page') ? 1 : $request->getQueryParam('page');
-            $getProvinsi = $provinsi->joinProvinsi()->setPaginate($page, 5);
+            $getProvinsi = $provinsi->joinProvinsi()->setPaginate($page, 10);
 
             if ($getProvinsi) {
                 $data = $this->responseDetail(200, false,  'Data tersedia', [
@@ -49,7 +49,7 @@ class ProvinsiController extends BaseController
             } else {
                 $addProvinsi = $provinsi->createProvinsi($input);
                 $find = $provinsi->find('id', $addProvinsi);
-                $data = $this->responseDetail(200, false, 'Berhasil menambahkan provinsi', [
+                $data = $this->responseDetail(201, false, 'Berhasil menambahkan provinsi', [
                         'data' => $find
                 ]);
             }

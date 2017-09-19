@@ -20,7 +20,6 @@ class UserModel extends BaseModel
             'photo'    => $data['photo'],
             'ktp'      => $data['ktp'],
             'role'     => 0,
-            'accepted_by' => 0,
         ];
 
         $this->createData($data);
@@ -151,13 +150,34 @@ class UserModel extends BaseModel
         ->execute();
     }
 
-    public function acceptedBy($id, $user)
+    public function searchUser($val)
     {
-        // var_dump($user);
         $qb = $this->db->createQueryBuilder();
-        $qb->update($this->table)
-        ->set('accepted_by', $id)
-        ->where('id = ' . $user)
-        ->execute();
-    }
+        $this->query = $qb->select('*')
+                 ->from($this->table)
+                 ->where('username LIKE :val')
+                 ->orWhere('email LIKE :val')
+                 ->orWhere('phone LIKE :val')
+                 ->andWhere('deleted = 0')
+                 ->setParameter('val', '%'.$val.'%');
+
+        // $result = $this->query->execute();
+
+        // return $result->fetchAll();
+
+        $query = $qb->execute();
+        return $this;    }
+
+    // public function acceptedBy($id, $user)
+    // {
+    //     var_dump($id);die;
+    //     $qb = $this->db->createQueryBuilder();
+    //     $qb->update($this->table)
+    //     ->set('accepted_by', 7)
+    //     ->where('id = ' . $user);
+    //     $qbb = $qb->execute();
+
+    //     return $qbb;
+    //     // var_dump($qbb);die();
+    // }
 }

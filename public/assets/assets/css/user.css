@@ -1,0 +1,514 @@
+   *{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    text-decoration: none
+}
+#bis {
+    border-bottom:1px solid #ecf0f1;
+}
+a{
+    text-decoration: none
+}
+a:hover{
+    text-decoration: none
+}
+
+.clean{
+    /*background:#b9b9b9;*/
+    height:1px;
+    width:50%;
+    margin:0 auto
+}
+
+.fa{
+    color: #7f8c8d;
+    cursor: pointer
+}
+
+.navbar{
+    border: 10px;
+    background: #ecf0f1;
+    cursor: pointer
+}
+
+.fa:hover{
+    color: #3498db;
+    cursor: pointer
+}
+
+.cennter{
+    text-align: center;
+}
+.color-white{
+    color: #fff;
+}
+
+.header-fix{
+    width: 100%;
+    /*background: #fff;*/
+    height: 80px;
+    position: fixed;
+    margin-top: 0px;
+    box-shadow:0 4px 6px rgba(0,0,0,0.1);
+    z-index: 99999;
+}
+
+.header-fix img{
+    width: 250px;
+    margin-left: 8%;
+}
+
+.dropdown{
+    display: block;
+    margin-top: -50px;
+    margin-left: 1050px;
+}
+
+.dropdown-mobile{
+    display: none;
+}
+
+.dropdown-g{
+    display: block;
+    margin-left:89%;margin-top:-15px
+}
+.g{
+    margin-top:-35.5%;
+    margin-left:67%;
+}
+
+.logo-avatar{
+    font-size: 25px
+}
+
+
+.menu-top {
+    width: 90%;
+    margin:0 auto;
+    margin-top: 25px;
+}
+
+.bb {
+    text-align: center;
+    padding: 10px;
+    padding-left: 28px;
+    padding-right: 28px;
+    margin-top: 0px;
+    margin-bottom: -0px;
+    margin-left: 0px;
+    margin-right: 0px;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+.bb a{
+    font-size: 16px;
+}
+.bb a:hover>.fa{
+    color: red;
+    text-decoration: none;
+}
+
+
+.menu-group{
+    text-align:center;
+    width:100%;
+    height: 70px;
+    border-radius: 2px;
+}
+
+body{
+    background: #F3F3F3;
+    font-family: 'Helvetica', arial, sans-serif;
+    font-size: 15px;
+}
+
+.article{
+    margin-bottom: 20px;
+    line-height: 1.5em;
+    font-size: 14px
+}
+h3{
+    margin-bottom: 20px;
+    border-bottom: 1px solid #aaa;
+}
+
+a{
+    text-decoration: none;
+    color: #333;
+}
+a:hover{
+    color: #666;
+}
+
+
+.container{
+    max-width: 600px;
+    height: 700px;
+    margin: 20px auto;
+    margin-top: 20px;
+    background: #fff;
+    overflow: hidden;
+    padding: 10px;
+    box-shadow: 2px 2px 15px 3px #c7bfbf;
+    border-radius: 6px;
+}
+
+
+.header{
+    border: 1px solid #dedede;
+    padding: 10px;
+    margin: 10px;
+}
+
+/* Main */
+    .left{
+        width: 50px;
+        border: 1px solid #dedede;
+        background: #e5e5e5;
+        padding: 10px;
+        margin: 10px;
+        float: left;
+    }
+
+    .middle{
+        /*width: 1040px;*/
+
+        border: 1px solid #dedede;
+        padding: 10px;
+        margin: 10px;
+        float: left;
+    }
+
+    .middleG{
+        /*width: 1040px;*/
+        border: 1px solid #dedede;
+        width:760px;
+    }
+
+    .middle img{
+        max-width: 100%;
+        height: auto;
+    }
+
+    .img-circle-img{
+        width:  8%;
+        float:left;
+        border-radius: 100px
+    }
+
+    .users-data{
+        float:left;
+        margin-left: 10px
+    }
+
+    .users-data p{
+        font-size:12px;
+        margin-top:-3px
+    }
+
+    .small{
+        padding:4px;
+        background:#000;
+        border-radius: 5px;
+        color:#fff
+    }
+    .red-small{
+        padding:4px;
+        background:red;
+        border-radius: 5px;
+        color:#fff
+    }
+    .blue-small{
+        padding:4px;
+        background:blue;
+        border-radius: 5px;
+        color:#fff
+    }
+
+    .middle a{
+        font-weight: bold;
+    }
+
+.col-md-6{
+    width: 410px;
+}
+
+    .right{
+        border: 1px solid #dedede;
+        padding: 10px;
+        margin: 10px;
+        float: left;
+    }
+
+
+    .right ul{
+        list-style-type: none;
+    }
+    .right ul li{
+        display: block;
+    }
+    .right ul li a{
+        display: block;
+        border-bottom: 1px solid #dedede;
+        margin-bottom: 10px;
+        padding: 10px 5px;
+    }
+    .right ul li a:hover{
+        color: orange;
+    }
+
+.comment{
+    margin-left: 93%
+}
+
+.comment span{
+    font-size: 25px;
+}
+
+.footer{
+    clear: both;
+    border: 1px solid #dedede;
+    padding: 10px;
+    margin: 10px;
+}
+
+
+/*CSS comment.php*/
+.middle .img-detail{
+    width: 30%;
+    margin: 2px;
+    height: auto;
+}
+
+.form-comment{
+    background: red;
+    width: 20%;
+    height: 100px;
+    border-radius: 4px;
+    font-size: 900px
+}
+
+.text-hp{
+    resize: vertical;
+    display: block;
+}
+
+textarea#comment {
+width:100%;
+text-align: left;
+box-sizing:border-box;
+display:block;
+max-width:100%;
+line-height:1.5;
+padding:15px 15px 30px;
+border-radius:3px;
+border:1px solid #ceeccc;
+font:14px Tahoma, cursive;
+transition:box-shadow 0.5s ease;
+box-shadow:0 4px 6px rgba(0,0,0,0.1);
+font-smoothing:subpixel-antialiased;
+background:linear-gradient(#d7ffde, #ffffff);
+background:-o-linear-gradient(#d7ffde, #ffffff);
+background:-ms-linear-gradient(#d7ffde, #ffffff);
+background:-moz-linear-gradient(#d7ffde, #ffffff);
+background:-webkit-linear-gradient(#d7ffde, #ffffff);
+}
+
+
+/*group*/
+.group-item{
+    float:left;
+    margin: 10px ;
+    text-align: center;
+}
+.modal-group{
+    z-index:99999;margin-top:10%
+}
+
+/************************************************************************************
+MEDIA QUERIES
+*************************************************************************************/
+/* untuk ukuran 1080px kebawah */
+/*tablet*/
+@media screen and (max-width: 1080px) {
+#bis {
+    border-bottom:1px solid #ecf0f1;
+}
+    .container {
+        width: 100%;
+    }
+    .left {
+        width: 25%;
+        background: #fff000;
+    }
+    .middle {
+        float: right;
+    }
+
+    .right {
+        clear: both;
+        padding: 1% 4%;
+        width: auto;
+        float: none;
+    }
+
+    .dropdown{
+        display: none
+    }
+
+    .dropdown-mobile{
+        display: block;
+        margin-left: 85%;
+        margin-top: -50px;
+        width:100%;
+    }
+
+    .dropdown-g{
+        display: block;
+        margin-left:90%;margin-top:-15px
+    }
+
+
+    .dropdown-menu{
+        margin-top: -20px;
+        width: 100%;
+    }
+
+    .dropdown-menu li a{
+        padding: 12px;
+        width: 100%;
+    }
+
+    .menu-group{
+        display: none
+    }
+
+    .dropdown{
+        margin-top: -50px;
+        margin-left: 85%;
+    }
+
+    .comment{
+        margin-left: 94%
+    }
+
+    .middle .img-detail{
+        width: 40%;
+        margin: 5px;
+        height: auto;
+    }
+    .modal-group{
+        z-index:99999;margin-top:60%
+    }
+
+
+
+}
+
+
+/* untuk ukuran layar 700px kebawah */
+/*phone*/
+@media screen and (max-width: 780px) {
+
+    .header,
+    .footer{
+        text-align: center;
+    }
+    .left {
+        width: auto;
+        float: none;
+    }
+
+    .middle {
+
+        width: auto;
+        float: none;
+    }
+
+    .right {
+        width: auto;
+        float: none;
+    }
+
+    .dropdown{
+        display: none
+    }
+
+    .dropdown-mobile{
+        display: block;
+        margin-left: 85%;
+        margin-top: -50px
+    }
+
+    .dropdown-menu{
+        margin-top: -20px;
+        width: 100%;
+    }
+
+    .dropdown-menu li a{
+        padding: 15px
+    }
+
+    .dropdown-g{
+        display: block;
+        margin-left:80%;margin-top:-15px
+
+    }
+
+    .users-data{
+        font-size: 12px
+    }
+
+    .img-circle-img{
+        width:  50px;
+        float:left;
+        border-radius: 100px
+    }
+    .comment{
+        margin-left: 88%
+    }
+
+/*
+    .middle .img-detail{
+        width: 100%;
+        margin: 2px;
+        height: auto;
+    }*/
+    .middle .img-detail {
+        width: 46%;
+        margin: 2px;
+        height: auto;
+    }
+
+    .group-report{
+        width: 100%;
+    }
+
+    .group-item{
+        float:left;
+        margin: 7.5px auto;
+        text-align: center;
+
+    }
+    .modal-group{
+        z-index:99999;margin-top:60%;
+    }
+
+    .box-shadow-2 {
+        box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+
+    .container{
+        width: 100%;
+        height: 800px;
+    }
+
+
+    }
+#bis {
+    border-bottom:1px solid #ecf0f1;
+}
+
+}

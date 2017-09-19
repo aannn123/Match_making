@@ -1,0 +1,24 @@
+php:
+    image: php5
+    ports:
+      - "8080:80"
+    volumes:
+      - ./:/var/www/html
+    links:
+      - db
+
+db:
+    image: mysql:5.6
+    ports:
+      - "3636:3306"
+    environment:
+       MYSQL_ROOT_PASSWORD: mustaqim
+    volumes:
+      - ./mysql_directory:/var/lib/mysql
+
+phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - "8888:80"
+    links:
+      - db

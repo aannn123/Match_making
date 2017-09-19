@@ -18,7 +18,7 @@ class KotaController extends BaseController
         $query = $request->getQueryParams();
         if ($get) {
             $page = !$request->getQueryParam('page') ? 1 : $request->getQueryParam('page');
-            $getKota = $kota->joinKota()->setPaginate($page, 5);
+            $getKota = $kota->joinKota()->setPaginate($page, 10);
 
             if ($getKota) {
                 $data = $this->responseDetail(200, false,  'Data tersedia', [
@@ -51,7 +51,7 @@ class KotaController extends BaseController
             } else {
                 $addKota = $kota->createKota($input);
                 $find = $kota->find('id', $addKota);
-                $data = $this->responseDetail(200, false, 'Berhasil menambahkan kota', [
+                $data = $this->responseDetail(201, false, 'Berhasil menambahkan kota', [
                         'data' => $find
                 ]);
             }

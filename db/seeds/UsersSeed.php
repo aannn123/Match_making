@@ -23,7 +23,6 @@ class UsersSeed extends AbstractSeed
             'ktp'      => 'user.png',
             'role'     => 1,
             'password' => password_hash('admin123', PASSWORD_DEFAULT),
-            'accepted_by' => 0
         ];
 
         $data[] = [
@@ -35,7 +34,6 @@ class UsersSeed extends AbstractSeed
             'ktp'      => 'user.png',
             'role'     => 2,
             'password' => password_hash('mode123', PASSWORD_DEFAULT),
-            'accepted_by' => 0
         ];
 
         $data[] = [
@@ -47,7 +45,6 @@ class UsersSeed extends AbstractSeed
             'ktp'      => 'user.png',
             'role'     => 0,
             'password' => password_hash('farhan123  ', PASSWORD_DEFAULT),
-            'accepted_by' => 1
         ];
 
         $data[] = [
@@ -59,7 +56,6 @@ class UsersSeed extends AbstractSeed
             'ktp'      => 'user.png',
             'role'     => 0,
             'password' => password_hash('yazid123  ', PASSWORD_DEFAULT),
-            'accepted_by' => 1
         ];
 
         $data[] = [
@@ -71,7 +67,6 @@ class UsersSeed extends AbstractSeed
             'ktp'      => 'user.png',
             'role'     => 0,
             'password' => password_hash('alya123  ', PASSWORD_DEFAULT),
-            'accepted_by' => 1
         ];
 
         $data[] = [
@@ -83,7 +78,6 @@ class UsersSeed extends AbstractSeed
             'ktp'      => 'user.png',
             'role'     => 0,
             'password' => password_hash('nadia123  ', PASSWORD_DEFAULT),
-            'accepted_by' => 1
         ];
 
         $this->insert('users', $data);

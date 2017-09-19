@@ -90,9 +90,11 @@ class UserController extends BaseController
     public function getAllUserMan($request, $response)
     {
         $user = new UserModel($this->db);
-        $get = $user->getAllUserMan();
+        $get = $user->getAllUserMan()->fetchAll();
         $gender = $user->find('gender');
         // var_dump($gender);die();
+        $count = count($get);
+        // var_dump($count);die;
         $countUser = count($get);
         $query = $request->getQueryParams();
         if ($get) {
@@ -725,6 +727,65 @@ class UserController extends BaseController
 
         $userToken->delete('user_id', $findUser['user_id']);
         return $this->responseDetail(200, false, 'Logout berhasil');
+    }
+
+   public function searchUserAll($request, $response)
+    {
+        $user = new UserModel($this->db);
+        $token = $request->getHeader('Authorization')[0];
+        $userToken = new UserToken($this->db);
+        $userId = $userToken->getUserId($token);
+        $query = $request->getQueryParams();
+
+        $search = $request->getParams()['search'];
+        $data = $user->searchUser($search, $userId)->fetchAll();
+        $get = count($data);
+
+        if ($get) {
+            $page = !$request->getQueryParam('page') ? 1 : $request->getQueryParam('page');
+            $getUser = $user->searchUser($search, $userId)->setPaginate($page, 10);
+
+            if ($getUser) {
+                $data = $this->responseDetail(200, false,  'Berhasil menampilkan data search '.$search, [
+                        'data'          =>  $getUser['data'],
+                        'pagination'    =>  $getUser['pagination'],
+                    ]);
+            } else {
+                $data = $this->responseDetail(404, true, 'Data tidak ditemukan');
+            }
+        } else {
+            $data = $this->responseDetail(204, false, 'Tidak ada konten');
+        }
+
+        return $data;
+
+
+        // $user = new UserModel($this->db);
+        // $token = $request->getHeader('Authorization')[0];
+        // $userToken = new UserToken($this->db);
+        // $userId = $userToken->getUserId($token);
+        // $query = $request->getQueryParams();
+
+        // $search = $request->getParams()['search'];
+
+        // $data = $user->searchUser($search, $userId)->fetchAll();
+        // $countUser = count($data);
+
+        // if ($countUser) {
+        //     $page = !$request->getQueryParam('page') ? 1 : $request->getQueryParam('page');
+        //     $getUser = $user->searchUser($search, $userId)->setPaginate($page, 5);
+        //     if ($getUser) {
+        //     $data = $this->responseDetail(200, false, 'Berhasil menampilkan data search '.$search, [
+        //             'query'     =>  $query,
+        //             'data'    =>  $data,
+        //             'pagination' => $getUser['pagination']
+        //         ]);
+                
+        //     }
+        // } else {
+        //     $data = $this->responseDetail(404, true, 'Data tidak ditemukan');
+        // }
+        //     return $data;
     }
 
 }

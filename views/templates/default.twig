@@ -180,9 +180,14 @@
     <!-- main menu-->
     <div data-scroll-to-active="true" class="main-menu menu-fixed menu-dark menu-accordion menu-shadow">
       <!-- main menu header-->
+      {% if login.role == 1 %}
       <div class="main-menu-header">
-        <input type="text" placeholder="Search" class="menu-search form-control round"/>
+      <form action="{{ path_for('admin.user') }}" method="GET">
+        <input type="text" name="search" placeholder="Search Here..." class="menu-search form-control round"/>
+        <!-- <input type="hidden" name="id" val> -->
+      </form>
       </div>
+      {% endif %}
         {% include 'templates/partials/sidebar-nav.twig' %}
       </div>
 
@@ -194,11 +199,6 @@
     </div>
 </div>
 
-    <!-- ////////////////////////////////////////////////////////////////////////////-->
-<div class="main-footer">>
-{% include 'templates/partials/footer.twig' %}
-</div>
-    <!-- BEGIN VENDOR JS-->
     <script src="{{ base_url() }}/assets/app-assets/js/core/libraries/jquery.min.js" type="text/javascript"></script>
     <script src="{{ base_url() }}/assets/js/tooltip.js" type="text/javascript"></script>
     <script src="{{ base_url() }}/assets/app-assets/vendors/js/ui/tether.min.js" type="text/javascript"></script>

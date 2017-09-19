@@ -1,0 +1,31 @@
+{% extends 'user/templates/default.twig' %}
+{% block content %}
+    <center><b><h4 class="text-muted" style="font-family:impact">Login</h4></b>
+        <i class="fa fa-instagram fa-5x"></i></center>
+          <div class="card-block">
+                    <form class="form-horizontal form-simple" action="{{path_for('post.login.user')}}" method="POST">
+                        <fieldset class="form-group position-relative has-icon-left mb-0">
+                            <input type="text" name="username" class="form-control" placeholder="Your Username" required>
+                            <div class="form-control-position">
+                                <i class="fa fa-user-o"></i>
+                            </div>
+                        </fieldset><br>
+                        <fieldset class="form-group position-relative has-icon-left">
+                            <input type="password" name="password" class="form-control" placeholder="Enter Password" required>
+                            <div class="form-control-position">
+                                <i class="fa fa-key"></i>
+                            </div>
+                        </fieldset>
+                        <button type="submit" class="btn btn-primary">Login</button>
+                    </form>
+                    <br>
+                    <div class="">
+                    <p class="float-sm-left text-xs-center m-0 col-xs-6 ">New account? <a href="{{ path_for('user.register') }}" class="card-link" style="color:#3498db">Register</a></p>
+                    <p class="float-sm-right text-xs-center m-0 col-xs-6"><a href="{{ path_for('forgot.password') }}" class="card-link" style="color:#3498db">Forgot password?</a></p>
+                </div>
+                <h6 class="card-subtitle line-on-side text-muted text-xs-center font-small-3 pt-2"><span>Or Login With</span></h6>
+                <center><button class="btn btn-primary" style="border-radius:10px;width:45px"><i style="color:white" class="fa fa-facebook"></i></button>
+                <button class="btn btn-danger" style="border-radius:10px"><i style="color:white;" class="fa fa-google-plus"></i></button></center>
+            </div>
+        </div>
+{% endblock %}

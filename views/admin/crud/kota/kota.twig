@@ -14,6 +14,7 @@
         <div class="card">
             <div class="card-header">
                 <h4 class="card-title">Semua data kota</h4>
+                <button type="button" class="btn btn-outline-primary"data-toggle="modal" data-target="#default">Tambah Kota</button>
                 <a class="heading-elements-toggle"><i class="icon-ellipsis font-medium-3"></i></a>
                 <div class="heading-elements">
                     <ul class="list-inline mb-0">
@@ -75,6 +76,37 @@
                             </nav>
                         </div>
                     </div>
+
+                     <div class="modal fade text-xs-left" id="default" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h4 class="modal-title" id="myModalLabel1"> Create Negara</h4>
+                          </div>
+                          <div class="modal-body">
+                             <form action="{{ path_for('admin.tambah.kota') }}" method="POST">
+                                <div class="form-group">
+                                <label for="complaintinput6">Nama Provinsi</label>
+                                    <select name="id_provinsi" id="complaintinput6" class="form-control round" >
+                                        <option value="">Select Provinsi</option>
+                                        {% for data in provinsi %}
+                                        <option value="{{data.id}}">{{data.nama}}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <label for="complaintinput6">Nama Kota</label>
+                                    <input type="text" id="complaintinput6" class="form-control round" placeholder="Nama Kota" name="nama">
+                                </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn grey btn-outline-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-outline-primary">Save changes</button>
+                          </div>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
            
                                 </div>
                             </div>
