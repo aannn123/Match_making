@@ -438,7 +438,7 @@ class AdminController extends BaseController
                 $_SESSION['login'] = $data['data'];
                 // var_dump($_SESSION['login']['role'] == 1);die();
                if ($_SESSION['login']['role'] == 1) {
-                   $this->flash->addMessage('success', 'Selamat datang '. $_SESSION['login']['username']);
+                   // $this->flash->addMessage('success', 'Selamat datang '. $_SESSION['login']['username']);
                    return $response->withRedirect($this->router->pathFor('admin.home'));
                } else {
                    $this->flash->addMessage('warning', 'Anda bukan admin');
@@ -458,7 +458,10 @@ class AdminController extends BaseController
 
         } elseif ($_SESSION['login']['role'] == 2) {
             session_destroy();
-            return $response->withRedirect($this->router->pathFor('admin.login'));
+            return $response->withRedirect($this->router->pathFor('user.login'));
+        } else {
+            session_destroy();
+            return $response->withRedirect($this->router->pathFor('user.login'));
         }
     }
 

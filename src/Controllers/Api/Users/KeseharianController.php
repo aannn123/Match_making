@@ -49,9 +49,9 @@ class KeseharianController extends BaseController
         $this->validator->rule('required', ['pekerjaan', 'status_pekerjaan', 'penghasilan_per_bulan', 'status', 'jumlah_anak', 'merokok', 'status_tinggal', 'memiliki_cicilan', 'bersedia_pindah_tinggal']);
 
         if ($this->validator->validate()) {
-            $createData = $keseharian->create($request->getParsedBody(), $userId['user_id']);
+            $createData = $keseharian->create($request->getParsedBody(), $userId);
             $finds = $keseharian->find('id', $createData);
-            $data = $this->responseDetail(200, false, 'Berhasil menambahkan data profil', [
+            $data = $this->responseDetail(201, false, 'Berhasil menambahkan data profil', [
                     'data' => $finds
                 ]); 
         } else {
@@ -68,7 +68,7 @@ class KeseharianController extends BaseController
         $user = $userToken->getUserId($token);
         $keseharian = new KeseharianModel($this->db);
 
-        $find       = $keseharian->findWithoutDelete('user_id', $user['id']);
+        $find       = $keseharian->findWithoutDelete('user_id', $user);
 
         if ($find) {
             $datainput  = $request->getParsedBody();
@@ -78,7 +78,7 @@ class KeseharianController extends BaseController
                 $keseharian->updateKeseharian($datainput);
                 $find       = $keseharian->findWithoutDelete('user_id', $user['id']);
 
-                $data = $this->responseDetail(200, false, 'Data telah terupdate', [
+                $data = $this->responseDetail(201, false, 'Data telah terupdate', [
                         'data'  => $find
                     ]);
 

@@ -29,7 +29,7 @@
                 <div class="row">
                     <div class="input-field col s12 {{ errors.username ? 'has-error' : '' }}">
                       <i class="material-icons prefix">account_circle</i>
-                      <input id="icon_prefix input_text" type="text" style="border-bottom:1px solid #ecf0f1" class="validate" name="username" data-length="20">
+                      <input id="icon_prefix input_text" type="text" style="border-bottom:1px solid #ecf0f1" class="validate" name="username" data-length="20" value="{{old.username}}">
                       <label for="icon_prefix" style="color:#ecf0f1">Username</label>
                       {% if errors.username %}
                         <span style="color:#FF0000">*
@@ -39,7 +39,7 @@
 
                     <div class="input-field col s12 {{ errors.email ? 'has-error' : '' }}">
                       <i class="material-icons prefix">email</i>
-                      <input id="icon_email" type="text" style="border-bottom:1px solid #ecf0f1" class="validate" name="email">
+                      <input id="icon_email" type="text" style="border-bottom:1px solid #ecf0f1" class="validate" name="email" value="{{old.email}}">
                       <label for="icon_prefix" style="color:#ecf0f1">Email</label>
                        {% if errors.email %}
                         <span style="color:#FF0000">*
@@ -61,8 +61,10 @@
                       <i class="material-icons prefix">people_outline</i>
                      <select name="gender" id="" style="border-bottom:1px solid #ecf0f1">
                          <option value="">Select jenis kelamin</option>
-                         <option value="laki-laki">laki-laki</option>
-                         <option value="perempuan">perempuan</option>
+                         <option value="laki-laki" {% if  old.gender == "laki-laki" %}
+                         selected="selected"{% endif %}>laki-laki</option>
+                         <option value="perempuan" {% if  old.gender == "perempuan" %}
+                         selected="selected"{% endif %}>perempuan</option>
                      </select>
                      {% if errors.gender %}
                         <span style="color:#FF0000">*
@@ -72,7 +74,7 @@
 
                     <div class="input-field col s12 {{ errors.phone ? 'has-error' : '' }}">
                       <i class="material-icons prefix">phone</i>
-                      <input id="icon_phone" type="tel" style="border-bottom:1px solid #ecf0f1" class="validate" name="phone">
+                      <input id="icon_phone" type="tel" style="border-bottom:1px solid #ecf0f1" class="validate" name="phone" value="{{old.phone}}">
                       <label for="icon_prefix" style="color:#ecf0f1">Nomor Telepon</label>
                        {% if errors.phone %}
                         <span style="color:#FF0000">*

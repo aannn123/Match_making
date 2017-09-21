@@ -1,23 +1,75 @@
-<div id="force-overflow">
-    <div class="main" class="box-shadow-2">
-       <nav class="navbar" style="border:100px">
-    <div class="navbar-header">
-      <a class="navbar-brand text-muted" href="#"> <i class="fa fa-instagram"></i> Match Making</a>
-    </div>
-
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse">
-      <form class="navbar-form navbar-left">
-        <div class="form-group">
-          <input type="text" class="form-control" placeholder="Search">
+<nav style="width:100%;">
+    <div class="blue">
+        <div class="nav-wrapper">
+          &nbsp;<a href="{{ path_for('user.home') }}" class=""><i class="fa fa-instagram fa-2x"></i><b style="font-size:20px"> Match Making</b></a>
+          <ul class="right">
+            <li><a href="#modal1" class=" modal-trigger" ><i class="material-icons">search</i></a></li>
+            <li><a href="{{ path_for('user.statistik') }}" style=""><i class="material-icons">equalizer</i></a></li>
+            <li><a href="{{ path_for('user.notification') }}"><i class="material-icons">notifications_none</i><span class="new badge red" style="position:absolute;margin:3px;border-radius:100px;top:2px;right:46px" data-badge-caption="10"></span></a></li>
+            <li><a href="{{ path_for('user.my.profil') }}"><i class="material-icons">account_circle</i></a></li>
+          </ul>
         </div>
-      </form>
-      <ul class="nav navbar-nav" style="float:right">
-        <li><a href="#" data-placement="top" title="Request" data-toggle="tooltip"><i class="fa fa-paper-plane-o"></i></a></li>
-        <li><a href="#" data-placement="top" title="Notification" data-toggle="tooltip"><i class="fa fa-bell-o"></i></a></li>
-        <li><a href="#" class="text-muted" data-placement="top" title="Profil" data-toggle="tooltip"><i class="fa fa-user-o"></i></a></li>
+    </div>
+</nav>
+<br>  
 
-      </ul>
+<!-- Modal Structure -->
+<div id="modal1" class="modal">
+  <div class="modal-content" style="background:#ecf0f1">
+    <h5>Search</h5>
+     <form class="col s12" action="" method="POST">
+     <div class="input-field col s12 ">
+                      <i class="material-icons prefix">search</i>
+                      <input id="icon_prefix input_text" type="text" style="border-bottom:1px solid #2c3e50" class="validate" name="username" data-length="20">
+                      <label for="icon_prefix" style="color:#2c3e50">Search nama, umur, kota</label>
+                      </div>
+        <div class="modal-footer" style="background:#ecf0f1">
+          <button class="btn waves-effect waves-light blue" type="submit">Search</button>
+     </form>
+        </div>
     </div>
   </div>
-</nav>
+</div>
+<!-- <form>
+        <div class="input-field">
+          <input id="search" type="search" required>
+          <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+          <i class="material-icons">close</i>
+        </div>
+      </form> -->
+<!-- 
+<nav  style="margin-top:-300px;width:40%;margin:0 auto;z-index: 3;">
+    <div class="green">
+        <div class="nav-buttom">
+          &nbsp;<a href="#!" class=""></a>
+          <ul class="right">
+            <li><a href="" style=""><i class="material-icons">equalizer</i></a></li>
+            <li><a href=""><i class="material-icons">notifications_none</i></a></li>
+            <li><a href=""><i class="material-icons">account_circle</i></a></li>
+          </ul>
+        </div>
+    </div>
+</nav> -->
+<!-- <nav  style="margin-top:-300px;width:40%;margin:0 auto;z-index: 3;">
+    <div class="green">
+        <div class="nav-buttom">
+          &nbsp;<a href="#!" class=""></a>
+          <ul class="right">
+            <li><a href="" style=""><i class="material-icons">equalizer</i></a></li>
+            <li><a href=""><i class="material-icons">notifications_none</i></a></li>
+            <li><a href=""><i class="material-icons">account_circle</i></a></li>
+          </ul>
+        </div>
+    </div>
+</nav> -->
+    <!--   <nav>
+    <div class="nav-wrapper">
+      <form>
+        <div class="input-field">
+          <input id="search" type="search" required>
+          <label for="search"><i class="material-icons">search</i></label>
+          <i class="material-icons">close</i>
+        </div>
+      </form>
+    </div>
+  </nav> -->

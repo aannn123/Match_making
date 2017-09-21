@@ -48,9 +48,9 @@ class LatarBelakangController extends BaseController
         $this->validator->rule('required', ['pendidikan', 'penjelasan_pendidikan', 'agama', 'penjelasan_agama', 'muallaf', 'baca_quran', 'hafalan', 'keluarga', 'penjelasan_keluarga', 'shalat']);
 
         if ($this->validator->validate()) {
-            $createData = $latar->createLatar($request->getParsedBody(), $userId['user_id']);
+            $createData = $latar->createLatar($request->getParsedBody(), $userId);
             $finds = $latar->find('id', $createData);
-            $data = $this->responseDetail(200, false, 'Berhasil menambahkan data profil', [
+            $data = $this->responseDetail(200, false, 'Berhasil menambahkan data latar belakang', [
                     'data' => $finds
                 ]); 
         } else {

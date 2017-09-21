@@ -82,11 +82,11 @@ class CiriFisikController extends BaseController
             if ($findUser['gender'] == 'perempuan') {
                 $data = $this->responseDetail(400, true, 'Maaf anda tidak mempunyai akses untuk mengcreate data ini');
             } else {
-                 $createFisik = $fisik->createFisikPria($input, $userId['user_id']);
+                 $createFisik = $fisik->createFisikPria($input, $userId);
                  // var_dump($createFisik);die();
                 $find = $fisik->find('id', $createFisik);
-                var_dump($find);die();
-                $data = $this->responseDetail(200, false, 'Berhasil menambahkan ciri fisik', [
+                // var_dump($find);die();
+                $data = $this->responseDetail(201, false, 'Berhasil menambahkan ciri fisik', [
                         'data' => $find
                 ]);
             }
@@ -114,10 +114,10 @@ class CiriFisikController extends BaseController
             if ($findUser['gender'] == 'laki-laki') {
                 $data = $this->responseDetail(400, true, 'Maaf anda tidak mempunyai akses untuk mengcreate data ini');
             } else {
-                $createFisik = $fisik->createFisikWanita($input, $userId['user_id']);
+                $createFisik = $fisik->createFisikWanita($input, $userId);
                 $find = $fisik->find('id', $createFisik);
                 // var_dump($find);die();
-                $data = $this->responseDetail(200, false, 'Berhasil menambahkan ciri fisik', [
+                $data = $this->responseDetail(201, false, 'Berhasil menambahkan ciri fisik', [
                         'data' => $find
                 ]);
             }
@@ -137,7 +137,7 @@ class CiriFisikController extends BaseController
         $fisik = new CiriFisikModel($this->db);
 
 
-        $find  = $fisik->findWithoutDelete('user_id', $user['id']);
+        $find  = $fisik->findWithoutDelete('user_id', $user);
         $findUser = $users->getUser('id', $user);
 
         if ($find) {
@@ -149,9 +149,9 @@ class CiriFisikController extends BaseController
 
                 try {
                     $fisik->updatePria($datainput);
-                    $find  = $fisik->findWithoutDelete('user_id', $user['id']);
+                    $find  = $fisik->findWithoutDelete('user_id', $user);
 
-                    $data = $this->responseDetail(200, false, 'Data telah terupdate', [
+                    $data = $this->responseDetail(201, false, 'Data telah terupdate', [
                             'data'  => $find
                         ]);
 
@@ -173,7 +173,7 @@ class CiriFisikController extends BaseController
         $user = $userToken->getUserId($token);
         $fisik = new CiriFisikModel($this->db);
         
-        $find  = $fisik->findWithoutDelete('user_id', $user['id']);
+        $find  = $fisik->findWithoutDelete('user_id', $user);
         $findUser = $users->getUser('id', $user); 
         // var_dump($find);die();
         if ($find) {
@@ -185,9 +185,9 @@ class CiriFisikController extends BaseController
 
                 try {
                     $fisik->updateWanita($datainput);
-                    $find  = $fisik->findWithoutDelete('user_id', $user['id']);
+                    $find  = $fisik->findWithoutDelete('user_id', $user);
 
-                    $data = $this->responseDetail(200, false, 'Data telah terupdate', [
+                    $data = $this->responseDetail(201, false, 'Data telah terupdate', [
                             'data'  => $find
                         ]);
 

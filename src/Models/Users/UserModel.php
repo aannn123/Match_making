@@ -150,6 +150,7 @@ class UserModel extends BaseModel
         ->execute();
     }
 
+
     public function searchUser($val)
     {
         $qb = $this->db->createQueryBuilder();

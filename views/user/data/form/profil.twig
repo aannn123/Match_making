@@ -1,0 +1,126 @@
+{% extends 'user/templates/default.twig' %}
+{% block content %}
+    
+
+<div class="card blue-grey darken-12">
+            <div class="card-content white-text">
+              <span class="card-title">Create Profile</span>
+        <div class="row">
+            <form class="col s12" action="{{ path_for('user.create.profil.post') }}" method="POST">
+            <div class="row">
+                <div class="input-field col s12 {{ errors.nama_lengkap ? 'has-error' : '' }}">
+                  <input type="text" class="validate" name="nama_lengkap"  value="{{old.nama_lengkap}}">
+                  <label style="color:#ecf0f1" for="icon_prefix">Nama Lengkap</label>
+                  {% if errors.nama_lengkap %}
+                    <span style="color:#FF0000">*
+                    {{errors.nama_lengkap | first}}</span>
+                  {% endif %}
+                </div>
+
+                <div class="input-field col s12 {{ errors.tanggal_lahir ? 'has-error' : '' }}">
+                  <input type="text" class="validate" name="tanggal_lahir" value="{{old.tanggal_lahir}}">
+                  <label style="color:#ecf0f1" for="icon_prefix">Tanggal Lahir</label>
+                   {% if errors.tanggal_lahir %}
+                    <span style="color:#FF0000">*
+                    {{errors.tanggal_lahir | first}}</span>
+                  {% endif %}
+                </div>
+
+                <div class="input-field col s12 {{ errors.tempat_lahir ? 'has-error' : '' }}">
+                  <input type="text" class="validate" name="tempat_lahir" value="{{old.tempat_lahir}}">
+                  <label style="color:#ecf0f1" for="icon_prefix">Tempat lahir</label>
+                   {% if errors.tempat_lahir %}
+                    <span style="color:#FF0000">*
+                    {{errors.tempat_lahir | first}}</span>
+                  {% endif %}
+                </div>
+
+                <div class="input-field col s12 {{ errors.alamat ? 'has-error' : '' }}">
+                  <input type="text" class="validate" name="alamat" value="{{old.alamat}}">
+                  <label style="color:#ecf0f1" for="icon_prefix">Alamat</label>
+                   {% if errors.alamat %}
+                    <span style="color:#FF0000">*
+                    {{errors.alamat | first}}</span>
+                  {% endif %}
+                </div>
+
+                <div class="input-field col s12 {{ errors.umur ? 'has-error' : '' }}">
+                  <input type="number" class="validate" name="umur" value="{{old.umur}}">
+                  <label style="color:#ecf0f1" for="icon_prefix">Umur</label>
+                   {% if errors.umur %}
+                    <span style="color:#FF0000">*
+                    {{errors.umur | first}}</span>
+                  {% endif %}
+                </div>
+
+                <div class="input-field col s12 {{ errors.kewarganegaraan ? 'has-error' : '' }}">
+                  <input type="text" class="validate" name="kewarganegaraan" value="{{old.kewarganegaraan}}">
+                  <label style="color:#ecf0f1" for="icon_prefix">Kewarganegaraan</label>
+                   {% if errors.kewarganegaraan %}
+                    <span style="color:#FF0000">*
+                    {{errors.kewarganegaraan | first}}</span>
+                  {% endif %}
+                </div>
+
+                <div class="input-field col s12 {{ errors.provinsi ? 'has-error' : '' }}">
+                  <input type="text" class="validate" name="provinsi" value="{{old.provinsi}}">
+                  <label style="color:#ecf0f1" for="icon_prefix">provinsi</label>
+                   {% if errors.provinsi %}
+                    <span style="color:#FF0000">*
+                    {{errors.provinsi | first}}</span>
+                  {% endif %}
+                </div>
+
+                <div class="input-field col s12 {{ errors.kota ? 'has-error' : '' }}">
+                  <input type="text" class="validate" name="kota" value="{{old.kota}}">
+                  <label style="color:#ecf0f1" for="icon_prefix">kota</label>
+                   {% if errors.kota %}
+                    <span style="color:#FF0000">*
+                    {{errors.kota | first}}</span>
+                  {% endif %}
+                </div>
+
+                 <!-- <div class="input-field col s12 {{ errors.kota ? 'has-error' : '' }}">
+                  <select name="kota" id="">
+                    <option value="sd">asdasdasd</option>
+                  </select>
+                  <label style="color:#ecf0f1" for="icon_prefix">kota</label>
+                   {% if errors.kota %}
+                    <span style="color:#FF0000">*
+                    {{errors.kota | first}}</span>
+                  {% endif %}
+                </div> -->
+
+
+                <div class="input-field col s12 {{ errors.target_menikah ? 'has-error' : '' }}">
+                  <input type="text" class="validate" name="target_menikah" value="{{old.target_menikah}}">
+                  <label style="color:#ecf0f1" for="icon_prefix">Target Menikah</label>
+                   {% if errors.target_menikah %}
+                    <span style="color:#FF0000">*
+                    {{errors.target_menikah | first}}</span>
+                  {% endif %}
+                </div>
+
+                <div class="input-field col s12  {{ errors.tentang_saya ? 'has-error' : '' }}">
+                  <input type="text" name="tentang_saya" class="validate">
+                  <label style="color:#ecf0f1" for="icon_tentang_saya">Tentang Saya</label>
+                  {% if errors.tentang_saya %}
+                    <span style="color:#FF0000">*
+                    {{errors.tentang_saya | first}}</span>
+                  {% endif %}
+                </div>
+
+                <div class="input-field col s12 {{ errors.pasangan_harapan ? 'has-error' : '' }}">
+                  <input type="text" class="validate" name="pasangan_harapan" value="{{old.pasangan_harapan}}">
+                  <label style="color:#ecf0f1" for="icon_prefix">Pasangan Yang Di Harapakan</label>
+                   {% if errors.pasangan_harapan %}
+                    <span style="color:#FF0000">*
+                    {{errors.pasangan_harapan | first}}</span>
+                  {% endif %}
+                </div>
+              <button class="btn waves-effect waves-light">Create</button>
+            </form>
+          </div>
+
+</div>
+{% endblock %}

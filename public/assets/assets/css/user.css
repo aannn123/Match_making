@@ -26,11 +26,11 @@ a:hover{
     cursor: pointer
 }
 
-.navbar{
+/*.navbar{
     border: 10px;
     background: #ecf0f1;
     cursor: pointer
-}
+}*/
 
 .fa:hover{
     color: #3498db;
@@ -235,7 +235,7 @@ a:hover{
     width: 410px;
 }
 
-    .right{
+   /* .right{
         border: 1px solid #dedede;
         padding: 10px;
         margin: 10px;
@@ -257,7 +257,7 @@ a:hover{
     }
     .right ul li a:hover{
         color: orange;
-    }
+    }*/
 
 .comment{
     margin-left: 93%
@@ -347,12 +347,12 @@ MEDIA QUERIES
         float: right;
     }
 
-    .right {
+    /*.right {
         clear: both;
         padding: 1% 4%;
         width: auto;
         float: none;
-    }
+    }*/
 
     .dropdown{
         display: none
@@ -470,12 +470,12 @@ MEDIA QUERIES
         margin-left: 88%
     }
 
-/*
+
     .middle .img-detail{
         width: 100%;
         margin: 2px;
         height: auto;
-    }*/
+    }
     .middle .img-detail {
         width: 46%;
         margin: 2px;
@@ -503,6 +503,10 @@ MEDIA QUERIES
     .container{
         width: 100%;
         height: 800px;
+    }
+
+    .nav-buttom {
+        width: 100%;
     }
 
 

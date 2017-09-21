@@ -1,0 +1,105 @@
+{% extends 'user/templates/default.twig' %}
+{% block content %}
+    
+
+<div class="card blue-grey darken-12">
+            <div class="card-content white-text">
+              <span class="card-title">Create Ciri Fisik</span>
+        <div class="row">
+            <form class="col s12" action="{{ path_for('user.post.create.ciri-fisik') }}" method="POST">
+            <div class="row">
+                <div class="input-field col s12 {{ errors.tinggi ? 'has-error' : '' }}">
+                  <input type="text" class="validate" name="tinggi"  value="{{old.tinggi}}">
+                  <label style="color:#ecf0f1" for="icon_prefix">Tinggi Badan</label>
+                  {% if errors.tinggi %}
+                    <span style="color:#FF0000">*
+                    {{errors.tinggi | first}}</span>
+                  {% endif %}
+                </div>
+
+                <div class="input-field col s12 {{ errors.berat ? 'has-error' : '' }}">
+                  <input type="text" class="validate" name="berat" value="{{old.berat}}">
+                  <label style="color:#ecf0f1" for="icon_prefix">Berat Badan</label>
+                   {% if errors.berat %}
+                    <span style="color:#FF0000">*
+                    {{errors.berat | first}}</span>
+                  {% endif %}
+                </div>
+
+                <div class="input-field col s12 {{ errors.warna_kulit ? 'has-error' : '' }}">
+                  <input type="text" class="validate" name="warna_kulit" value="{{old.warna_kulit}}">
+                  <label style="color:#ecf0f1" for="icon_prefix">Warna Kulit</label>
+                   {% if errors.warna_kulit %}
+                    <span style="color:#FF0000">*
+                    {{errors.warna_kulit | first}}</span>
+                  {% endif %}
+                </div>
+
+                <div class="input-field col s12 {{ errors.suku ? 'has-error' : '' }}">
+                  <input type="text" class="validate" name="suku" value="{{old.suku}}">
+                  <label style="color:#ecf0f1" for="icon_prefix">Suku</label>
+                   {% if errors.suku %}
+                    <span style="color:#FF0000">*
+                    {{errors.suku | first}}</span>
+                  {% endif %}
+                </div>
+
+                <div class="input-field col s12 {{ errors.jenggot ? 'has-error' : '' }}">
+                  <input type="text" class="validate" name="jenggot" value="{{old.jenggot}}">
+                  <label style="color:#ecf0f1" for="icon_prefix">Jenggot</label>
+                   {% if errors.jenggot %}
+                    <span style="color:#FF0000">*
+                    {{errors.jenggot | first}}</span>
+                  {% endif %}
+                </div>
+
+                <div class="input-field col s12 {{ errors.hijab ? 'has-error' : '' }}">
+                  <input type="text" class="validate" name="hijab" value="{{old.hijab}}">
+                  <label style="color:#ecf0f1" for="icon_prefix">Hijab</label>
+                   {% if errors.hijab %}
+                    <span style="color:#FF0000">*
+                    {{errors.hijab | first}}</span>
+                  {% endif %}
+                </div>
+
+                <div class="input-field col s12 {{ errors.cadar ? 'has-error' : '' }}">
+                  <input type="text" class="validate" name="cadar" value="{{old.cadar}}">
+                  <label style="color:#ecf0f1" for="icon_prefix">Cadar</label>
+                   {% if errors.cadar %}
+                    <span style="color:#FF0000">*
+                    {{errors.cadar | first}}</span>
+                  {% endif %}
+                </div>
+
+                <div class="input-field col s12 {{ errors.kaca_mata ? 'has-error' : '' }}">
+                  <input type="text" class="validate" name="kaca_mata" value="{{old.kaca_mata}}">
+                  <label style="color:#ecf0f1" for="icon_prefix">Kaca Mata</label>
+                   {% if errors.kaca_mata %}
+                    <span style="color:#FF0000">*
+                    {{errors.kaca_mata | first}}</span>
+                  {% endif %}
+                </div>
+
+                 <div class="input-field col s12 {{ errors.status_kesehatan ? 'has-error' : '' }}">
+                  <input type="text" class="validate" name="status_kesehatan" value="{{old.status_kesehatan}}">
+                  <label style="color:#ecf0f1" for="icon_prefix">Status Kesehatan</label>
+                   {% if errors.status_kesehatan %}
+                    <span style="color:#FF0000">*
+                    {{errors.status_kesehatan | first}}</span>
+                  {% endif %}
+
+                <div class="input-field col s12 {{ errors.ciri_fisik_lain ? 'has-error' : '' }}">
+                  <input type="text" class="validate" name="ciri_fisik_lain" value="{{old.ciri_fisik_lain}}">
+                  <label style="color:#ecf0f1" for="icon_prefix">Ciri Fisik Lain</label>
+                   {% if errors.ciri_fisik_lain %}
+                    <span style="color:#FF0000">*
+                    {{errors.ciri_fisik_lain | first}}</span>
+                  {% endif %}
+                </div>               
+                </div>
+              <button class="btn waves-effect waves-light">Create</button>
+            </form>
+          </div>
+
+</div>
+{% endblock %}

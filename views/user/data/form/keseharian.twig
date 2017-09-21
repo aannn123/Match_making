@@ -1,0 +1,96 @@
+{% extends 'user/templates/default.twig' %}
+{% block content %}
+    
+
+<div class="card blue-grey darken-12">
+            <div class="card-content white-text">
+              <span class="card-title">Create Keseharian</span>
+        <div class="row">
+            <form class="col s12" action="{{ path_for('user.post.create.keseharian') }}" method="POST">
+            <div class="row">
+                <div class="input-field col s12 {{ errors.pekerjaan ? 'has-error' : '' }}">
+                  <input type="text" class="validate" name="pekerjaan"  value="{{old.pekerjaan}}">
+                  <label style="color:#ecf0f1" for="icon_prefix">Pekerjaan</label>
+                  {% if errors.pekerjaan %}
+                    <span style="color:#FF0000">*
+                    {{errors.pekerjaan | first}}</span>
+                  {% endif %}
+                </div>
+
+                <div class="input-field col s12 {{ errors.merokok ? 'has-error' : '' }}">
+                  <input type="text" class="validate" name="merokok" value="{{old.merokok}}">
+                  <label style="color:#ecf0f1" for="icon_prefix">Merokok</label>
+                   {% if errors.merokok %}
+                    <span style="color:#FF0000">*
+                    {{errors.merokok | first}}</span>
+                  {% endif %}
+                </div>
+
+                <div class="input-field col s12 {{ errors.status_pekerjaan ? 'has-error' : '' }}">
+                  <input type="text" class="validate" name="status_pekerjaan" value="{{old.status_pekerjaan}}">
+                  <label style="color:#ecf0f1" for="icon_prefix">Status Pekerjaan</label>
+                   {% if errors.status_pekerjaan %}
+                    <span style="color:#FF0000">*
+                    {{errors.status_pekerjaan | first}}</span>
+                  {% endif %}
+                </div>
+
+                <div class="input-field col s12 {{ errors.penghasilan_per_bulan ? 'has-error' : '' }}">
+                  <input type="text" class="validate" name="penghasilan_per_bulan" value="{{old.penghasilan_per_bulan}}">
+                  <label style="color:#ecf0f1" for="icon_prefix">Penghasilan Per Bulan</label>
+                   {% if errors.penghasilan_per_bulan %}
+                    <span style="color:#FF0000">*
+                    {{errors.penghasilan_per_bulan | first}}</span>
+                  {% endif %}
+                </div>
+
+                <div class="input-field col s12 {{ errors.status ? 'has-error' : '' }}">
+                  <input type="text" class="validate" name="status" value="{{old.status}}">
+                  <label style="color:#ecf0f1" for="icon_prefix">Status</label>
+                   {% if errors.status %}
+                    <span style="color:#FF0000">*
+                    {{errors.status | first}}</span>
+                  {% endif %}
+                </div>
+
+                <div class="input-field col s12 {{ errors.jumlah_anak ? 'has-error' : '' }}">
+                  <input type="text" class="validate" name="jumlah_anak" value="{{old.jumlah_anak}}">
+                  <label style="color:#ecf0f1" for="icon_prefix">Jumlah Anak</label>
+                   {% if errors.jumlah_anak %}
+                    <span style="color:#FF0000">*
+                    {{errors.jumlah_anak | first}}</span>
+                  {% endif %}
+                </div>
+
+                <div class="input-field col s12 {{ errors.status_tinggal ? 'has-error' : '' }}">
+                  <input type="text" class="validate" name="status_tinggal" value="{{old.status_tinggal}}">
+                  <label style="color:#ecf0f1" for="icon_prefix">Status Tempat Tinggal</label>
+                   {% if errors.status_tinggal %}
+                    <span style="color:#FF0000">*
+                    {{errors.status_tinggal | first}}</span>
+                  {% endif %}
+                </div>
+
+                <div class="input-field col s12 {{ errors.memiliki_cicilan ? 'has-error' : '' }}">
+                  <input type="text" class="validate" name="memiliki_cicilan" value="{{old.memiliki_cicilan}}">
+                  <label style="color:#ecf0f1" for="icon_prefix">Memiliki Cicilan</label>
+                   {% if errors.memiliki_cicilan %}
+                    <span style="color:#FF0000">*
+                    {{errors.memiliki_cicilan | first}}</span>
+                  {% endif %}
+                </div>
+
+                 <div class="input-field col s12 {{ errors.bersedia_pindah_tinggal ? 'has-error' : '' }}">
+                  <input type="text" class="validate" name="bersedia_pindah_tinggal" value="{{old.bersedia_pindah_tinggal}}">
+                  <label style="color:#ecf0f1" for="icon_prefix">Bersedia Pindah Tempat Tinggal</label>
+                   {% if errors.bersedia_pindah_tinggal %}
+                    <span style="color:#FF0000">*
+                    {{errors.bersedia_pindah_tinggal | first}}</span>
+                  {% endif %}
+                </div>
+              <button class="btn waves-effect waves-light">Create</button>
+            </form>
+          </div>
+
+</div>
+{% endblock %}

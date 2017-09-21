@@ -13,6 +13,10 @@ $app->post('/forgot-password', 'App\Controllers\Web\UserController:forgotPasswor
 $app->get('/', 'App\Controllers\Web\UserController:getLogin')->setName('user.login');
 $app->post('/', 'App\Controllers\Web\UserController:login')->setName('post.login.user');
 
+// $app->get('/{id}/change-image/get', 'App\Controllers\Web\UserController:getChangeImage')->setName('user.change.image');
+$app->post('/{id}/change-image', 'App\Controllers\Web\UserController:changeImage')->setName('user.post.change.image');
+
+
 $app->group('', function() use ($app, $container) {
 
 $app->group('/admin', function() use ($app, $container) {
@@ -53,7 +57,28 @@ $app->group('/admin', function() use ($app, $container) {
 
     $app->group('/user', function() use ($app, $container) {
         $app->get('',  'App\Controllers\Web\UserController:home')->setName('user.home');
-        $app->get('/create-data',  'App\Controllers\Web\UserController:getFormData')->setName('user.fill.data');
+        // $app->get('/list-user',  'App\Controllers\Web\UserController:getAllUserPria')->setName('user.list.pria');
+        $app->get('/create/profil',  'App\Controllers\Web\UserController:getCreateProfil')->setName('user.create.profil');
+        $app->post('/create/profil',  'App\Controllers\Web\UserController:createProfil')->setName('user.create.profil.post');
+
+        $app->get('/create/keseharian',  'App\Controllers\Web\UserController:getCreateKeseharian')->setName('user.create.keseharian');
+        $app->post('/create/keseharian',  'App\Controllers\Web\UserController:createKeseharian')->setName('user.post.create.keseharian');
+
+        $app->get('/create/latar-belakang',  'App\Controllers\Web\UserController:getCreateLatarBelakang')->setName('user.create.latar-belakang');
+        $app->post('/create/latar-belakang',  'App\Controllers\Web\UserController:createLatarBelakang')->setName('user.post.create.latar-belakang');
+
+        $app->get('/create/ciri-fisik',  'App\Controllers\Web\UserController:getCreateCiriFisik')->setName('user.create.ciri-fisik');
+        $app->post('/create/ciri-fisik',  'App\Controllers\Web\UserController:createCiriFisik')->setName('user.post.create.ciri-fisik');
+
+        $app->get('/create/poligami',  'App\Controllers\Web\UserController:getCreatePoligami')->setName('user.create.poligami');
+        $app->post('/create/poligami',  'App\Controllers\Web\UserController:createPoligami')->setName('user.post.create.poligami');
+
+        $app->get('/profil',  'App\Controllers\Web\UserController:myProfil')->setName('user.my.profil');
+
+        $app->get('/statistik',  'App\Controllers\Web\UserController:statistikRequest')->setName('user.statistik');
+
+        $app->get('/notification',  'App\Controllers\Web\UserController:getNotification')->setName('user.notification');
+
     });
 
 })->add(new \App\Middlewares\web\AuthMiddleware($container));

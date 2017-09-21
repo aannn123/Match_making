@@ -39,12 +39,12 @@ class ProfilController extends BaseController
         $profile = new ProfilModel($this->db);
         $UserToken = new UserToken($this->db);
         $token = $request->getHeader('Authorization')[0];
-        $userId = $UserToken->getUserId($token);;
+        $userId = $UserToken->getUserId($token);
         // var_dump($userId);die();
         $this->validator->rule('required', ['nama_lengkap', 'tanggal_lahir', 'tempat_lahir', 'umur', 'alamat', 'kota', 'provinsi', 'kewarganegaraan', 'target_menikah', 'tentang_saya', 'pasangan_harapan']);
 
         if ($this->validator->validate()) {
-            $create = $profile->createProfil($request->getParsedBody(), $userId['Id']);
+            $create = $profile->createProfil($request->getParams(), $userId);
             $find = $profile->find('id', $create);
             $data = $this->responseDetail(201, false, 'Profile berhasil dibuat', [
                     'data' => $find,

@@ -65,7 +65,7 @@ $app->group('/api', function() use ($app, $container) {
 
         $app->group('/profile', function() use ($app, $container) {
             $app->get('', 'App\Controllers\Api\Users\ProfilController:showProfileUser')->setName('api.show.profile');
-            $app->post('/create', 'App\Controllers\Api\Users\ProfilController:createProfile');
+            $app->post('/create', 'App\Controllers\Api\Users\ProfilController:createProfile')->setName('api.user.create.profil');
             $app->put('/update', 'App\Controllers\Api\Users\ProfilController:updateProfile');
             $app->get('/find/{id}', 'App\Controllers\Api\Users\ProfilController:findProfil')->setName('user.find.profil');
 
@@ -74,8 +74,8 @@ $app->group('/api', function() use ($app, $container) {
         $app->group('/ciri-fisik', function() use ($app, $container) {
             $app->get('/show/pria', 'App\Controllers\Api\Users\CiriFisikController:getAllFisikPria');
             $app->get('/show/wanita', 'App\Controllers\Api\Users\CiriFisikController:getAllFisikWanita');
-            $app->post('/create/pria', 'App\Controllers\Api\Users\CiriFisikController:createCiriFisikPria');
-            $app->post('/create/wanita', 'App\Controllers\Api\Users\CiriFisikController:createCiriFisikWanita');
+            $app->post('/create/pria', 'App\Controllers\Api\Users\CiriFisikController:createCiriFisikPria')->setName('api.user.create.ciri.fisik.pria');
+            $app->post('/create/wanita', 'App\Controllers\Api\Users\CiriFisikController:createCiriFisikWanita')->setName('api.user.create.ciri.fisik.wanita');
             $app->put('/update/pria', 'App\Controllers\Api\Users\CiriFisikController:updateFisikPria');
             $app->put('/update/wanita', 'App\Controllers\Api\Users\CiriFisikController:updateFisikWanita');
             $app->get('/find/{id}', 'App\Controllers\Api\Users\CiriFisikController:findData')->setName('user.find.ciri-fisik');
@@ -85,21 +85,21 @@ $app->group('/api', function() use ($app, $container) {
         $app->group('/keseharian', function() use ($app, $container) {
             $app->get('', 'App\Controllers\Api\Users\KeseharianController:getAll');
 
-            $app->post('/create', 'App\Controllers\Api\Users\KeseharianController:createKeseharian');
+            $app->post('/create', 'App\Controllers\Api\Users\KeseharianController:createKeseharian')->setName('api.user.create.keseharian');
             $app->put('/update', 'App\Controllers\Api\Users\KeseharianController:updateKeseharian');
             $app->get('/find/{id}', 'App\Controllers\Api\Users\KeseharianController:findData')->setName('user.find.keseharian');
         });
 
         $app->group('/latar-belakang', function() use ($app, $container) {
             $app->get('', 'App\Controllers\Api\Users\LatarBelakangController:getAll')->setName('api.show.latar');
-            $app->post('/create', 'App\Controllers\Api\Users\LatarBelakangController:createLatarBelakang');
+            $app->post('/create', 'App\Controllers\Api\Users\LatarBelakangController:createLatarBelakang')->setName('api.user.create.latar-belakang');
             $app->put('/update', 'App\Controllers\Api\Users\LatarBelakangController:updateLatarBelakang');
             $app->get('/find/{id}', 'App\Controllers\Api\Users\LatarBelakangController:findData')->setName('user.find.latar-belakang');
         });
 
         $app->group('/poligami', function() use ($app, $container) {
             $app->get('', 'App\Controllers\Api\Users\Poligami\PoligamiController:getAll');
-            $app->post('/create', 'App\Controllers\Api\Users\Poligami\PoligamiController:createPoligami');
+            $app->post('/create', 'App\Controllers\Api\Users\Poligami\PoligamiController:createPoligami')->setName('api.user.create.poligami');
             $app->put('/update', 'App\Controllers\Api\Users\Poligami\PoligamiController:updatePoligami');
             $app->get('/find/{id}', 'App\Controllers\Api\Users\Poligami\PoligamiController:findData')->setName('user.find.poligami');
 

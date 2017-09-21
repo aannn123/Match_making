@@ -94,14 +94,28 @@ class ProfilModel extends BaseModel
    public function joinProfile()
     {
         $qb = $this->db->createQueryBuilder();
-        $this->query = $qb->select('prof.*','kot.nama as kota','prov.nama as provinsi','negara.nama as kewarganegaraan')
+        $this->query = $qb->select('prof.*','kot.nama as kota','prov.nama as provinsi','negara.nama as kewarganegaraan', 'user.gender as jenis_kelamin', 'req.status as status_request')
             ->from($this->table,'prof')
             ->join('prof','kota', 'kot', 'kot.id = prof.kota')
             ->join('prof','provinsi', 'prov', 'prov.id = prof.provinsi')
+            ->join('prof','users', 'user', 'user.gender = user.id')
+            ->join('prof','request_taaruf', 'req', 'req.status = req.id')
             ->join('prof','negara', 'negara', 'negara.id = prof.kewarganegaraan');
         $query = $qb->execute();
         return $this;
     }
+
+    // public function joinListUser()
+    // {
+    //     $qb = $this->db->createQueryBuilder();
+    //     $this->query = $qb->select('prof.*','user.gender as users','req.status as request')
+    //         ->from($this->table,'prof')
+    //         ->join('prof','users', 'user', 'user.id = prof.kota')
+    //         ->join('prof','provinsi', 'prov', 'prov.id = prof.provinsi')
+    //         ->join('prof','negara', 'negara', 'negara.id = prof.kewarganegaraan');
+    //     $query = $qb->execute();
+    //     return $this;
+    // }
 
     public function findProfile($column, $value)
     {

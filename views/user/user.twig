@@ -1,56 +1,112 @@
 {% extends 'user/templates/default.twig' %}
 {% block content %}
-    <div class="col-md-5 col-xs-6">
-            <div class="card">
-                <!-- <div class="card-body"> -->
-                    <div class="card-block">
-                        <h4 class="card-title"> <i class="fa fa-instagram"></i> Card title</h4>
-                        <img class="card-img img-fluid mb-1" src="{{ base_url() }}/assets/images/img-20170909-59b3e0b2ad3e1.png">
-                        <i class="fa fa-send-o" style="color:black"></i>&emsp;
-                        <i class="fa fa-address-book-o" style="color:black"></i>
-                        <p class="card-text">Sweet halvah dragée jelly-o halvah carrot cake oat cake. Donut jujubes jelly chocolate cake marzipan chocolate chocolate bar.</p>
-                        <a href="#" class="btn btn-outline-teal">View Detail</a>
-                    </div>
+        <!-- <div class="col s10 m12" style="margin-top:-20px">
+          <div class="card blue darken-1">
+            <div class="card-content white-text">
+              <p>Total Member Terdaftar : <b>{{ counts.allUser }}</b></p>
             </div>
-    </div>
-     <div class="col-md-5 col-xs-6">
-            <div class="card">
-                <!-- <div class="card-body"> -->
-                    <div class="card-block">
-                        <h4 class="card-title"> <i class="fa fa-instagram"></i> Card title</h4>
-                        <img class="card-img img-fluid mb-1" src="{{ base_url() }}/assets/images/img-20170909-59b3e0b2ad3e1.png">
-                        <i class="fa fa-send-o" style="color:black"></i>&emsp;
-                        <i class="fa fa-address-book-o" style="color:black"></i>
-                        <p class="card-text">Sweet halvah dragée jelly-o halvah carrot cake oat cake. Donut jujubes jelly chocolate cake marzipan chocolate chocolate bar.</p>
-                        <a href="#" class="btn btn-outline-teal">View Detail</a>
-                    </div>
+          </div>
+        </div> -->
+<a href="#modal3" class="modal-trigger"><span><i class="material-icons right">more_vert</i></span></a>
+    <div class="row" style="width:100%;margin-top:25px">
+    {% if login.gender == 'laki-laki' %}
+    {% for profil in data %} 
+    <div class="col s6 m6">
+      <div class="card">
+        <div class="card-image">
+          <img src="{{ base_url() }}/assets/images/avatar.png">
+          <a class="btn-floating halfway-fab waves-effect waves-light blue"><i class="fa fa-paper-plane -o" style="color:white"></i></a>
+        </div>
+        <div class="card-content">
+          <span class="card-title">{{ profil.nama_lengkap }}</span>
+        <div class="card-action">
+          </div>
+          <p><b>Jenis Kelamin :</b> laki-laki.</p>
+          <p><b>Umur :</b> {{profil.umur}} Tahun.</p>
+          <p><b>Domisili :</b></p>
+          <p><b>- Negara :</b> {{profil.kewarganegaraan}}.</p>
+          <p><b>- Provinsi : </b> {{profil.provinsi}}.</p>
+          <p><b>- Kota : </b> {{profil.kota}}.</p>
+          {% if profil.status_request == 2 %}
+          <p><b>Status : </b><!-- <b class="chip blue" style="color:white">Sedang Taaruf</b> -->  <span class="new badge" data-badge-caption="Sedang Taaruf."></span>.</p>
+          {% elseif profil.status_request == 1 %}
+          <p><b>Status : </b><b class="badge" style="color:white">Available</b>.</p>
+          {% endif %}
+        </div>
+         <div class="card-action">
+              <center><a href="#"><button class="btn waves-effect waves-light blue">View Detail</button></a></center>
             </div>
+      </div>
     </div>
-     <div class="col-md-5 col-xs-6">
-            <div class="card">
-                <!-- <div class="card-body"> -->
-                    <div class="card-block">
-                        <h4 class="card-title"> <i class="fa fa-instagram"></i> Card title</h4>
-                        <img class="card-img img-fluid mb-1" src="{{ base_url() }}/assets/images/img-20170909-59b3e0b2ad3e1.png">
-                        <i class="fa fa-send-o" style="color:black"></i>&emsp;
-                        <i class="fa fa-address-book-o" style="color:black"></i>
-                        <p class="card-text">Sweet halvah dragée jelly-o halvah carrot cake oat cake. Donut jujubes jelly chocolate cake marzipan chocolate chocolate bar.</p>
-                        <a href="#" class="btn btn-outline-teal">View Detail</a>
-                    </div>
+    {% else %}
+         <div class="col s6 m6">
+      <div class="card">
+        <div class="card-image">
+          <img src="{{ base_url() }}/assets/images/avatar.png">
+          <a class="btn-floating halfway-fab waves-effect waves-light blue"><i class="fa fa-paper-plane -o" style="color:white"></i></a>
+        </div>
+        <div class="card-content">
+          <span class="card-title">{{ profil.nama_lengkap }}</span>
+        <div class="card-action">
+          </div>
+          <p><b>Jenis Kelamin :</b> Perempuan.</p>
+          <p><b>Umur :</b> {{profil.umur}} Tahun.</p>
+          <p><b>Domisili :</b></p>
+          <p><b>- Negara :</b> {{profil.kewarganegaraan}}.</p>
+          <p><b>- Provinsi : </b> {{profil.provinsi}}.</p>
+          <p><b>- Kota : </b> {{profil.kota}}.</p>
+          {% if profil.status_request == 2 %}
+          <p><b>Status : </b><b class="chip blue" style="color:white">Sedang Taaruf</b>.</p>
+          {% else %}
+          <p><b>Status : </b><b class="chip blue" style="color:white">Available</b>.</p>
+          {% endif %}
+        </div>
+         <div class="card-action">
+              <center><a href="#"><button class="btn waves-effect waves-light blue">View Detail</button></a></center>
             </div>
+      </div>
     </div>
-     <div class="col-md-5 col-xs-6">
-            <div class="card">
-                <!-- <div class="card-body"> -->
-                    <div class="card-block">
-                        <h4 class="card-title"> <i class="fa fa-instagram"></i> Card title</h4>
-                        <img class="card-img img-fluid mb-1" src="{{ base_url() }}/assets/images/img-20170909-59b3e0b2ad3e1.png">
-                        <i class="fa fa-send-o" style="color:black"></i>&emsp;
-                        <i class="fa fa-address-book-o" style="color:black"></i>
-                        <p class="card-text">Sweet halvah dragée jelly-o halvah carrot cake oat cake. Donut jujubes jelly chocolate cake marzipan chocolate chocolate bar.</p>
-                        <a href="#" class="btn btn-outline-teal">View Detail</a>
-                    </div>
-            </div>
-    </div>
+    {% endfor %}
+    {% endif %}        
 
+  <div id="modal3" class="modal bottom-sheet">
+          <div class="modal-content">
+            <h4>Modal Header</h4>
+            <ul class="collection">
+              <li class="collection-item avatar">
+                <img src="{{ base_url() }}/assets/images/avatar.png" alt="" class="circle">
+                <span class="title">Title</span>
+                <p>First Line <br>
+                   Second Line
+                </p>
+                <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+              </li>
+              <li class="collection-item avatar">
+                <i class="material-icons circle">folder</i>
+                <span class="title">Title</span>
+                <p>First Line <br>
+                   Second Line
+                </p>
+                <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+              </li>
+              <li class="collection-item avatar">
+                <i class="material-icons circle green">assessment</i>
+                <span class="title">Title</span>
+                <p>First Line <br>
+                   Second Line
+                </p>
+                <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+              </li>
+              <li class="collection-item avatar">
+                <i class="material-icons circle red">play_arrow</i>
+                <span class="title">Title</span>
+                <p>First Line <br>
+                   Second Line
+                </p>
+                <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
 {% endblock %}
