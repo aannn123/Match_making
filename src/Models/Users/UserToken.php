@@ -15,7 +15,7 @@ class UserToken extends BaseModel
             'user_id' => $id,
             'token' => md5(openssl_random_pseudo_bytes(8)),
             'login_at' => date('Y-m-d H:i:s'),
-            'expired_date' => date('Y-m-d H:i:s', strtotime('+1 hour'))
+            'expired_date' => date('Y-m-d H:i:s', strtotime('+5 hour'))
         ];
 
         $findUserId = $this->find('user_id', $id);

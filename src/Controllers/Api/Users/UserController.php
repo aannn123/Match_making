@@ -23,7 +23,40 @@ class UserController extends BaseController
         $query = $request->getQueryParams();
         if ($get) {
             $page = !$request->getQueryParam('page') ? 1 : $request->getQueryParam('page');
-            $getUser = $user->getAllData()->setPaginate($page, 20);
+            $perPage = $request->getQueryParam('perpage');
+            $getUser = $user->getAllData()->setPaginate($page, $perPage);
+
+            if ($getUser) {
+                $data = $this->responseDetail(200, false,  'Data tersedia', [
+                        'data'          =>  $getUser['data'],
+                        'pagination'    =>  $getUser['pagination'],
+                    ]);
+            } else {
+                $data = $this->responseDetail(404, true, 'Data tidak ditemukan');
+            }
+        } else {
+            $data = $this->responseDetail(204, false, 'Tidak ada konten');
+        }
+
+        return $data;
+    }
+
+     public function allJoinUser($request, $response)
+    {
+        $user = new UserModel($this->db);
+        $userToken = new userToken($this->db);
+        $token = $request->getHeader('Authorization')[0];
+        $userId = $userToken->getUserId($token);
+
+        $get = $user->joinUserAll();
+        $gender = $user->find('gender');
+        // var_dump($gender);die();
+        $countUser = count($get);
+        $query = $request->getQueryParams();
+        if ($get) {
+            $page = !$request->getQueryParam('page') ? 1 : $request->getQueryParam('page');
+            $perPage = $request->getQueryParam('perpage');
+            $getUser = $user->joinUserAll()->setPaginate($page, $perPage);
 
             if ($getUser) {
                 $data = $this->responseDetail(200, false,  'Data tersedia', [
@@ -53,7 +86,8 @@ class UserController extends BaseController
         $query = $request->getQueryParams();
         if ($get) {
             $page = !$request->getQueryParam('page') ? 1 : $request->getQueryParam('page');
-            $getUser = $user->getAllNewUser()->setPaginate($page, 10);
+            $perPage = $request->getQueryParam('perpage');
+            $getUser = $user->getAllNewUser()->setPaginate($page, $perPage);
 
             if ($getUser) {
                 $data = $this->responseDetail(200, false,  'Data tersedia', [
@@ -99,7 +133,8 @@ class UserController extends BaseController
         $query = $request->getQueryParams();
         if ($get) {
             $page = !$request->getQueryParam('page') ? 1 : $request->getQueryParam('page');
-            $getUser = $user->getAllUserMan()->setPaginate($page, 5);
+            $perPage = $request->getQueryParam('perpage');
+            $getUser = $user->getAllUserMan()->setPaginate($page, $perPage);
 
             if ($getUser) {
                 $data = $this->responseDetail(200, false,  'Data tersedia', [
@@ -126,7 +161,8 @@ class UserController extends BaseController
         $query = $request->getQueryParams();
         if ($get) {
             $page = !$request->getQueryParam('page') ? 1 : $request->getQueryParam('page');
-            $getUser = $user->getAllUserWoman()->setPaginate($page, 5);
+            $perPage = $request->getQueryParam('perpage');
+            $getUser = $user->getAllUserWoman()->setPaginate($page, $perPage);
 
             if ($getUser) {
                 $data = $this->responseDetail(200, false,  'Data tersedia', [
@@ -609,7 +645,8 @@ class UserController extends BaseController
         $query = $request->getQueryParams();
         if ($get) {
             $page = !$request->getQueryParam('page') ? 1 : $request->getQueryParam('page');
-            $getNotification = $requests->allNotification($userId)->setPaginate($page, 5);
+            $perPage = $request->getQueryParam('perpage');
+            $getNotification = $requests->allNotification($userId)->setPaginate($page, $perPage);
 
             if ($getNotification) {
                 $data = $this->responseDetail(200, false,  'Data notification tersedia', [
@@ -641,7 +678,8 @@ class UserController extends BaseController
         $query = $request->getQueryParams();
         if ($get) {
             $page = !$request->getQueryParam('page') ? 1 : $request->getQueryParam('page');
-            $getNotification = $requests->getAllRequest($userId)->setPaginate($page, 5);
+            $perPage = $request->getQueryParam('perpage');
+            $getNotification = $requests->getAllRequest($userId)->setPaginate($page, $perPage);
 
             if ($getNotification) {
                 $data = $this->responseDetail(200, false,  'Data notification request', [
@@ -701,7 +739,8 @@ class UserController extends BaseController
         $query = $request->getQueryParams();
         if ($get) {
             $page = !$request->getQueryParam('page') ? 1 : $request->getQueryParam('page');
-            $getNotification = $requests->getAllBlokir($userId)->setPaginate($page, 5);
+            $perPage = $request->getQueryParam('perpage');
+            $getNotification = $requests->getAllBlokir($userId)->setPaginate($page, $perPage);
 
             if ($getNotification) {
                 $data = $this->responseDetail(200, false,  'Data request yang di tolak tersedia', [
@@ -743,7 +782,8 @@ class UserController extends BaseController
 
         if ($get) {
             $page = !$request->getQueryParam('page') ? 1 : $request->getQueryParam('page');
-            $getUser = $user->searchUser($search, $userId)->setPaginate($page, 10);
+            $perPage = $request->getQueryParam('perpage');
+            $getUser = $user->searchUser($search, $userId)->setPaginate($page, $perPage);
 
             if ($getUser) {
                 $data = $this->responseDetail(200, false,  'Berhasil menampilkan data search '.$search, [

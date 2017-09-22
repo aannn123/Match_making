@@ -14,7 +14,8 @@ class NegaraController extends BaseController
         $query = $request->getQueryParams();
         if ($get) {
             $page = !$request->getQueryParam('page') ? 1 : $request->getQueryParam('page');
-            $getNegara = $negara->getAllNegara()->setPaginate($page, 10);
+            $perPage = $request->getQueryParam('perpage');
+            $getNegara = $negara->getAllNegara()->setPaginate($page, $perPage);
 
             if ($getNegara) {
                 $data = $this->responseDetail(200, false,  'Data tersedia', [

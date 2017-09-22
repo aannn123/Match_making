@@ -52,6 +52,7 @@ $app->group('/api', function() use ($app, $container) {
 
     $app->group('/user', function() use ($app, $container) {
         $app->get('', 'App\Controllers\Api\Users\UserController:getAllData')->setName('api.show.user');
+        $app->get('/join', 'App\Controllers\Api\Users\UserController:allJoinUser')->setName('api.show.user.join');
         $app->get('/find/{id}', 'App\Controllers\Api\Users\UserController:findByUser')->setName('api.find.user');
         $app->get('/new', 'App\Controllers\Api\Users\UserController:getAllNewUser')->setName('api.new.user');
         $app->get('/send-request/{id}', 'App\Controllers\Api\Users\UserController:sendRequest')->setName('api.send.request');

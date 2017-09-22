@@ -202,7 +202,7 @@ class UserController extends BaseController
                 $result2 = $this->client->request('GET',
                 $this->router->pathFor('admin.negara'), [
                         'query' => [
-                            'perpage' => 9,
+                            'perpage' => 100,
                             'page'    => $request->getQueryParam('page')
                         ]
                     ]);
@@ -218,7 +218,7 @@ class UserController extends BaseController
                     $result3 = $this->client->request('GET',
                     $this->router->pathFor('admin.provinsi'), [
                             'query' => [
-                                'perpage' => 9,
+                                'perpage' => 100,
                                 'page'    => $request->getQueryParam('page')
                             ]
                         ]);
@@ -234,7 +234,7 @@ class UserController extends BaseController
                         $result3 = $this->client->request('GET',
                         $this->router->pathFor('api.admin.kota'), [
                                 'query' => [
-                                    'perpage' => 9,
+                                    'perpage' => 100,
                                     'page'    => $request->getQueryParam('page')
                                 ]
                             ]);
@@ -255,7 +255,7 @@ class UserController extends BaseController
 
     public function createProfil(Request $request, Response $response)
     {   
-        $this->validator->rule('required', ['nama_lengkap', 'tanggal_lahir', 'tempat_lahir', 'alamat', 'umur', 'kota', 'provinsi', 'kewarganegaraan', 'target_menikah', 'tentang_saya', 'pasangan_harapan']);
+        $this->validator->rule('required', ['nama_lengkap', 'tanggal_lahir', 'tempat_lahir', 'alamat', 'umur', 'kota', 'kewarganegaraan', 'target_menikah', 'tentang_saya', 'pasangan_harapan']);
         // ->labels(array(
         //     'username' => 'Username', 
         //     'email' => 'Email', 
@@ -359,7 +359,7 @@ class UserController extends BaseController
            }
            $data = json_decode($result->getBody()->getContents(), true);
            
-            var_dump($data['message']);die;
+            // var_dump($data['message']);die;
         if ($this->validator->validate()) {
            if ($data['code'] == 201 ) {
                 $this->flash->addMessage('success_material', $data['message']);
@@ -417,14 +417,14 @@ class UserController extends BaseController
            }
            $data = json_decode($result->getBody()->getContents(), true);
            
-            // var_dump($data['message']);die;
+            var_dump($data['message']);die;
         if ($this->validator->validate()) {
            if ($data['code'] == 201 ) {
-                $this->flash->addMessage('success_material', $data['message']);
+                $this->flash->addMessage('error_material', $data['message']);
                 return $response->withRedirect($this->router->pathFor('user.create.latar-belakang'));
            } else {
                $_SESSION['old'] = $request->getParams();
-                $this->flash->addMessage('error_material', $data['message']);
+                $this->flash->addMessage('success_material', $data['message']);
                 return $response->withRedirect($this->router->pathFor('user.create.latar-belakang'));
            }
        } else {
@@ -457,7 +457,7 @@ class UserController extends BaseController
                $result = $this->client->request('POST',
                $this->router->pathFor('api.user.create.ciri.fisik.pria'),
                    ['form_params' => [
-                       'user_id'     => $_SESSION['login']['id'],
+                       // 'user_id'     => $_SESSION['login']['id'],
                        'tinggi' => $request->getParam('tinggi'),
                        'berat' => $request->getParam('berat'),
                        'warna_kulit' => $request->getParam('warna_kulit'),
@@ -475,7 +475,7 @@ class UserController extends BaseController
            }
            $data = json_decode($result->getBody()->getContents(), true);
            
-            // var_dump($data['message']);die;
+            var_dump($data['message']);die;
         if ($this->validator->validate()) {
            if ($data['code'] == 201 ) {
                 $this->flash->addMessage('success_material', $data['message']);
@@ -522,16 +522,16 @@ class UserController extends BaseController
         if ($this->validator->validate()) {
            if ($data['code'] == 201 ) {
                 $this->flash->addMessage('success_material', $data['message']);
-                return $response->withRedirect($this->router->pathFor('user.create.ciri-fisik'));
+                return $response->withRedirect($this->router->pathFor('user.create.poligami'));
            } else {
                $_SESSION['old'] = $request->getParams();
                 $this->flash->addMessage('error_material', $data['message']);
-                return $response->withRedirect($this->router->pathFor('user.create.ciri-fisik'));
+                return $response->withRedirect($this->router->pathFor('user.create.poligami'));
            }
        } else {
         $_SESSION['errors'] = $this->validator->errors();
         $_SESSION['old'] = $request->getParams();
-        return $response->withRedirect($this->router->pathFor('user.create.ciri-fisik'));
+        return $response->withRedirect($this->router->pathFor('user.create.poligami'));
        }
     }
 
@@ -548,5 +548,131 @@ class UserController extends BaseController
     public function getNotification(Request $request, Response $response)
     {
         return $this->view->render($response, 'user/data/notification/notification.twig');
+    }
+
+    public function viewDetailUser(Request $request, Response $response)
+    {
+       try {
+            $result1 = $this->client->request('GET',
+            $this->router->pathFor('api.find.user', ['id' => $args['id']]), [
+                'query' => [
+                    // 'page'    => $request->getQueryparam('page'),
+                    'perpage' => 5,
+                    'id' => $args['id']
+                    ]
+                ]);
+        try {
+                $result2 = $this->client->request('GET',
+                $this->router->pathFor('user.find.profil', ['id' => $args['id']]), [
+                        'query' => [
+                            'perpage' => 5,
+                            'page'    => $request->getQueryParam('page')
+                        ]
+                    ]);
+
+
+                } catch (GuzzleException $e) {
+                    $result2 = $e->getResponse();
+                }
+
+                $profil = json_decode($result2->getBody()->getContents(), true);
+
+                    try {
+                    $result3 = $this->client->request('GET',
+                    $this->router->pathFor('user.find.keseharian', ['id' => $args['id']]), [
+                            'query' => [
+                                'perpage' => 5,
+                                'page'    => $request->getQueryParam('page')
+                            ]
+                        ]);
+
+
+                    } catch (GuzzleException $e) {
+                        $result3 = $e->getResponse();
+                    }
+
+                    $keseharian = json_decode($result3->getBody()->getContents(), true);
+
+                        try {
+                        $result3 = $this->client->request('GET',
+                        $this->router->pathFor('user.find.latar-belakang', ['id' => $args['id']]), [
+                                'query' => [
+                                    'perpage' => 5,
+                                    'page'    => $request->getQueryParam('page')
+                                ]
+                            ]);
+
+
+                        } catch (GuzzleException $e) {
+                            $result3 = $e->getResponse();
+                        }
+
+                        $latar = json_decode($result3->getBody()->getContents(), true);
+
+                            try {
+                            $result4 = $this->client->request('GET',
+                            $this->router->pathFor('user.find.ciri-fisik', ['id' => $args['id']]), [
+                                    'query' => [
+                                        'perpage' => 5,
+                                        'page'    => $request->getQueryParam('page')
+                                    ]
+                                ]);
+
+
+                            } catch (GuzzleException $e) {
+                                $result4 = $e->getResponse();
+                            }
+
+                            $fisik = json_decode($result4->getBody()->getContents(), true);
+
+                                try {
+                                $result5 = $this->client->request('GET',
+                                $this->router->pathFor('user.find.poligami', ['id' => $args['id']]), [
+                                        'query' => [
+                                            'perpage' => 9,
+                                            'page'    => $request->getQueryParam('page')
+                                        ]
+                                    ]);
+
+
+                                } catch (GuzzleException $e) {
+                                    $result5 = $e->getResponse();
+                                }
+
+                                $poligami = json_decode($result5->getBody()->getContents(), true);
+
+                                    try {
+                                    $result6 = $this->client->request('GET',
+                                    $this->router->pathFor('user.find.dipoligami', ['id' => $args['id']]), [
+                                            'query' => [
+                                                'perpage' => 5,
+                                                'page'    => $request->getQueryParam('page')
+                                            ]
+                                        ]);
+
+
+                                    } catch (GuzzleException $e) {
+                                        $result6 = $e->getResponse();
+                                    }
+
+                                    $dipoligami = json_decode($result6->getBody()->getContents(), true);
+                                    // var_dump($dipoligami);die();
+        } catch (GuzzleException $e) {
+              $result = $e->getResponse();
+             }
+         $user = json_decode($result1->getBody()->getContents(), true);
+
+        // echo "<br />";
+        // var_dump($profil['data']);die();
+        return $this->view->render($response, 'admin/user/view-detail.twig', [
+            'user' => $user['data'],
+            'profil'    => $profil['data'],
+            'keseharian' => $keseharian['data'],
+            'latar' => $latar['data'],
+            'fisik' => $fisik['data'],
+            'poligami' => $poligami['data'],
+            'dipoligami' => $dipoligami['data'],
+            'pagination'    => $data['pagination'],
+        ]);
     }
 }

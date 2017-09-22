@@ -150,6 +150,29 @@ class UserModel extends BaseModel
         ->execute();
     }
 
+     // $qb = $this->db->createQueryBuilder();
+     //    $this->query = $qb->select('prof.*','kot.nama as kota','prov.nama as provinsi','negara.nama as kewarganegaraan', 'user.gender as jenis_kelamin')
+     //        ->from($this->table,'prof')
+     //        ->join('prof','kota', 'kot', 'kot.id = prof.kota')
+     //        ->join('prof','provinsi', 'prov', 'prov.id = prof.provinsi')
+     //        ->join('prof','users', 'user', 'user.id = prof.user_id')
+     //        ->join('prof','negara', 'negara', 'negara.id = prof.kewarganegaraan');
+     //    $query = $qb->execute();
+     //    return $this;
+
+    public function joinUserAll()
+    {
+          $qb = $this->db->createQueryBuilder();
+        $this->query = $qb->select('user.*','kot.nama as kota','prov.nama as provinsi','negara.nama as kewarganegaraan')
+            ->from($this->table,'user')
+            // ->join('user','profil', 'prof', 'prof.umur = user.id')
+            ->join('user','kota', 'kot', 'kot.id = kot.id')
+            ->join('user','provinsi', 'prov', 'prov.id = user.id')
+            ->join('user','negara', 'negara', 'negara.id = user.id');
+        $query = $qb->execute();
+        return $this;
+    }
+
 
     public function searchUser($val)
     {

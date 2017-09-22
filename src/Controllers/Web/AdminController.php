@@ -16,7 +16,7 @@ class AdminController extends BaseController
             $result = $this->client->request('GET',
             $this->router->pathFor('api.show.user'), [
                  'query' => [
-                     'perpage' => 10,
+                     'perpage' => 5,
                      'page' => $request->getQueryParam('page'),
                      'id' => $_SESSION['login']['id']
             ]]);
@@ -44,7 +44,7 @@ class AdminController extends BaseController
 
         return $this->view->render($response, 'admin/user/all-user.twig', [
             'data'          =>  $searchUser['data'],
-            // 'pagination'    =>  $data['pagination']
+            'pagination'    =>  $data['pagination']
         ]);    //
     }
 
@@ -54,7 +54,7 @@ class AdminController extends BaseController
             $result = $this->client->request('GET',
             $this->router->pathFor('api.new.user'), [
                  'query' => [
-                     'perpage' => 10,
+                     'perpage' => 5,
                      'page' => $request->getQueryParam('page'),
                      'id' => $_SESSION['login']['id']
             ]]);
@@ -76,7 +76,7 @@ class AdminController extends BaseController
             $result = $this->client->request('GET',
             $this->router->pathFor('api.show.user.man'), [
                  'query' => [
-                     'perpage' => 10,
+                     'perpage' => 5,
                      'page' => $request->getQueryParam('page'),
                      'id' => $_SESSION['login']['id']
             ]]);
@@ -98,7 +98,7 @@ class AdminController extends BaseController
             $result = $this->client->request('GET',
             $this->router->pathFor('api.show.user.woman'), [
                  'query' => [
-                     'perpage' => 10,
+                     'perpage' => 5,
                      'page' => $request->getQueryParam('page'),
                      'id' => $_SESSION['login']['id']
             ]]);
@@ -120,7 +120,7 @@ class AdminController extends BaseController
             $result = $this->client->request('GET',
             $this->router->pathFor('api.admin.kota'), [
                  'query' => [
-                     'perpage' => 10,
+                     'perpage' => 5,
                      'page' => $request->getQueryParam('page'),
                      'id' => $_SESSION['login']['id']
             ]]);
@@ -136,7 +136,7 @@ class AdminController extends BaseController
                 $result1 = $this->client->request('GET',
                 $this->router->pathFor('admin.provinsi'), [
                      'query' => [
-                         'perpage' => 10,
+                         'perpage' => 5,
                          'page' => $request->getQueryParam('page'),
                          'id' => $_SESSION['login']['id']
                 ]]);
@@ -183,7 +183,7 @@ class AdminController extends BaseController
             $result = $this->client->request('GET',
             $this->router->pathFor('admin.provinsi'), [
                  'query' => [
-                     'perpage' => 10,
+                     'perpage' => 5,
                      'page' => $request->getQueryParam('page'),
                      'id' => $_SESSION['login']['id']
             ]]);
@@ -199,7 +199,7 @@ class AdminController extends BaseController
                 $result = $this->client->request('GET',
                 $this->router->pathFor('admin.negara'), [
                      'query' => [
-                         'perpage' => 10,
+                         'perpage' => 5,
                          'page' => $request->getQueryParam('page'),
                          'id' => $_SESSION['login']['id']
                 ]]);
@@ -222,7 +222,7 @@ class AdminController extends BaseController
             $result = $this->client->request('GET',
             $this->router->pathFor('admin.negara'), [
                  'query' => [
-                     'perpage' => 10,
+                     'perpage' => 5,
                      'page' => $request->getQueryParam('page'),
                      'id' => $_SESSION['login']['id']
             ]]);
@@ -245,7 +245,7 @@ class AdminController extends BaseController
             $this->router->pathFor('api.find.user', ['id' => $args['id']]), [
                 'query' => [
                     // 'page'    => $request->getQueryparam('page'),
-                    'perpage' => 10,
+                    'perpage' => 5,
                     'id' => $args['id']
                     ]
                 ]);
@@ -253,7 +253,7 @@ class AdminController extends BaseController
                 $result2 = $this->client->request('GET',
                 $this->router->pathFor('user.find.profil', ['id' => $args['id']]), [
                         'query' => [
-                            'perpage' => 9,
+                            'perpage' => 5,
                             'page'    => $request->getQueryParam('page')
                         ]
                     ]);
@@ -269,7 +269,7 @@ class AdminController extends BaseController
                     $result3 = $this->client->request('GET',
                     $this->router->pathFor('user.find.keseharian', ['id' => $args['id']]), [
                             'query' => [
-                                'perpage' => 9,
+                                'perpage' => 5,
                                 'page'    => $request->getQueryParam('page')
                             ]
                         ]);
@@ -285,7 +285,7 @@ class AdminController extends BaseController
                         $result3 = $this->client->request('GET',
                         $this->router->pathFor('user.find.latar-belakang', ['id' => $args['id']]), [
                                 'query' => [
-                                    'perpage' => 9,
+                                    'perpage' => 5,
                                     'page'    => $request->getQueryParam('page')
                                 ]
                             ]);
@@ -301,7 +301,7 @@ class AdminController extends BaseController
                             $result4 = $this->client->request('GET',
                             $this->router->pathFor('user.find.ciri-fisik', ['id' => $args['id']]), [
                                     'query' => [
-                                        'perpage' => 9,
+                                        'perpage' => 5,
                                         'page'    => $request->getQueryParam('page')
                                     ]
                                 ]);
@@ -333,7 +333,7 @@ class AdminController extends BaseController
                                     $result6 = $this->client->request('GET',
                                     $this->router->pathFor('user.find.dipoligami', ['id' => $args['id']]), [
                                             'query' => [
-                                                'perpage' => 9,
+                                                'perpage' => 5,
                                                 'page'    => $request->getQueryParam('page')
                                             ]
                                         ]);
@@ -394,7 +394,7 @@ class AdminController extends BaseController
             $result = $this->client->request('GET',
             $this->router->pathFor('admin.cancel.user', ['id' => $args['id']]), [
                  'query' => [
-                     'perpage' => 10,
+                     'perpage' => 5,
                      'page' => $request->getQueryParam('page'),
                      'id' => $_SESSION['login']['id']
             ]]);
@@ -471,7 +471,7 @@ class AdminController extends BaseController
             $result = $this->client->request('GET',
             $this->router->pathFor('admin.setModerator', ['id' => $args['id']]), [
                  'query' => [
-                     'perpage' => 10,
+                     'perpage' => 5,
                      'page' => $request->getQueryParam('page'),
                      'id' => $_SESSION['login']['id']
             ]]);
@@ -496,7 +496,7 @@ class AdminController extends BaseController
             $result = $this->client->request('GET',
             $this->router->pathFor('admin.get.taaruf'), [
                  'query' => [
-                     'perpage' => 10,
+                     'perpage' => 5,
                      'page' => $request->getQueryParam('page'),
                      'id' => $_SESSION['login']['id']
             ]]);
@@ -519,7 +519,7 @@ class AdminController extends BaseController
             $result = $this->client->request('GET',
             $this->router->pathFor('admin.request.all'), [
                  'query' => [
-                     'perpage' => 10,
+                     'perpage' => 5,
                      'page' => $request->getQueryParam('page'),
                      'id' => $_SESSION['login']['id']
             ]]);
@@ -542,7 +542,7 @@ class AdminController extends BaseController
             $result = $this->client->request('GET',
             $this->router->pathFor('admin.cancel.proses', ['id' => $args['id']]), [
                  'query' => [
-                     'perpage' => 10,
+                     'perpage' => 5,
                      'page' => $request->getQueryParam('page'),
                      'id' => $_SESSION['login']['id']
             ]]);
@@ -567,7 +567,7 @@ class AdminController extends BaseController
             $result = $this->client->request('GET',
             $this->router->pathFor('admin.find.taaruf', ['perequest' => $args['perequest'], 'terequest' => $args['terequest']]), [
                  'query' => [
-                     'perpage' => 10,
+                     'perpage' => 5,
                      'page' => $request->getQueryParam('page'),
                      'id' => $_SESSION['login']['id']
             ]]);

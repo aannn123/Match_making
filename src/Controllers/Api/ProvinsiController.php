@@ -15,7 +15,8 @@ class ProvinsiController extends BaseController
         $query = $request->getQueryParams();
         if ($get) {
             $page = !$request->getQueryParam('page') ? 1 : $request->getQueryParam('page');
-            $getProvinsi = $provinsi->joinProvinsi()->setPaginate($page, 10);
+            $perPage = $request->getQueryParam('perpage');
+            $getProvinsi = $provinsi->joinProvinsi()->setPaginate($page, $perPage);
 
             if ($getProvinsi) {
                 $data = $this->responseDetail(200, false,  'Data tersedia', [

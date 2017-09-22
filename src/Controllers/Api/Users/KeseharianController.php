@@ -21,7 +21,8 @@ class KeseharianController extends BaseController
         $query = $request->getQueryParams();
         if ($get) {
             $page = !$request->getQueryParam('page') ? 1 : $request->getQueryParam('page');
-            $getKeseharian = $keseharian->getAllData()->setPaginate($page, 5);
+            $perPage = $request->getQueryParam('perpage');
+            $getKeseharian = $keseharian->getAllData()->setPaginate($page, $perPage);
 
             if ($getKeseharian) {
                 $data = $this->responseDetail(200, false,  'Data tersedia', [

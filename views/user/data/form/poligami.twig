@@ -1,4 +1,7 @@
 {% extends 'user/templates/default.twig' %}
+{% block title %}
+  Create Poligami
+{% endblock %}
 {% block content %}
     
 
@@ -9,8 +12,11 @@
             <form class="col s12" action="{{ path_for('user.post.create.poligami') }}" method="POST">
             <div class="row">
                 <div class="input-field col s12 {{ errors.kesiapan ? 'has-error' : '' }}">
-                  <input type="text" class="validate" name="kesiapan"  value="{{old.kesiapan}}">
-                  <label style="color:#ecf0f1" for="icon_prefix">Kesiapan</label>
+                  <select name="kesiapan">
+                      <option value = "" disabled selected>Kesiapan</option>
+                      <option value = "siap">Siap</option>
+                      <option value = "belum siap">Belum siap</option>
+                  </select>
                   {% if errors.kesiapan %}
                     <span style="color:#FF0000">*
                     {{errors.kesiapan | first}}</span>
@@ -36,8 +42,13 @@
                 </div>
 
                 <div class="input-field col s12 {{ errors.kondisi_istri ? 'has-error' : '' }}">
-                  <input type="text" class="validate" name="kondisi_istri" value="{{old.kondisi_istri}}">
-                  <label style="color:#ecf0f1" for="icon_prefix">Kondisi Istri</label>
+                 <select name="kondisi_istri">
+                      <option value = "" disabled selected>Kondisi Istri</option>
+                      <option value = "belum mengizinkan">Belum Mengizinkan</option>
+                      <option value = "sudah mengizinkan">Sudah Mengizinkan</option>
+                      <option value = "mendukung dan mencarikan">Mendukung dan Mencarikan</option>
+                      <option value = "belum punya istri">Belum punya istri</option>
+                  </select>
                    {% if errors.kondisi_istri %}
                     <span style="color:#FF0000">*
                     {{errors.kondisi_istri | first}}</span>

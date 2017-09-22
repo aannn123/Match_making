@@ -17,7 +17,8 @@ class ProfilController extends BaseController
         $query = $request->getQueryParams();
         if ($get) {
             $page = !$request->getQueryParam('page') ? 1 : $request->getQueryParam('page');
-            $getUser = $profil->joinProfile()->setPaginate($page, 5);
+            $perPage = $request->getQueryParam('perpage');
+            $getUser = $profil->joinProfile()->setPaginate($page, $perPage);
 
             if ($getUser) {
                 $data = $this->responseDetail(200, false,  'Data tersedia', [
@@ -41,7 +42,7 @@ class ProfilController extends BaseController
         $token = $request->getHeader('Authorization')[0];
         $userId = $UserToken->getUserId($token);
         // var_dump($userId);die();
-        $this->validator->rule('required', ['nama_lengkap', 'tanggal_lahir', 'tempat_lahir', 'umur', 'alamat', 'kota', 'provinsi', 'kewarganegaraan', 'target_menikah', 'tentang_saya', 'pasangan_harapan']);
+        $this->validator->rule('required', ['nama_lengkap', 'tanggal_lahir', 'tempat_lahir', 'umur', 'alamat', 'kota', 'kewarganegaraan', 'target_menikah', 'tentang_saya', 'pasangan_harapan']);
 
         if ($this->validator->validate()) {
             $create = $profile->createProfil($request->getParams(), $userId);

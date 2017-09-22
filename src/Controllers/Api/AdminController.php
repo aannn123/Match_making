@@ -30,7 +30,8 @@ class AdminController extends BaseController
         $query = $request->getQueryParams();
         if ($get) {
             $page = !$request->getQueryParam('page') ? 1 : $request->getQueryParam('page');
-            $getUser = $profil->joinProfile()->setPaginate($page, 5);
+            $perPage = $request->getQueryParam('perpage');
+            $getUser = $profil->joinProfile()->setPaginate($page, $perPage);
 
             if ($getUser) {
                 $data = $this->responseDetail(200, false,  'Data tersedia', [
@@ -62,7 +63,8 @@ class AdminController extends BaseController
         $query = $request->getQueryParams();
         if ($get) {
             $page = !$request->getQueryParam('page') ? 1 : $request->getQueryParam('page');
-            $getUser = $user->getAllUserMan()->setPaginate($page, 5);
+            $perPage = $request->getQueryParam('perpage');
+            $getUser = $user->getAllUserMan()->setPaginate($page, $perPage);
 
             if ($getUser) {
                 $data = $this->responseDetail(200, false,  'Data tersedia', [
@@ -91,7 +93,8 @@ class AdminController extends BaseController
         $query = $request->getQueryParams();
         if ($get) {
             $page = !$request->getQueryParam('page') ? 1 : $request->getQueryParam('page');
-            $getLatar = $latar->getAllData()->setPaginate($page, 5);
+            $perPage = $request->getQueryParam('perpage');
+            $getLatar = $latar->getAllData()->setPaginate($page, $perPage);
 
             if ($getLatar) {
                 $data = $this->responseDetail(200, false,  'Data tersedia', [
@@ -289,7 +292,8 @@ class AdminController extends BaseController
         $query = $request->getQueryParams();
         if ($get) {
             $page = !$request->getQueryParam('page') ? 1 : $request->getQueryParam('page');
-            $getNotification = $requests->joinRequest()->setPaginate($page, 10);
+            $perPage = $request->getQueryParam('perpage');
+            $getNotification = $requests->joinRequest()->setPaginate($page, $perPage);
 
             if ($getNotification) {
                 $data = $this->responseDetail(200, false,  'Data taaruf user tersedia', [
@@ -320,7 +324,8 @@ class AdminController extends BaseController
         $query = $request->getQueryParams();
         if ($get) {
             $page = !$request->getQueryParam('page') ? 1 : $request->getQueryParam('page');
-            $getNotification = $user->getAllNewuser()->setPaginate($page, 5);
+            $perPage = $request->getQueryParam('perpage');
+            $getNotification = $user->getAllNewuser()->setPaginate($page, $perPage);
 
             if ($getNotification) {
                 $data = $this->responseDetail(200, false,  'Data taaruf user tersedia', [
@@ -414,7 +419,8 @@ class AdminController extends BaseController
         $query = $request->getQueryParams();
         if ($get) {
             $page = !$request->getQueryParam('page') ? 1 : $request->getQueryParam('page');
-            $getNotification = $requests->joinRequestAll()->setPaginate($page, 10);
+            $perPage = $request->getQueryParam('perpage');
+            $getNotification = $requests->joinRequestAll()->setPaginate($page, $perPage);
 
             if ($getNotification) {
                 $data = $this->responseDetail(200, false,  'Data semua request tersedia', [

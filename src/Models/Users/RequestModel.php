@@ -130,7 +130,8 @@ class RequestModel extends BaseModel
             ->from($this->table,'req')
             ->join('req','users', 'user', 'req.id_perequest = user.id')
             ->join('req','users', 'user1', 'req.id_terequest = user1.id')
-            ->where('req.status = 2 && req.blokir = 0');
+            ->where('req.status = 2')
+            ->andWhere('req.blokir = 0');
         $query = $qb->execute()->fetch();
         return $this;
     }

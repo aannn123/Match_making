@@ -19,7 +19,8 @@ class CiriFisikController extends BaseController
         $query = $request->getQueryParams();
         if ($get) {
             $page = !$request->getQueryParam('page') ? 1 : $request->getQueryParam('page');
-            $getUser = $user->getAllData()->setPaginate($page, 5);
+            $perPage = $request->getQueryParam('perpage');
+            $getUser = $user->getAllData()->setPaginate($page, $perPage);
 
             if ($getUser) {
                 $data = $this->responseDetail(200, false,  'Data tersedia', [
@@ -46,7 +47,8 @@ class CiriFisikController extends BaseController
         $query = $request->getQueryParams();
         if ($get) {
             $page = !$request->getQueryParam('page') ? 1 : $request->getQueryParam('page');
-            $getUser = $user->showFisikPria()->setPaginate($page, 5);
+            $perPage = $request->getQueryParam('perpage');
+            $getUser = $user->showFisikPria()->setPaginate($page, $perPage);
 
             if ($getUser) {
                 $data = $this->responseDetail(200, false,  'Data tersedia', [

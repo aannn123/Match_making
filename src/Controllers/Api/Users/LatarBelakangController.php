@@ -20,7 +20,8 @@ class LatarBelakangController extends BaseController
         $query = $request->getQueryParams();
         if ($get) {
             $page = !$request->getQueryParam('page') ? 1 : $request->getQueryParam('page');
-            $getLatar = $latar->getAllData()->setPaginate($page, 5);
+            $perPage = $request->getQueryParam('perpage');
+            $getLatar = $latar->getAllData()->setPaginate($page, $perPage);
 
             if ($getLatar) {
                 $data = $this->responseDetail(200, false,  'Data tersedia', [

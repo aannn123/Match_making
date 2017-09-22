@@ -1,4 +1,5 @@
 {% extends 'user/templates/default.twig' %}
+{% block title %}Create Profile{% endblock %}
 {% block content %}
     
 
@@ -18,7 +19,7 @@
                 </div>
 
                 <div class="input-field col s12 {{ errors.tanggal_lahir ? 'has-error' : '' }}">
-                  <input type="text" class="validate" name="tanggal_lahir" value="{{old.tanggal_lahir}}">
+                  <input type="date" class="datepicker" name="tanggal_lahir" value="{{old.tanggal_lahir}}">
                   <label style="color:#ecf0f1" for="icon_prefix">Tanggal Lahir</label>
                    {% if errors.tanggal_lahir %}
                     <span style="color:#FF0000">*
@@ -53,47 +54,48 @@
                   {% endif %}
                 </div>
 
-                <div class="input-field col s12 {{ errors.kewarganegaraan ? 'has-error' : '' }}">
-                  <input type="text" class="validate" name="kewarganegaraan" value="{{old.kewarganegaraan}}">
-                  <label style="color:#ecf0f1" for="icon_prefix">Kewarganegaraan</label>
+              <div class="input-field col s12 {{ errors.kewarganegaraan ? 'has-error' : '' }}">
+                 <select name="kewarganegaraan">
+                    <option value = "0" disabled selected>Pilih Negara</option>
+                    {% for negara in negara %}
+                    <option value = "{{negara.id}}">{{negara.nama}}</option>
+                    {% endfor %}
+                  </select>
                    {% if errors.kewarganegaraan %}
                     <span style="color:#FF0000">*
                     {{errors.kewarganegaraan | first}}</span>
                   {% endif %}
                 </div>
 
-                <div class="input-field col s12 {{ errors.provinsi ? 'has-error' : '' }}">
-                  <input type="text" class="validate" name="provinsi" value="{{old.provinsi}}">
-                  <label style="color:#ecf0f1" for="icon_prefix">provinsi</label>
+               <div class="input-field col s12 {{ errors.provinsi ? 'has-error' : '' }}">
+                 <select name="provinsi">
+                    <option value = "0" disabled selected>Pilih Provinsi</option>
+                    {% for provinsi in provinsi %}
+                    <option value = "{{provinsi.id}}">{{provinsi.nama}}</option>
+                    {% endfor %}
+                  </select>
                    {% if errors.provinsi %}
                     <span style="color:#FF0000">*
                     {{errors.provinsi | first}}</span>
                   {% endif %}
                 </div>
 
-                <div class="input-field col s12 {{ errors.kota ? 'has-error' : '' }}">
-                  <input type="text" class="validate" name="kota" value="{{old.kota}}">
-                  <label style="color:#ecf0f1" for="icon_prefix">kota</label>
+             <div class="input-field col s12 {{ errors.kota ? 'has-error' : '' }}">
+                 <select name="kota">
+                    <option value = "0" disabled selected>Pilih Kota</option>
+                    {% for kota in kota %}
+                    <option value = "{{kota.id}}">{{kota.nama}}</option>
+                    {% endfor %}
+                  </select>
                    {% if errors.kota %}
                     <span style="color:#FF0000">*
                     {{errors.kota | first}}</span>
                   {% endif %}
                 </div>
 
-                 <!-- <div class="input-field col s12 {{ errors.kota ? 'has-error' : '' }}">
-                  <select name="kota" id="">
-                    <option value="sd">asdasdasd</option>
-                  </select>
-                  <label style="color:#ecf0f1" for="icon_prefix">kota</label>
-                   {% if errors.kota %}
-                    <span style="color:#FF0000">*
-                    {{errors.kota | first}}</span>
-                  {% endif %}
-                </div> -->
-
 
                 <div class="input-field col s12 {{ errors.target_menikah ? 'has-error' : '' }}">
-                  <input type="text" class="validate" name="target_menikah" value="{{old.target_menikah}}">
+                  <input type="date" class="datepicker" name="target_menikah" value="{{old.target_menikah}}">
                   <label style="color:#ecf0f1" for="icon_prefix">Target Menikah</label>
                    {% if errors.target_menikah %}
                     <span style="color:#FF0000">*

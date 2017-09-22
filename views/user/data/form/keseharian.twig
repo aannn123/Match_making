@@ -1,4 +1,7 @@
 {% extends 'user/templates/default.twig' %}
+{% block title %}
+    Create Keseharian
+{% endblock %}
 {% block content %}
     
 
@@ -17,18 +20,17 @@
                   {% endif %}
                 </div>
 
-                <div class="input-field col s12 {{ errors.merokok ? 'has-error' : '' }}">
-                  <input type="text" class="validate" name="merokok" value="{{old.merokok}}">
-                  <label style="color:#ecf0f1" for="icon_prefix">Merokok</label>
-                   {% if errors.merokok %}
-                    <span style="color:#FF0000">*
-                    {{errors.merokok | first}}</span>
-                  {% endif %}
-                </div>
-
                 <div class="input-field col s12 {{ errors.status_pekerjaan ? 'has-error' : '' }}">
-                  <input type="text" class="validate" name="status_pekerjaan" value="{{old.status_pekerjaan}}">
-                  <label style="color:#ecf0f1" for="icon_prefix">Status Pekerjaan</label>
+                 <select name="status_pekerjaan">
+                    <option value = "" disabled selected>Status Pekerjaan</option>
+                    <option value = "full-time">Full time</option>
+                    <option value = "part-time">Part time</option>
+                    <option value = "rumah tangga">Rumah Tangga</option>
+                    <option value = "pensiun">Sudah Pensiun</option>
+                    <option value = "tidak bekerja">Tidak bekerja</option>
+                    <option value = "pelajar/mahasiswa">Pelajar/Mahasiswa</option>
+                    <option value = "lainya">Lainya</option>
+                  </select>
                    {% if errors.status_pekerjaan %}
                     <span style="color:#FF0000">*
                     {{errors.status_pekerjaan | first}}</span>
@@ -36,17 +38,48 @@
                 </div>
 
                 <div class="input-field col s12 {{ errors.penghasilan_per_bulan ? 'has-error' : '' }}">
-                  <input type="text" class="validate" name="penghasilan_per_bulan" value="{{old.penghasilan_per_bulan}}">
-                  <label style="color:#ecf0f1" for="icon_prefix">Penghasilan Per Bulan</label>
+                   <select name="penghasilan_per_bulan">
+                    <option value = "" disabled selected>Penghasilan per bulan</option>
+                    <option value = "tidak bekerja">Tidak Bekerja</option>
+                    <option value = "di bawah Rp 1 juta">Di bawah Rp 1 juta</option>
+                    <option value = "Rp 1 juta - Rp 2,5 juta">Rp 1 juta - Rp 2,5 juta</option>
+                    <option value = "Rp 2,5 juta - Rp 5 juta">Rp 2,5 juta - Rp 5 juta</option>
+                    <option value = "Rp 5 juta - Rp 10 juta">Rp 5 juta - Rp 10 juta</option>
+                    <option value = "Rp 10 juta - Rp 30 juta">Rp 10 juta - Rp 30 juta</option>
+                    <option value = "di atas Rp 30 juta">di atas Rp 30 juta</option>
+                  </select>
                    {% if errors.penghasilan_per_bulan %}
                     <span style="color:#FF0000">*
                     {{errors.penghasilan_per_bulan | first}}</span>
                   {% endif %}
                 </div>
 
+                <div class="input-field col s12 {{ errors.merokok ? 'has-error' : '' }}">
+                 <select name="merokok">
+                    <option value = "" disabled selected>Merokok</option>
+                    <option value = "masih">Masih</option>
+                    <option value = "tidak">Tidak</option>
+                    <option value = "pernah">Pernah, tapi sudah tidak</option>
+                  </select>
+                   {% if errors.merokok %}
+                    <span style="color:#FF0000">*
+                    {{errors.merokok | first}}</span>
+                  {% endif %}
+                </div>
+
                 <div class="input-field col s12 {{ errors.status ? 'has-error' : '' }}">
-                  <input type="text" class="validate" name="status" value="{{old.status}}">
-                  <label style="color:#ecf0f1" for="icon_prefix">Status</label>
+                 <select name="status">
+                    <option value = "" disabled selected>Status</option>
+                    <option value = "belum menikah">Belum menikah</option>
+                    <option value = "menikah 1 istri">Menikah 1 istri</option>
+                    <option value = "menikah 2 istri">Menikah 2 istri</option>
+                    <option value = "menikah 3 istri">Menikah 3 istri</option>
+                    <option value = "menikah 4 istri">Menikah 4 istri</option>
+                    <option value = "janda bercerai">Janda bercerai</option>
+                    <option value = "janda karena meninggal">Janda karena meninggal</option>
+                    <option value = "duda bercerai">Duda bercerai</option>
+                    <option value = "duda karena meninggal">Duda karena meninggal</option>
+                  </select>
                    {% if errors.status %}
                     <span style="color:#FF0000">*
                     {{errors.status | first}}</span>
@@ -63,8 +96,13 @@
                 </div>
 
                 <div class="input-field col s12 {{ errors.status_tinggal ? 'has-error' : '' }}">
-                  <input type="text" class="validate" name="status_tinggal" value="{{old.status_tinggal}}">
-                  <label style="color:#ecf0f1" for="icon_prefix">Status Tempat Tinggal</label>
+                   <select name="status_tinggal">
+                    <option value = "" disabled selected>Status Tempat Tinggal</option>
+                    <option value = "rumah seniri">Rumah sendiri</option>
+                    <option value = "rumah sewa">Rumah sewa</option>
+                    <option value = "bersama orang tua">Bersama orang tua</option>
+                    <option value = "bersama teman">Bersama teman</option>
+                  </select>
                    {% if errors.status_tinggal %}
                     <span style="color:#FF0000">*
                     {{errors.status_tinggal | first}}</span>
@@ -72,8 +110,12 @@
                 </div>
 
                 <div class="input-field col s12 {{ errors.memiliki_cicilan ? 'has-error' : '' }}">
-                  <input type="text" class="validate" name="memiliki_cicilan" value="{{old.memiliki_cicilan}}">
-                  <label style="color:#ecf0f1" for="icon_prefix">Memiliki Cicilan</label>
+                  <select name="memiliki_cicilan">
+                      <option value = "" disabled selected>Memiliki Cicilan</option>
+                      <option value = "ya, syari">Ya, syar'i</option>
+                      <option value = "ya, riba">Ya, riba</option>
+                      <option value = "tidak">tidak</option>
+                  </select>
                    {% if errors.memiliki_cicilan %}
                     <span style="color:#FF0000">*
                     {{errors.memiliki_cicilan | first}}</span>
@@ -81,8 +123,12 @@
                 </div>
 
                  <div class="input-field col s12 {{ errors.bersedia_pindah_tinggal ? 'has-error' : '' }}">
-                  <input type="text" class="validate" name="bersedia_pindah_tinggal" value="{{old.bersedia_pindah_tinggal}}">
-                  <label style="color:#ecf0f1" for="icon_prefix">Bersedia Pindah Tempat Tinggal</label>
+                  <select name="bersedia_pindah_tinggal">
+                      <option value = "" disabled selected>Bersedia Pindah Tempat Tinggal</option>
+                      <option value = "ya">Ya</option>
+                      <option value = "mungkin">Mungkin</option>
+                      <option value = "tidak">tidak</option>
+                  </select>
                    {% if errors.bersedia_pindah_tinggal %}
                     <span style="color:#FF0000">*
                     {{errors.bersedia_pindah_tinggal | first}}</span>

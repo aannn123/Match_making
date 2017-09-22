@@ -1,4 +1,7 @@
 {% extends 'user/templates/default.twig' %}
+{% block title %}
+    Create Latar Belakang
+{% endblock %}
 {% block content %}
     
 
@@ -9,8 +12,19 @@
             <form class="col s12" action="{{ path_for('user.post.create.latar-belakang') }}" method="POST">
             <div class="row">
                 <div class="input-field col s12 {{ errors.pendidikan ? 'has-error' : '' }}">
-                  <input type="text" class="validate" name="pendidikan"  value="{{old.pendidikan}}">
-                  <label style="color:#ecf0f1" for="icon_prefix">Pendidikan</label>
+                   <select name="pendidikan">
+                    <option value = "" disabled selected>Pendidikan</option>
+                    <option value = "sd">SD</option>
+                    <option value = "smp">SMP</option>
+                    <option value = "sma">SMA</option>
+                    <option value = "diploma1">Diploma1</option>
+                    <option value = "diploma2">Diploma2</option>
+                    <option value = "diploma4">Diploma4</option>
+                    <option value = "strata 1">Starta 1</option>
+                    <option value = "magister">Magister</option>
+                    <option value = "doktor">Doktor</option>
+                    <option value = "lainya">Lainya</option>
+                  </select>
                   {% if errors.pendidikan %}
                     <span style="color:#FF0000">*
                     {{errors.pendidikan | first}}</span>
@@ -26,9 +40,25 @@
                   {% endif %}
                 </div>
 
+                <div class="input-field col s12 {{ errors.muallaf ? 'has-error' : '' }}">
+                  <select name="muallaf">
+                    <option value = "" disabled selected>Muaalaf</option>
+                    <option value = "ya">Ya</option>
+                    <option value = "tidak">Tidak</option>
+                  </select>
+                   {% if errors.muallaf %}
+                    <span style="color:#FF0000">*
+                    {{errors.muallaf | first}}</span>
+                  {% endif %}
+                </div>
+
                 <div class="input-field col s12 {{ errors.agama ? 'has-error' : '' }}">
-                  <input type="text" class="validate" name="agama" value="{{old.agama}}">
-                  <label style="color:#ecf0f1" for="icon_prefix">Agama</label>
+                   <select name="agama">
+                    <option value = "" disabled selected>Agama</option>
+                    <option value = "ngaji sunnah">Ngaji Sunnah</option>
+                    <option value = "sedang hijrah">Sedang Hijrah</option>
+                    <option value = "islam biasa">Islam Biasa</option>
+                  </select>
                    {% if errors.agama %}
                     <span style="color:#FF0000">*
                     {{errors.agama | first}}</span>
@@ -44,27 +74,31 @@
                   {% endif %}
                 </div>
 
-                <div class="input-field col s12 {{ errors.muallaf ? 'has-error' : '' }}">
-                  <input type="text" class="validate" name="muallaf" value="{{old.muallaf}}">
-                  <label style="color:#ecf0f1" for="icon_prefix">Muallaf</label>
-                   {% if errors.muallaf %}
-                    <span style="color:#FF0000">*
-                    {{errors.muallaf | first}}</span>
-                  {% endif %}
-                </div>
 
                 <div class="input-field col s12 {{ errors.baca_quran ? 'has-error' : '' }}">
-                  <input type="text" class="validate" name="baca_quran" value="{{old.baca_quran}}">
-                  <label style="color:#ecf0f1" for="icon_prefix">Baca Al-quran</label>
+                  <select name="baca_quran">
+                    <option value = "" disabled selected>Baca Al-quran</option>
+                    <option value = "setiap hari">Setiap hari</option>
+                    <option value = "minimal seminggu sekali">Minimal seminggu sekali</option>
+                    <option value = "minimal sebulan sekali">Minimal sebulan sekali</option>
+                    <option value = "sedang belajar">Sedang belajar</option>
+                  </select>
                    {% if errors.baca_quran %}
                     <span style="color:#FF0000">*
                     {{errors.baca_quran | first}}</span>
                   {% endif %}
                 </div>
 
+
                 <div class="input-field col s12 {{ errors.hafalan ? 'has-error' : '' }}">
-                  <input type="text" class="validate" name="hafalan" value="{{old.hafalan}}">
-                  <label style="color:#ecf0f1" for="icon_prefix">hafalan</label>
+                  <select name="hafalan">
+                    <option value = "" disabled selected>Hafalan</option>
+                    <option value = "surat surat pendek">Surat-Surat pendek</option>
+                    <option value = "1-3 juz">1-3 Juz</option>
+                    <option value = "3-10 juz">3-10 Juz</option>
+                    <option value = "10-20 juz">10-20 Juz</option>
+                    <option value = "30 juz">30 Juz</option>
+                  </select>
                    {% if errors.hafalan %}
                     <span style="color:#FF0000">*
                     {{errors.hafalan | first}}</span>
@@ -72,8 +106,12 @@
                 </div>
 
                 <div class="input-field col s12 {{ errors.keluarga ? 'has-error' : '' }}">
-                  <input type="text" class="validate" name="keluarga" value="{{old.keluarga}}">
-                  <label style="color:#ecf0f1" for="icon_prefix">Keluarga</label>
+                  <select name="keluarga">
+                    <option value = "" disabled selected>Keluarga</option>
+                    <option value = "sudah paham sunnah">Sudah paham sunnah</option>
+                    <option value = "islam biasa">Islam biasa</option>
+                    <option value = "sedang proses hijrah">sedang proses hijrah</option>
+                  </select>
                    {% if errors.keluarga %}
                     <span style="color:#FF0000">*
                     {{errors.keluarga | first}}</span>
@@ -89,8 +127,13 @@
                   {% endif %}
 
                 <div class="input-field col s12 {{ errors.shalat ? 'has-error' : '' }}">
-                  <input type="text" class="validate" name="shalat" value="{{old.shalat}}">
-                  <label style="color:#ecf0f1" for="icon_prefix">Shalat</label>
+                  <select name="shalat">
+                    <option value = "" disabled selected>Shalat</option>
+                    <option value = "5 waktu di masjid">5 Waktu di masjid</option>
+                    <option value = "5 waktu tidak di masjid">5 Waktu tidak di masjid</option>
+                    <option value = "belum 5 waktu">Belum 5 waktu</option>
+                    <option value = "belum shalat">Belum shalat</option>
+                  </select>
                    {% if errors.shalat %}
                     <span style="color:#FF0000">*
                     {{errors.shalat | first}}</span>

@@ -18,7 +18,8 @@ class KotaController extends BaseController
         $query = $request->getQueryParams();
         if ($get) {
             $page = !$request->getQueryParam('page') ? 1 : $request->getQueryParam('page');
-            $getKota = $kota->joinKota()->setPaginate($page, 10);
+            $perPage = $request->getQueryParam('perpage');
+            $getKota = $kota->joinKota()->setPaginate($page, $perPage);
 
             if ($getKota) {
                 $data = $this->responseDetail(200, false,  'Data tersedia', [
