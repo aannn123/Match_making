@@ -1,0 +1,144 @@
+{% extends 'user/templates/default.twig' %}
+{% block title %}
+    Detail User
+{% endblock %}
+{% block content %}
+<style>
+    #tabs {
+        margin:5px;
+    }
+    #font {
+        color:#3498db;
+        font-size:15px; 
+        font-family:initial;
+        font-style:oblique;
+    }
+</style>
+    <div class="row">
+    <div class="col s12">
+        <ul class="tabs tab-demo z-depth-1">
+          <li class="tab"><a href="#test5" class="active" style="color:#3498db;font-size:15px; font-family:initial;font-style:oblique">User</a></li>
+          <li class="tab"><a href="#test6" style="color:#3498db;font-size:15px; font-family:initial;font-style:oblique">Profil</a></li>
+          <li class="tab"><a href="#test7" style="color:#3498db;font-size:15px; font-family:initial;font-style:oblique">Latar Belakang</a></li>
+          <li class="tab"><a href="#test8" style="color:#3498db;font-size:15px; font-family:initial;font-style:oblique">Keseharian</a></li>
+          <li class="tab"><a class="active" href="#test9" style="color:#3498db;font-size:15px; font-family:initial;font-style:oblique">Ciri Fisik</a></li>
+          <li class="tab"><a class="active" href="#test10" style="color:#3498db;font-size:15px; font-family:initial;font-style:oblique">Data Poligami</a></li>
+        </ul>
+        <div id="test5" class="col s12">
+        <div class="col s12 m12">
+          <div class="card">
+            <div class="card-content white-text">
+              <span class="card-title" style="color:black;font-size:20px; font-family:initial;font-style:oblique">Data User</span><hr><br>
+              <p id="tabs font" style="color:black"><b>Username : </b>{{user.username}}.</p>
+              <p id="tabs font" style="color:black"><b>Jenis Kelamin : </b>{{user.gender}} .</p>
+              <p id="tabs font" style="color:black"><b>Email : </b>{{user.email}} .</p>
+              <p id="tabs font" style="color:black"><b>Nomor Telepon : </b>{{user.phone}} .</p>
+            </div>
+          </div>
+      </div>
+        </div>
+        <div id="test6" class="col s12">
+        <div class="col s12 m12">
+          <div class="card">
+            <div class="card-content white-text">
+              <span class="card-title" style="color:black;font-size:20px; font-family:initial;font-style:oblique">Data Profil</span><hr><br>
+              <p id="tabs font" style="color:black"><b>Nama Lengkap : </b>{{profil.nama_lengkap}}.</p>
+              <p id="tabs font" style="color:black"><b>Tanggal Lahir : </b>{{profil.tanggal_lahir|date("j F Y")}} .</p>
+              <p id="tabs font" style="color:black"><b>Tempat Lahir : </b>{{profil.tempat_lahir}} .</p>
+              <p id="tabs font" style="color:black"><b>Alamat : </b>{{profil.alamat}} .</p>
+              <p id="tabs font" style="color:black"><b>Umur : </b>{{profil.umur}} Tahun.</p>
+              <p id="tabs font" style="color:black"><b>Kewarganegaraan : </b>{{profil.kewarganegaraan}} .</p>
+              <p id="tabs font" style="color:black"><b>Provinsi : </b>{{profil.provinsi}} .</p>
+              <p id="tabs font" style="color:black"><b>Kota : </b>{{profil.kota}} .</p>
+              <p id="tabs font" style="color:black"><b>Target Menikah : </b>{{profil.target_menikah|date("j F Y")}} .</p>
+              <p id="tabs font" style="color:black"><b>Tentang Saya : </b>{{profil.tentang_saya}} .</p>
+              <p id="tabs font" style="color:black"><b>Pasangan Yang Di Harapkan : </b>{{profil.pasangan_harapan}} .</p>
+            </div>
+          </div>
+        </div>
+        </div>
+        <div id="test7" class="col s12">
+        <div class="col s12 m12">
+          <div class="card">
+            <div class="card-content white-text">
+              <span class="card-title" style="color:black;font-size:20px; font-family:initial;font-style:oblique">Data Latar Belakang</span><hr><br>
+              <p id="tabs font" style="color:black"><b>Pendidikan : </b>{{latar.pendidikan}}.</p>
+              <p id="tabs font" style="color:black"><b>Penjelasan Pendidikan : </b>{{latar.penjelasan_pendidikan}} .</p>
+              <p id="tabs font" style="color:black"><b>Muallaf : </b>{{latar.muallaf}} .</p>
+              <p id="tabs font" style="color:black"><b>Agama : </b>{{latar.agama}} .</p>
+              <p id="tabs font" style="color:black"><b>Penjelasan Agama : </b>{{latar.penjelasan_agama}} .</p>
+              <p id="tabs font" style="color:black"><b>Baca Quran : </b>{{latar.baca_quran}} .</p>
+              <p id="tabs font" style="color:black"><b>Hafalan : </b>{{latar.hafalan}} .</p>
+              <p id="tabs font" style="color:black"><b>Shalat : </b>{{latar.shalat}} .</p>
+              <p id="tabs font" style="color:black"><b>Keluarga : </b>{{latar.keluarga}} .</p>
+              <p id="tabs font" style="color:black"><b>Penjelasan Keluarga : </b>{{latar.penjelasan_keluarga}} .</p>
+            </div>
+          </div>
+        </div>
+        </div>
+        <div id="test8" class="col s12">
+        <div class="col s12 m12">
+          <div class="card">
+            <div class="card-content white-text">
+              <span class="card-title" style="color:black;font-size:20px; font-family:initial;font-style:oblique">Data Keseharian</span><hr><br>
+              <p id="tabs font" style="color:black"><b>Pekerjan : </b>{{keseharian.pekerjaan}}.</p>
+              <p id="tabs font" style="color:black"><b>Status Pekerjaan : </b>{{keseharian.status_pekerjaan}} .</p>
+              <p id="tabs font" style="color:black"><b>Penghasilan Per Bulan : </b>{{keseharian.penghasilan_per_bulan}} .</p>
+              <p id="tabs font" style="color:black"><b>Merokok : </b>{{keseharian.merokok}} .</p>
+              <p id="tabs font" style="color:black"><b>Status : </b>{{keseharian.status}} .</p>
+              {% if keseharian.jumlah_anak == 0 %}
+              {% else %}
+              <p id="tabs font" style="color:black"><b>Jumlah Anak : </b>{{keseharian.jumlah_anak}} .</p>
+              {% endif %}
+              <p id="tabs font" style="color:black"><b>Status Tempat Tinggal : </b>{{keseharian.status_tinggal}} .</p>
+              <p id="tabs font" style="color:black"><b>Memiliki Cicilan : </b>{{keseharian.memiliki_cicilan}} .</p>
+              <p id="tabs font" style="color:black"><b>Bersedia Pindah Tempat Tiggal : </b>{{keseharian.bersedia_pindah_tinggal}} .</p>
+            </div>
+          </div>
+        </div>
+        </div>
+        <div id="test9" class="col s12">
+        <div class="col s12 m12">
+          <div class="card">
+            <div class="card-content white-text">
+              <span class="card-title" style="color:black;font-size:20px; font-family:initial;font-style:oblique">Data Ciri Fisik</span><hr><br>
+              <p id="tabs font" style="color:black"><b>Tinggi Badan : </b>{{fisik.tinggi}}.</p>
+              <p id="tabs font" style="color:black"><b>Berat Badan : </b>{{fisik.berat}} .</p>
+              <p id="tabs font" style="color:black"><b>Warna Kulit : </b>{{fisik.warna_kulit}} .</p>
+              <p id="tabs font" style="color:black"><b>Suku : </b>{{fisik.suku}} .</p>
+              {% if user.gender == 'laki-laki' %}
+              <p id="tabs font" style="color:black"><b>Jenggot : </b>{{fisik.jenggot}} .</p>
+              {% else %}
+              <p id="tabs font" style="color:black"><b>Hijab : </b>{{fisik.hijab}} .</p>
+              <p id="tabs font" style="color:black"><b>Cadar : </b>{{fisik.cadar}} .</p>
+              {% endif %}
+              <p id="tabs font" style="color:black"><b>Kaca Mata : </b>{{fisik.kaca_mata}} .</p>
+              <p id="tabs font" style="color:black"><b>Status Kesehatan : </b>{{fisik.status_kesehatan}} .</p>
+              <p id="tabs font" style="color:black"><b>Ciri Fisik Lain : </b>{{fisik.ciri_fisik_lain}} .</p>
+            </div>
+          </div>
+        </div>
+        </div>
+        <div id="test10" class="col s12">
+        <div class="col s12 m12">
+          <div class="card">
+            <div class="card-content white-text">
+              {% if user.gender == 'laki-laki' %}
+              <span class="card-title" style="color:black;font-size:20px; font-family:initial;font-style:oblique">Data Poligami</span><hr><br>
+              <p id="tabs font" style="color:black"><b>Kesiapan : </b>{{poligami.kesiapan}}.</p>
+              <p id="tabs font" style="color:black"><b>Penjelasan Kesiapan : </b>{{poligami.penjelasan_kesiapan}} .</p>
+              <p id="tabs font" style="color:black"><b>Alasan Poligmi : </b>{{poligami.alasan_poligami}} .</p>
+              <p id="tabs font" style="color:black"><b>Kondisi Istri : </b>{{poligami.kondisi_istri}} .</p>
+              {% else %}
+              <span class="card-title" style="color:black;font-size:20px; font-family:initial;font-style:oblique">Bersedia Menikah Dengan Pria Beristri</span><hr><br>
+              <p id="tabs font" style="color:black"><b>Kesiapan : </b>{{dipoligami.kesiapan}}.</p>
+              <p id="tabs font" style="color:black"><b>Penjelasan Kesiapan : </b>{{dipoligami.penjelasan_kesiapan}} .</p>
+              {% endif %}
+            </div>
+          </div>
+      </div>
+        </div>
+        <a href="{{ path_for('user.home') }}" style="float:right"><button class="btn waves-effect waves-blue blue">Back</button></a>
+         <a href=""><button class="btn waves-effect waves-blue blue"><i class="fa fa-paper-plane" style="color:white"></i> Send Request</button></a>
+  </div>
+{% endblock %}

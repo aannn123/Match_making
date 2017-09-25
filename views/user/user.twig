@@ -1,4 +1,7 @@
 {% extends 'user/templates/default.twig' %}
+{% block title %}
+    Home - Match Making
+{% endblock %}
 {% block content %}
         <!-- <div class="col s10 m12" style="margin-top:-20px">
           <div class="card blue darken-1">
@@ -8,14 +11,15 @@
           </div>
         </div> -->
 <a href="#modal3" class="modal-trigger"><span><i class="material-icons right">more_vert</i></span></a>
+
+{% if login.gender == 'perempuan' %}
     <div class="row" style="width:100%;margin-top:25px">
-    {% if login.gender == 'perempuan' %}
     {% for profil in data %} 
     <div class="col s6 m6">
       <div class="card">
         <div class="card-image">
           <img src="{{ base_url() }}/assets/images/avatar.png">
-          <a class="btn-floating halfway-fab waves-effect waves-light blue tooltipped" data-position="bottom" data-delay="50" data-tooltip="Send Request"><i class="fa fa-paper-plane -o" style="color:white"></i></a>
+          <a href="" class="btn-floating halfway-fab waves-effect waves-light blue tooltipped pulse" data-position="bottom" data-delay="50" data-tooltip="Send Request"><i class="fa fa-paper-plane -o" style="color:white"></i></a>
         </div>
         <div class="card-content">
           <span class="card-title">{{ profil.nama_lengkap }}</span>
@@ -27,51 +31,47 @@
           <p><b>- Negara :</b> {{profil.kewarganegaraan}}.</p>
           <p><b>- Provinsi : </b> {{profil.provinsi}}.</p>
           <p><b>- Kota : </b> {{profil.kota}}.</p>
-          {% if profil.status_request == 2 %}
-          <p><b>Status : </b><!-- <b class="chip blue" style="color:white">Sedang Taaruf</b> -->  <span class="new badge" data-badge-caption="Sedang Taaruf."></span>.</p>
-          {% elseif profil.status_request == 1 %}
-          <p><b>Status : </b><b class="badge" style="color:white">Available</b>.</p>
-          {% endif %}
+          <!-- <p><b>Status : </b> <span class="new badge" data-badge-caption="Sedang Taaruf."></span>.</p> -->
+          <p><b>Status : </b><a class="btn btn-floating pulse" style="width:10px;height:10px"></a><b style=" font-family:initial;font-style:oblique;font-size:12px"> Sedang Taaruf</b>.</p>
         </div>
          <div class="card-action">
-              <center><a href="#"><button class="btn waves-effect waves-light blue">View Detail</button></a></center>
+              <center><a href="{{ path_for('user.view.detail.user',  {id:profil.user_id}) }}"><button class="btn waves-effect waves-light blue">View Detail</button></a></center>
             </div>
       </div>
     </div>
     {% endfor %}
-
-    {% elseif login.gender == 'laki-laki' %}
-    {% for profil in data %}        
+{% else %}
+  <div class="row" style="width:100%;margin-top:25px">
+    {% for profil1 in user %} 
     <div class="col s6 m6">
       <div class="card">
         <div class="card-image">
           <img src="{{ base_url() }}/assets/images/avatar.png">
-          <a class="btn-floating halfway-fab waves-effect waves-light blue"><i class="fa fa-paper-plane -o" style="color:white"></i></a>
+          <a href="{{ path_for('user.view.detail.user',  {id:profil1.id}) }}" class="btn-floating halfway-fab waves-effect waves-light blue tooltipped pulse" data-position="bottom" data-delay="50" data-tooltip="Send Request"><i class="fa fa-paper-plane -o" style="color:white"></i></a>
         </div>
         <div class="card-content">
-          <span class="card-title">{{ profil.nama_lengkap }}</span>
+          <span class="card-title">{{ profil1.nama_lengkap }}</span>
         <div class="card-action">
           </div>
-          <p><b>Jenis Kelamin :</b> {{profil.jenis_kelamin}}.</p>
-          <p><b>Umur :</b> {{profil.umur}} Tahun.</p>
+          <p><b>Jenis Kelamin :</b> {{profil1.jenis_kelamin}}.</p>
+          <p><b>Umur :</b> {{profil1.umur}} Tahun.</p>
           <p><b>Domisili :</b></p>
-          <p><b>- Negara :</b> {{profil.kewarganegaraan}}.</p>
-          <p><b>- Provinsi : </b> {{profil.provinsi}}.</p>
-          <p><b>- Kota : </b> {{profil.kota}}.</p>
-          {% if profil.status_request == 2 %}
-          <p><b>Status : </b><b class="chip blue" style="color:white">Sedang Taaruf</b>.</p>
-          {% else %}
-          <p><b>Status : </b><b class="chip blue" style="color:white">Available</b>.</p>
+          <p><b>- Negara :</b> {{profil1.kewarganegaraan}}.</p>
+          <p><b>- Provinsi : </b> {{profil1.provinsi}}.</p>
+          <p><b>- Kota : </b> {{profil1.kota}}.</p>
+          {% if profil1.status_request == 2 %}
+          <p><b>Status : </b> <span class="new badge" data-badge-caption="Sedang Taaruf."></span>.</p>
+          {% elseif profil1.status_request == 1 %}
+          <p><b>Status : </b><b class="badge" style="color:white">Available</b>.</p>
           {% endif %}
         </div>
          <div class="card-action">
-              <center><a href="#"><button class="btn waves-effect waves-light blue">View Detail</button></a></center>
+              <center><a href="{{ path_for('user.view.detail.user', {id:profil1.user_id}) }}"><button class="btn waves-effect waves-light blue">View Detail</button></a></center>
             </div>
       </div>
     </div>
-    {% endfor %}    
-    {% endif %}    
-
+    {% endfor %}
+{% endif %}
   <div id="modal3" class="modal bottom-sheet">
           <div class="modal-content">
             <h4>Modal Header</h4>

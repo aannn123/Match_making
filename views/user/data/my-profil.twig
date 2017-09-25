@@ -1,21 +1,193 @@
 {% extends 'user/templates/default.twig' %}
 {% block title %} Profil {% endblock %}
 {% block content %}
-    <div class="row">
-    <div class="col s10 m8">
-     <div class="card">
-    <div class="card-image waves-effect waves-block waves-light">
-      <img class="activator" src="{{ base_url() }}/assets/images/avatar.png">
+<style>
+  #set {
+    color:black;
+  }
+  .btn-small {
+    height: 20px;
+    line-height: 20px;
+    padding: 0 0.5rem;
+}
+</style>
+  <div class="row">
+    <div class="col s12 m6 l3">
+      <img src="https://pbs.twimg.com/profile_images/378800000383884561/e46af00398c2abd99ba4c179bd510a84_400x400.jpeg" class="circle responsive-img" style="width:70%" alt="">
+      </div>
+    <div class="col s12 m6 l3"><p style=" font-family:initial;font-style:oblique">{{profil.nama_lengkap}}</p>
+     <a href="{{ path_for('user.update.profil') }}"><button class="btn waves-effect waves-blue btn-small" style="font-size:xx-small;background:rgba(16, 164, 201, 0.33)"><b style="color:black">update profil</b></button></a>
+    <a href="#modal2" class="tooltipped modal-trigger pulse" data-position="bottom" data-delay="50" data-tooltip="Settings"><i class="tiny material-icons">settings</i></a><br>
+    <a class="btn btn-floating pulse" style="width:10px;height:10px"></a><b style=" font-family:initial;font-style:oblique;font-size:12px"> Sedang Taaruf</b>
     </div>
-    <div class="card-content">
-      <span class="card-title activator grey-text text-darken-4">Card Title<i class="material-icons right">more_vert</i></span>
-      <p><a href="#">This is a link</a></p>
     </div>
-    <div class="card-reveal">
-      <span class="card-title grey-text text-darken-4">Card Title<i class="material-icons right">close</i></span>
-      <p>Here is some more information about this product that is only revealed once clicked on.</p>
+     <div class="row">
+    <div class="col s3 m6 l3"><p class="">Request Diterima</p><center><b>1</b></center></div>
+    <div class="col s3 m6 l3"><p class="">Request Ditolak</p><center><b>1</b></center></div>
+    <div class="col s3 m6 l3"><p class="">Direquest Terima</p><center><b>1</b></center></div>
+    <div class="col s3 m6 l3"><p class="">Direquest Tolak</p><center><b>1</b></center></div>
+  </div>
+    <br><hr>
+  <!-- Modal Structure -->
+  <div id="modal2" class="modal" style="width:50%">
+    <div class="modal-content">
+      <div class="collection">
+        <center><a id="set" href="{{ path_for('user.change-password') }}" class="collection-item">Change Password</a>
+        <a id="set" href="#!" class="collection-item">Change Image</a>
+        <a id="set" href="#!" class="collection-item">Update User</a>
+        <a id="set" href="{{path_for('logout')}}" class="collection-item">Log Out</a>
+        <a id="set" href="#!" class="collection-item modal-action modal-close">Cancel</a></center>
+      </div>
     </div>
   </div>
-  </div>
-  </div>
+
+    <center><span class="black-text" style="font-family:initial;font-style:oblique;font-size:20px">Data User</center>
+
+    <ul class="collapsible popout" data-collapsible="accordion">
+    <li>
+      <div class="collapsible-header"><i class="material-icons">account_circle</i>Profil</div>
+      <div class="collapsible-body">
+        <div class="card-panel grey lighten-5 z-depth-1">
+          <div class="row valign-wrapper">
+              <span class="black-text" style="font-family:initial;font-style:oblique;font-size:15px">
+                <p>Nama Lengkap : <b>{{profil.nama_lengkap}}</b></p>
+                
+                <p>Tanggal Lahir : <b>{{profil.tanggal_lahir}}</b></p>
+                
+                <p>Tempat Lahir : <b>{{profil.tempat_lahir}}</b></p>
+                
+                <p>Umur : <b>{{profil.umur}} Tahun</b></p>
+                
+                <p>Alamat :  <b>{{profil.alamat}}</b></p>
+                      
+                <p>Kewarganegaraan :  <b>{{profil.kewarganegaraan}}</b></p>
+               
+                <p>Provinsi : <b>{{profil.provinsi}}</b></p>
+                
+                <p>Kota : <b>{{profil.kota}}</b></p>
+               
+                <p>Tentang Saya : <b>{{profil.tentang_saya}}</b></p>
+                <p>Target Menikah : <b>{{profil.target_menikah|date('j F Y')}}</b></p> 
+                <p>Pasangan Yang Di Harapkan : <b>{{profil.pasangan_harapan}}</b></p>  
+              </span>
+          </div>
+      </div>
+    </li>
+    <li>
+      <div class="collapsible-header"><i class="material-icons">portrait</i>Latar Belakang</div>
+      <div class="collapsible-body">
+        <div class="card-panel grey lighten-5 z-depth-1">
+          <div class="row valign-wrapper">
+              <span class="black-text" style="font-family:initial;font-style:oblique;font-size:15px">
+                <p>Pendidikan : <b>{{latar.pendidikan}}</b></p>
+                
+                <p>Penjelasan Pendidikan : <b>{{latar.penjelasan_pendidikan}}</b></p>
+                
+                <p>Muallaf : <b>{{latar.muallaf}}</b></p>
+                     
+                <p>Agama : <b>{{latar.agama}}</b></p>
+               
+                <p>Penjelasan Agama : <b>{{latar.penjelasan_agama}}</b></p>
+               
+                <p>Shalat : <b>{{latar.shalat}}</b></p>
+                
+                <p>Baca Quran : <b>{{latar.baca_quran}}</b></p>
+                
+                <p>Hafalan : <b>{{latar.hafalan}}</b></p>
+                
+                <p>Keluarga : <b>{{latar.keluarga}}</b></p>
+                
+                <p>Penjelasan Keluarga :  <b>{{latar.penjelasan_keluarga}}</b></p>
+                
+              </span>
+          </div>
+      </div>
+    </li>
+    <li>
+      <div class="collapsible-header"><i class="material-icons">person_outline</i>Ciri Fisik</div>
+      <div class="collapsible-body">
+      <div class="card-panel grey lighten-5 z-depth-1">
+          <div class="row valign-wrapper">
+              <span class="black-text" style="font-family:initial;font-style:oblique;font-size:15px">
+                <p>Tinggi Badan : <b>{{fisik.tinggi}}</b></p>
+               
+                <p>Berat Badan : <b>{{fisik.berat}}</b></p>
+               
+                <p>Warna Kulit : <b>{{fisik.warna_kulit}}</b></p>
+               
+                <p>Suku : <b>{{fisik.suku}}</b></p>
+              
+              {% if login.gender == 'laki-laki' %}
+                <p>Jenggot : <b>{{fisik.jenggot}}</b></p>
+                
+              {% else %}
+                <p>Hijab : <b>{{fisik.hijab}}</b></p>
+                <p>Cadar : <b>{{fisik.cadar}}</b></p>
+              {% endif %}
+                <p>Kaca Mata : <b>{{fisik.kaca_mata}}</b></p>
+               
+                <p>Status Kesehatan : <b>{{fisik.status_kesehatan}}</b></p>
+               
+                <p>Ciri Fisik Lain :  <b>{{fisik.ciri_fisik_lain}}</b></p>
+               
+          </div>
+      </div> 
+    </li>
+     <li>
+      <div class="collapsible-header"><i class="material-icons">business_center</i>Keseharian</div>
+      <div class="collapsible-body">
+         <div class="card-panel grey lighten-5 z-depth-1">
+          <div class="row valign-wrapper">
+              <span class="black-text" style="font-family:initial;font-style:oblique;font-size:15px">
+                <p>Pekerjaan : <b>{{keseharian.pekerjaan}}</b></p>
+                
+                <p>Status Pekerjaan : <b>{{keseharian.status_pekerjaan}}</b></p>
+                
+                <p>Penghasilan Per Bulan : <b>{{keseharian.penghasilan_per_bulan}}</b></p>
+                     
+                <p>Merokok : <b>{{keseharian.merokok}}</b></p>
+               
+                <p>Status : <b>{{keseharian.status}}</b></p>
+
+                {% if keseharian.jumlah_anak == 0 %}
+                {% else %}
+                <p>Jumlah Anak : <b>{{keseharian.jumlah_anak}}</b></p>
+                {% endif %}
+
+                <p>Status Tinggal : <b>{{keseharian.status_tinggal}}</b></p>
+                
+                <p>Memiliki Cicilan : <b>{{keseharian.memiliki_cicilan}}</b></p>
+                
+                <p>Bersedia Pindah Tinggal : <b>{{keseharian.bersedia_pindah_tinggal}}</b></p>
+                                
+              </span>
+          </div>
+      </div>
+      </div>
+    </li>
+     <li>
+      <div class="collapsible-header"><i class="material-icons">wc</i>Data Poligami</div>
+      <div class="collapsible-body">
+         <div class="card-panel grey lighten-5 z-depth-1">
+          <div class="row valign-wrapper">
+              <span class="black-text" style="font-family:initial;font-style:oblique;font-size:15px">
+                <p>Kesiapan : <b>{{poligami.kesiapan}}</b></p>
+                
+                <p>Penjelasan Kesiapan : <b>{{poligami.penjelasan_kesiapan}}</b></p>
+                {% if poligami.kesiapan == 'siap' %}
+                <p>Alasan Poligami : <b>{{poligami.alasan_poligami}}</b></p>
+                <p>Kondisi Istri : <b>{{poligami.kondisi_istri}}</b></p>
+                {% endif %}
+               {% if login.gender == 'perempuan' %}
+               <p>Kesiapan : <b>{{dipoligami.kesiapan}}</b></p>
+                
+                <p>Penjelasan Kesiapan : <b>{{dipoligami.penjelasan_kesiapan}}</b></p>
+               {% endif %}
+              </span>
+          </div>
+      </div>
+      </div>
+    </li>
+  </ul>
+             
 {% endblock %}

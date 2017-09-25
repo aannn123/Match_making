@@ -487,8 +487,6 @@ class UserController extends BaseController
         if (!$findUser) {
             $data = $this->responseDetail(404, true, 'Akun tidak ditemukan');
         }
-        if ($this->validator->validate()) {
-
             if (!empty($request->getUploadedFiles()['photo'])) {
                 $storage = new \Upload\Storage\FileSystem('assets/images');
                 $image = new \Upload\File('photo',$storage);
@@ -505,13 +503,38 @@ class UserController extends BaseController
 
                 $user->updateData($data, $args['id']);
                 $newUser = $user->getUser('id', $args['id']);
-                if (file_exists('assets/images/'.$findUser['photo']['ktp'])) {
-                    unlink('assets/images/'.$findUser['photo']);die();
+                if (file_exists('assets/images/'.$findUser['photo'])) {
+                    unlink('assets/images/'.$findUser['photo']);
                 }
-                $data =  $this->responseDetail(200, false, 'Foto berhasil diunggah', [
-                    'data' => $newUser
-                ]);
-            } elseif (!empty($request->getUploadedFiles()['ktp'])) {
+
+            // } elseif (!empty($request->getUploadedFiles()['ktp'])) {
+            //     $storage = new \Upload\Storage\FileSystem('assets/images');
+            //     $image = new \Upload\File('ktp',$storage);
+
+            //     $image->setName(uniqid('img-'.date('Ymd').'-'));
+            //     $image->addValidations(array(
+            //         new \Upload\Validation\Mimetype(array('image/png', 'image/gif',
+            //         'image/jpg', 'image/jpeg')),
+            //         new \Upload\Validation\Size('5M')
+            //     ));
+
+            //     $image->upload();
+            //     $data['ktp'] = $image->getNameWithExtension();
+
+            //     $user->updateData($data, $args['id']);
+            //     $newUser = $user->getUser('id', $args['id']);
+            //     if (file_exists('assets/images/'.$findUser['ktp']['ktp'])) {
+            //         unlink('assets/images/'.$findUser['ktp']);
+            //     }
+            //     $data =  $this->responseDetail(200, false, 'Foto berhasil diunggah', [
+            //         'data' => $newUser
+            //     ]);
+
+
+           
+            }
+
+            if (!empty($request->getUploadedFiles()['ktp'])) {
                 $storage = new \Upload\Storage\FileSystem('assets/images');
                 $image = new \Upload\File('ktp',$storage);
 
@@ -527,24 +550,18 @@ class UserController extends BaseController
 
                 $user->updateData($data, $args['id']);
                 $newUser = $user->getUser('id', $args['id']);
-                if (file_exists('assets/images/'.$findUser['ktp']['ktp'])) {
-                    unlink('assets/images/'.$findUser['ktp']);die();
+                if (file_exists('assets/images/'.$findUser['ktp'])) {
+                    unlink('assets/images/'.$findUser['ktp']);
                 }
-                $data =  $this->responseDetail(200, false, 'Foto berhasil diunggah', [
+                return $this->responseDetail(200, false, 'File berhasil diunggah', [
                     'data' => $newUser
                 ]);
-
-
-            } else {
-                $data = $this->responseDetail(400, true, 'File foto belum dipilih');
-
+            } elseif (empty($request->getUploadedFiles()['ktp']) 
+                        && empty($request->getUploadedFiles()['phot'])) {
+                
+                return $this->responseDetail(400, true, 'File belum dipilih');
+                
             }
-        } else {
-            $errors = $this->validator->errors();
-
-            $data =  $this->responseDetail(400, true, $errors);
-        }
-            return $data;
     }
 
     public function searchUser($request, $response)
@@ -798,35 +815,40 @@ class UserController extends BaseController
         }
 
         return $data;
+    }
 
+    public function changePassword($request, $response, $args)
+    {
+        $users = new UserModel($this->db);
+        $userToken = new \App\Models\Users\UserToken($this->container->db);
 
-        // $user = new UserModel($this->db);
-        // $token = $request->getHeader('Authorization')[0];
-        // $userToken = new UserToken($this->db);
-        // $userId = $userToken->getUserId($token);
-        // $query = $request->getQueryParams();
+        $token = $request->getHeader('Authorization')[0];
+        $findUser = $userToken->find('token', $token);
+        $user = $users->find('id', $findUser['user_id']);
 
-        // $search = $request->getParams()['search'];
+        $password = password_verify($request->getParam('password'), $user['password']);
+        // var_dump($request->getParams());die();
 
-        // $data = $user->searchUser($search, $userId)->fetchAll();
-        // $countUser = count($data);
+        if ($password) {
+            $this->validator->rule('required', ['new_password', 'password']);
+            $this->validator->rule('lengthMin', ['new_password'], 5);
 
-        // if ($countUser) {
-        //     $page = !$request->getQueryParam('page') ? 1 : $request->getQueryParam('page');
-        //     $getUser = $user->searchUser($search, $userId)->setPaginate($page, 5);
-        //     if ($getUser) {
-        //     $data = $this->responseDetail(200, false, 'Berhasil menampilkan data search '.$search, [
-        //             'query'     =>  $query,
-        //             'data'    =>  $data,
-        //             'pagination' => $getUser['pagination']
-        //         ]);
-                
-        //     }
-        // } else {
-        //     $data = $this->responseDetail(404, true, 'Data tidak ditemukan');
-        // }
-        //     return $data;
+            if ($this->validator->validate()) {
+                $newData = [
+                'password'  => password_hash($request->getParam('new_password'), PASSWORD_BCRYPT)
+                ];
+                $users->updateData($newData, $user['id']);
+                $data = $findUser;
+
+                return $this->responseDetail(200, false, 'Password berhasil diubah', [
+                    'data'  => $data
+                    ]);
+            } else {
+                return $this->responseDetail(400, true, 'Password minimal 5 karakter');
+            }
+        } else {
+            return $this->responseDetail(400, true, 'Password lama tidak sesuai');
+        }
     }
 
 }
-//

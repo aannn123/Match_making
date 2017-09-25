@@ -33,7 +33,7 @@ class CreateProfilTable extends AbstractMigration
                ->addColumn('tanggal_lahir', 'date')
                ->addColumn('tempat_lahir', 'string')
                ->addColumn('alamat', 'text')
-               ->addColumn('umur', 'string')
+               ->addColumn('umur', 'integer')
                ->addColumn('kota', 'integer')
                ->addColumn('provinsi', 'integer')
                ->addColumn('kewarganegaraan', 'integer')

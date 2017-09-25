@@ -1,0 +1,128 @@
+{% extends 'user/data/form/update/sidebar.twig' %}
+{% block title %}
+    update profil
+{% endblock %}
+{% block content %}
+    <div class="card blue-grey darken-12">
+            <div class="card-content white-text">
+              <span class="card-title">Update Profile</span>
+        <div class="row">
+            <form class="col s12" action="{{ path_for('user.post.update.profil') }}" method="POST">
+            <div class="row">
+                <div class="input-field col s12 {{ errors.nama_lengkap ? 'has-error' : '' }}">
+                  <input type="text" class="validate" name="nama_lengkap"  value="{{login.nama_lengkap}}">
+                  <label style="color:#ecf0f1" for="icon_prefix">Nama Lengkap</label>
+                  {% if errors.nama_lengkap %}
+                    <span style="color:#FF0000">*
+                    {{errors.nama_lengkap | first}}</span>
+                  {% endif %}
+                </div>
+
+                <div class="input-field col s12 {{ errors.tanggal_lahir ? 'has-error' : '' }}">
+                  <input type="date" class="datepicker" name="tanggal_lahir" value="{{data.tanggal_lahir}}">
+                  <label style="color:#ecf0f1" for="icon_prefix">Tanggal Lahir</label>
+                   {% if errors.tanggal_lahir %}
+                    <span style="color:#FF0000">*
+                    {{errors.tanggal_lahir | first}}</span>
+                  {% endif %}
+                </div>
+
+                <div class="input-field col s12 {{ errors.tempat_lahir ? 'has-error' : '' }}">
+                  <input type="text" class="validate" name="tempat_lahir" value="{{data.tempat_lahir}}">
+                  <label style="color:#ecf0f1" for="icon_prefix">Tempat lahir</label>
+                   {% if errors.tempat_lahir %}
+                    <span style="color:#FF0000">*
+                    {{errors.tempat_lahir | first}}</span>
+                  {% endif %}
+                </div>
+
+                <div class="input-field col s12 {{ errors.alamat ? 'has-error' : '' }}">
+                  <input type="text" class="validate" name="alamat" value="{{data.alamat}}">
+                  <label style="color:#ecf0f1" for="icon_prefix">Alamat</label>
+                   {% if errors.alamat %}
+                    <span style="color:#FF0000">*
+                    {{errors.alamat | first}}</span>
+                  {% endif %}
+                </div>
+
+                <div class="input-field col s12 {{ errors.umur ? 'has-error' : '' }}">
+                  <input type="number" class="validate" name="umur" value="{{data.umur}}">
+                  <label style="color:#ecf0f1" for="icon_prefix">Umur</label>
+                   {% if errors.umur %}
+                    <span style="color:#FF0000">*
+                    {{errors.umur | first}}</span>
+                  {% endif %}
+                </div>
+
+              <div class="input-field col s12 {{ errors.kewarganegaraan ? 'has-error' : '' }}">
+                 <select name="kewarganegaraan">
+                    <option value = "0" disabled selected>Pilih Negara</option>
+                    {% for negara in negara %}
+                    <option value = "{{negara.id}}" {% if data.kewarganegaraan == '{{negara.id}}' %} selected="selected" {% endif %}>{{negara.nama}}</option>
+                    {% endfor %}
+                  </select>
+                   {% if errors.kewarganegaraan %}
+                    <span style="color:#FF0000">*
+                    {{errors.kewarganegaraan | first}}</span>
+                  {% endif %}
+                </div>
+
+               <div class="input-field col s12 {{ errors.provinsi ? 'has-error' : '' }}">
+                 <select name="provinsi">
+                    <option value = "0" disabled selected>Pilih Provinsi</option>
+                    {% for provinsi in provinsi %}
+                    <option value = "{{provinsi.id}}" {% if data.provinsi == '{{provinsi.id}}' %} selected="selected" {% endif %}>{{provinsi.nama}}</option>
+                    {% endfor %}
+                  </select>
+                   {% if errors.provinsi %}
+                    <span style="color:#FF0000">*
+                    {{errors.provinsi | first}}</span>
+                  {% endif %}
+                </div>
+
+             <div class="input-field col s12 {{ errors.kota ? 'has-error' : '' }}">
+                 <select name="kota">
+                    <option value = "0" disabled selected>Pilih Kota</option>
+                    {% for kota in kota %}
+                    <option value = "{{kota.id}}" {% if data.kota == '{{kota.id}}' %} selected="selected" {% endif %}>{{kota.nama}}</option>
+                    {% endfor %}
+                  </select>
+                   {% if errors.kota %}
+                    <span style="color:#FF0000">*
+                    {{errors.kota | first}}</span>
+                  {% endif %}
+                </div>
+
+
+                <div class="input-field col s12 {{ errors.target_menikah ? 'has-error' : '' }}">
+                  <input type="date" class="datepicker" name="target_menikah" value="{{data.target_menikah}}">
+                  <label style="color:#ecf0f1" for="icon_prefix">Target Menikah</label>
+                   {% if errors.target_menikah %}
+                    <span style="color:#FF0000">*
+                    {{errors.target_menikah | first}}</span>
+                  {% endif %}
+                </div>
+
+                <div class="input-field col s12  {{ errors.tentang_saya ? 'has-error' : '' }}">
+                  <input type="text" name="tentang_saya" class="validate" value="{{data.tentang_saya}}">
+                  <label style="color:#ecf0f1" for="icon_tentang_saya">Tentang Saya</label>
+                  {% if errors.tentang_saya %}
+                    <span style="color:#FF0000">*
+                    {{errors.tentang_saya | first}}</span>
+                  {% endif %}
+                </div>
+
+                <div class="input-field col s12 {{ errors.pasangan_harapan ? 'has-error' : '' }}">
+                  <input type="text" class="validate" name="pasangan_harapan" value="{{data.pasangan_harapan}}">
+                  <label style="color:#ecf0f1" for="icon_prefix">Pasangan Yang Di Harapakan</label>
+                   {% if errors.pasangan_harapan %}
+                    <span style="color:#FF0000">*
+                    {{errors.pasangan_harapan | first}}</span>
+                  {% endif %}
+                </div>
+              <button class="btn waves-effect waves-light">update</button>
+            </form>
+          </div>
+
+</div>
+{% endblock %}

@@ -35,6 +35,58 @@ class ProfilController extends BaseController
         return $data;
     }
 
+    public function showProfileUserPria($request, $response)
+    {
+        $profil = new ProfilModel($this->db);
+        $get = $profil->joinProfilePria();
+        $countUser = count($get);
+        $query = $request->getQueryParams();
+        if ($get) {
+            $page = !$request->getQueryParam('page') ? 1 : $request->getQueryParam('page');
+            $perPage = $request->getQueryParam('perpage');
+            $getUser = $profil->joinProfilePria()->setPaginate($page, $perPage);
+
+            if ($getUser) {
+                $data = $this->responseDetail(200, false,  'Data tersedia', [
+                        'data'          =>  $getUser['data'],
+                        'pagination'    =>  $getUser['pagination'],
+                    ]);
+            } else {
+                $data = $this->responseDetail(404, true, 'Data tidak ditemukan');
+            }
+        } else {
+            $data = $this->responseDetail(204, false, 'Tidak ada konten');
+        }
+
+        return $data;
+    }
+
+    public function showProfileUserWanita($request, $response)
+    {
+        $profil = new ProfilModel($this->db);
+        $get = $profil->joinProfileWanita();
+        $countUser = count($get);
+        $query = $request->getQueryParams();
+        if ($get) {
+            $page = !$request->getQueryParam('page') ? 1 : $request->getQueryParam('page');
+            $perPage = $request->getQueryParam('perpage');
+            $getUser = $profil->joinProfileWanita()->setPaginate($page, $perPage);
+
+            if ($getUser) {
+                $data = $this->responseDetail(200, false,  'Data tersedia', [
+                        'data'          =>  $getUser['data'],
+                        'pagination'    =>  $getUser['pagination'],
+                    ]);
+            } else {
+                $data = $this->responseDetail(404, true, 'Data tidak ditemukan');
+            }
+        } else {
+            $data = $this->responseDetail(204, false, 'Tidak ada konten');
+        }
+
+        return $data;
+    }
+
     public function createProfile($request, $response)
     {
         $profile = new ProfilModel($this->db);

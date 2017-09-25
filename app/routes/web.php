@@ -13,8 +13,8 @@ $app->post('/forgot-password', 'App\Controllers\Web\UserController:forgotPasswor
 $app->get('/', 'App\Controllers\Web\UserController:getLogin')->setName('user.login');
 $app->post('/', 'App\Controllers\Web\UserController:login')->setName('post.login.user');
 
-// $app->get('/{id}/change-image/get', 'App\Controllers\Web\UserController:getChangeImage')->setName('user.change.image');
-$app->post('/{id}/change-image', 'App\Controllers\Web\UserController:changeImage')->setName('user.post.change.image');
+$app->get('/register/{id}/change-image', 'App\Controllers\Web\UserController:changeImage')->setName('user.change.image');
+// $app->post('/register/{id}/change-image', 'App\Controllers\Web\UserController:changeImage')->setName('user.post.change.image');
 
 
 $app->group('', function() use ($app, $container) {
@@ -68,16 +68,55 @@ $app->group('/admin', function() use ($app, $container) {
         $app->post('/create/latar-belakang',  'App\Controllers\Web\UserController:createLatarBelakang')->setName('user.post.create.latar-belakang');
 
         $app->get('/create/ciri-fisik',  'App\Controllers\Web\UserController:getCreateCiriFisik')->setName('user.create.ciri-fisik');
+
         $app->post('/create/ciri-fisik',  'App\Controllers\Web\UserController:createCiriFisik')->setName('user.post.create.ciri-fisik');
 
+        $app->post('/create/ciri-fisik/wanita',  'App\Controllers\Web\UserController:createCiriFisikWanita')->setName('user.post.create.ciri-fisik.wanita');
+
         $app->get('/create/poligami',  'App\Controllers\Web\UserController:getCreatePoligami')->setName('user.create.poligami');
+
         $app->post('/create/poligami',  'App\Controllers\Web\UserController:createPoligami')->setName('user.post.create.poligami');
 
-        $app->get('/profil',  'App\Controllers\Web\UserController:myProfil')->setName('user.my.profil');
+        $app->get('/create/dipoligami',  'App\Controllers\Web\UserController:getCreateDipoligami')->setName('user.create.dipoligami');
+
+        $app->post('/create/dipoligami',  'App\Controllers\Web\UserController:createDipoligami')->setName('user.post.create.dipoligami');
+
+        $app->get('/profil/{id}',  'App\Controllers\Web\UserController:viewProfile')->setName('user.my.profil');
 
         $app->get('/statistik',  'App\Controllers\Web\UserController:statistikRequest')->setName('user.statistik');
 
         $app->get('/notification',  'App\Controllers\Web\UserController:getNotification')->setName('user.notification');
+
+        $app->get('/view/detail/{id}',  'App\Controllers\Web\UserController:viewDetailUser')->setName('user.view.detail.user');
+
+        $app->get('/update/profil',  'App\Controllers\Web\UserController:updateProfil')->setName('user.update.profil');
+
+        $app->post('/update/profil',  'App\Controllers\Web\UserController:postUpdateProfil')->setName('user.post.update.profil');
+
+        $app->get('/update/latar-belakang',  'App\Controllers\Web\UserController:updateLatarBelakang')->setName('user.update.latar-belakang');
+
+        $app->post('/update/latar-belakang',  'App\Controllers\Web\UserController:postUpdateLatarBelakang')->setName('user.post.update.latar-belakang');
+
+        $app->get('/update/ciri-fisik',  'App\Controllers\Web\UserController:updateCiriFisik')->setName('user.update.ciri-fisik');
+
+        $app->post('/update/ciri-fisik',  'App\Controllers\Web\UserController:postUpdateCiriFisikPria')->setName('user.update.ciri-fisik.post.pria');
+
+        $app->post('/update/ciri-fisik/wanita',  'App\Controllers\Web\UserController:postUpdateCiriFisikWanita')->setName('user.update.ciri-fisik.post.wanita');
+
+        $app->get('/update/keseharian',  'App\Controllers\Web\UserController:updateKeseharian')->setName('user.update.keseharian');
+
+        $app->post('/update/keseharian',  'App\Controllers\Web\UserController:postUpdateKeseharian')->setName('user.post.update.keseharian');
+
+        $app->get('/update/poligami',  'App\Controllers\Web\UserController:updatePoligami')->setName('user.update.poligami');
+
+        $app->post('/update/poligami',  'App\Controllers\Web\UserController:postUpdatePoligami')->setName('user.post.update.poligami');
+
+        $app->post('/update/dipoligami',  'App\Controllers\Web\UserController:')->setName('user.post.update.dipoligami');
+
+        $app->get('/change-password',  'App\Controllers\Web\UserController:getChangePassword')->setName('user.change-password');
+
+        $app->post('/change-password',  'App\Controllers\Web\UserController:changePassword')->setName('user.post.change-password');
+       
 
     });
 

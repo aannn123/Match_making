@@ -1,0 +1,142 @@
+{% extends 'user/data/form/update/sidebar.twig' %}
+{% block title %}
+    update keseharian
+{% endblock %}
+{% block content %}
+    
+
+<div class="card blue-grey darken-12">
+            <div class="card-content white-text">
+              <span class="card-title">Update Keseharian</span>
+        <div class="row">
+            <form class="col s12" action="{{ path_for('user.post.update.keseharian') }}" method="POST">
+            <div class="row">
+                <div class="input-field col s12 {{ errors.pekerjaan ? 'has-error' : '' }}">
+                  <input type="text" class="validate" name="pekerjaan"  value="{{data.pekerjaan}}">
+                  <label style="color:#ecf0f1" for="icon_prefix">Pekerjaan</label>
+                  {% if errors.pekerjaan %}
+                    <span style="color:#FF0000">*
+                    {{errors.pekerjaan | first}}</span>
+                  {% endif %}
+                </div>
+
+                <div class="input-field col s12 {{ errors.status_pekerjaan ? 'has-error' : '' }}">
+                 <select name="status_pekerjaan">
+                    <option value = "" disabled selected>Status Pekerjaan</option>
+                    <option value = "full-time" {% if data.status_pekerjaan == 'full-time' %} selected="selected" {% endif %}>Full time</option>
+                    <option value = "part-time" {% if data.status_pekerjaan == 'part-time' %} selected="selected" {% endif %}>Part time</option>
+                    <option value = "rumah tangga" {% if data.status_pekerjaan == 'rumah tangga' %} selected="selected" {% endif %}>Rumah Tangga</option>
+                    <option value = "pensiun" {% if data.status_pekerjaan == 'pensiun' %} selected="selected" {% endif %}>Sudah Pensiun</option>
+                    <option value = "tidak bekerja" {% if data.status_pekerjaan == 'tidak bekerja' %} selected="selected" {% endif %}>Tidak bekerja</option>
+                    <option value = "pelajar/mahasiswa" {% if data.status_pekerjaan == 'pelajar/mahasiswa' %} selected="selected" {% endif %}>Pelajar/Mahasiswa</option>
+                    <option value = "lainya" {% if data.status_pekerjaan == 'lainya' %} selected="selected" {% endif %}>Lainya</option>
+                  </select>
+                   {% if errors.status_pekerjaan %}
+                    <span style="color:#FF0000">*
+                    {{errors.status_pekerjaan | first}}</span>
+                  {% endif %}
+                </div>
+
+                <div class="input-field col s12 {{ errors.penghasilan_per_bulan ? 'has-error' : '' }}">
+                   <select name="penghasilan_per_bulan">
+                    <option value = "" disabled selected>Penghasilan per bulan</option>
+                    <option value = "tidak bekerja" {% if data.penghasilan_per_bulan == 'tidak bekerja' %} selected="selected" {% endif %}>Tidak Bekerja</option>
+                    <option value = "di bawah Rp 1 juta" {% if data.penghasilan_per_bulan == 'di bawah Rp 1 juta' %} selected="selected" {% endif %}>Di bawah Rp 1 juta</option>
+                    <option value = "Rp 1 juta - Rp 2,5 juta" {% if data.penghasilan_per_bulan == 'Rp 1 juta - RP 2,5 juta' %} selected="selected" {% endif %}>Rp 1 juta - Rp 2,5 juta</option>
+                    <option value = "Rp 2,5 juta - Rp 5 juta" {% if data.penghasilan_per_bulan == 'Rp 2,5 juta - Rp 5 juta' %} selected="selected" {% endif %}>Rp 2,5 juta - Rp 5 juta</option>
+                    <option value = "Rp 5 juta - Rp 10 juta" {% if data.penghasilan_per_bulan == 'Rp 5 juta - Rp 10 juta' %} selected="selected" {% endif %}>Rp 5 juta - Rp 10 juta</option>
+                    <option value = "Rp 10 juta - Rp 30 juta" {% if data.penghasilan_per_bulan == 'Rp 10 juta - Rp 30 juta ' %} selected="selected" {% endif %}>Rp 10 juta - Rp 30 juta</option>
+                    <option value = "di atas Rp 30 juta" {% if data.penghasilan_per_bulan == 'di atas 30 Rp 30 juta' %} selected="selected" {% endif %}>di atas Rp 30 juta</option>
+                  </select>
+                   {% if errors.penghasilan_per_bulan %}
+                    <span style="color:#FF0000">*
+                    {{errors.penghasilan_per_bulan | first}}</span>
+                  {% endif %}
+                </div>
+
+                <div class="input-field col s12 {{ errors.merokok ? 'has-error' : '' }}">
+                 <select name="merokok">
+                    <option value = "" disabled selected>Merokok</option>
+                    <option value = "masih" {% if data.merokok == 'masih' %} selected="selected" {% endif %}>Masih</option>
+                    <option value = "tidak" {% if data.merokok == 'tidak' %} selected="selected" {% endif %}>Tidak</option>
+                    <option value = "pernah" {% if data.merokok == 'pernah' %} selected="selected" {% endif %}>Pernah, tapi sudah tidak</option>
+                  </select>
+                   {% if errors.merokok %}
+                    <span style="color:#FF0000">*
+                    {{errors.merokok | first}}</span>
+                  {% endif %}
+                </div>
+
+                <div class="input-field col s12 {{ errors.status ? 'has-error' : '' }}">
+                 <select name="status">
+                    <option value = "" disabled selected>Status</option>
+                    <option value = "belum menikah" {% if data.status == 'belum menikah' %} selected="selected" {% endif %}>Belum menikah</option>
+                    <option value = "menikah 1 istri" {% if data.status == 'menikah 1 istri' %} selected="selected" {% endif %}>Menikah 1 istri</option>
+                    <option value = "menikah 2 istri" {% if data.status == 'menikah 2 istri' %} selected="selected" {% endif %}>Menikah 2 istri</option>
+                    <option value = "menikah 3 istri" {% if data.status == 'menikah 3 istri' %} selected="selected" {% endif %}>Menikah 3 istri</option>
+                    <option value = "menikah 4 istri" {% if data.status == 'menikah 4 istri' %} selected="selected" {% endif %}>Menikah 4 istri</option>
+                    <option value = "janda bercerai" {% if data.status == 'janda bercerai' %} selected="selected" {% endif %}>Janda bercerai</option>
+                    <option value = "janda karena meninggal" {% if data.status == 'janda karena meninggal' %} selected="selected" {% endif %}>Janda karena meninggal</option>
+                    <option value = "duda bercerai" {% if data.status == 'duda bercerai' %} selected="selected" {% endif %}>Duda bercerai</option>
+                    <option value = "duda karena meninggal" {% if data.status == 'duda karena meninggal' %} selected="selected" {% endif %}>Duda karena meninggal</option>
+                  </select>
+                   {% if errors.status %}
+                    <span style="color:#FF0000">*
+                    {{errors.status | first}}</span>
+                  {% endif %}
+                </div>
+
+                <div class="input-field col s12 {{ errors.jumlah_anak ? 'has-error' : '' }}">
+                  <input type="text" class="validate" name="jumlah_anak" value="{{data.jumlah_anak}}">
+                  <label style="color:#ecf0f1" for="icon_prefix">Jumlah Anak</label>
+                   {% if errors.jumlah_anak %}
+                    <span style="color:#FF0000">*
+                    {{errors.jumlah_anak | first}}</span>
+                  {% endif %}
+                </div>
+
+                <div class="input-field col s12 {{ errors.status_tinggal ? 'has-error' : '' }}">
+                   <select name="status_tinggal">
+                    <option value = "" disabled selected>Status Tempat Tinggal</option>
+                    <option value = "rumah sendiri" {% if data.status_tinggal == 'rumah sendiri' %} selected="selected" {% endif %}>Rumah sendiri</option>
+                    <option value = "rumah sewa" {% if data.status_tinggal == 'rumah sewa' %} selected="selected" {% endif %}>Rumah sewa</option>
+                    <option value = "bersama orang tua" {% if data.status_tinggal == 'bersama teman' %} selected="selected" {% endif %}>Bersama orang tua</option>
+                    <option value = "bersama teman">Bersama teman</option>
+                  </select>
+                   {% if errors.status_tinggal %}
+                    <span style="color:#FF0000">*
+                    {{errors.status_tinggal | first}}</span>
+                  {% endif %}
+                </div>
+
+                <div class="input-field col s12 {{ errors.memiliki_cicilan ? 'has-error' : '' }}">
+                  <select name="memiliki_cicilan">
+                      <option value = "" disabled selected>Memiliki Cicilan</option>
+                      <option value = "ya, syari" {% if data.memiliki_cicilan == 'ya, syari' %} selected="selected" {% endif %}>Ya, syar'i</option>
+                      <option value = "ya, riba" {% if data.memiliki_cicilan == 'ya, riba' %} selected="selected" {% endif %}>Ya, riba</option>
+                      <option value = "tidak" {% if data.memiliki_cicilan == 'tidak' %} selected="selected" {% endif %}>tidak</option>
+                  </select>
+                   {% if errors.memiliki_cicilan %}
+                    <span style="color:#FF0000">*
+                    {{errors.memiliki_cicilan | first}}</span>
+                  {% endif %}
+                </div>
+
+                 <div class="input-field col s12 {{ errors.bersedia_pindah_tinggal ? 'has-error' : '' }}">
+                  <select name="bersedia_pindah_tinggal">
+                      <option value = "" disabled selected>Bersedia Pindah Tempat Tinggal</option>
+                      <option value = "ya" {% if data.bersedia_pindah_tinggal == 'ya' %} selected="selected" {% endif %}>Ya</option>
+                      <option value = "mungkin" {% if data.bersedia_pindah_tinggal == 'mungkin' %} selected="selected" {% endif %}>Mungkin</option>
+                      <option value = "tidak" {% if data.bersedia_pindah_tinggal == 'tidak' %} selected="selected" {% endif %}>tidak</option>
+                  </select>
+                   {% if errors.bersedia_pindah_tinggal %}
+                    <span style="color:#FF0000">*
+                    {{errors.bersedia_pindah_tinggal | first}}</span>
+                  {% endif %}
+                </div>
+              <button class="btn waves-effect waves-light">update</button>
+            </form>
+          </div>
+
+</div>
+{% endblock %}

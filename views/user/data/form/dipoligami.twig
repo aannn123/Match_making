@@ -1,0 +1,43 @@
+{% extends 'user/templates/default.twig' %}
+{% block title %}
+  Create Poligami
+{% endblock %}
+{% block content %}
+    
+{% if login.gender == 'perempuan' %}
+<div class="card blue-grey darken-12">
+            <div class="card-content white-text">
+              <span class="card-title">Create Data Poligami</span>
+        <div class="row">
+            <form class="col s12" action="{{ path_for('user.post.create.dipoligami') }}" method="POST">
+            <div class="row">
+                <div class="input-field col s12 {{ errors.kesiapan ? 'has-error' : '' }}">
+                  <select name="kesiapan">
+                      <option value = "" disabled selected>Kesiapan</option>
+                      <option value = "bersedia">Bersedia</option>
+                      <option value = "kurang yakin">Kurang Yakin</option>
+                      <option value = "tidak bersedia">Tidak Bersedia</option>
+                  </select>
+                  {% if errors.kesiapan %}
+                    <span style="color:#FF0000">*
+                    {{errors.kesiapan | first}}</span>
+                  {% endif %}
+                </div>
+
+                <div class="input-field col s12 {{ errors.penjelasan_kesiapan ? 'has-error' : '' }}">
+                  <input type="text" class="validate" name="penjelasan_kesiapan" value="{{old.penjelasan_kesiapan}}">
+                  <label style="color:#ecf0f1" for="icon_prefix">Penjelasan Kesiapan</label>
+                   {% if errors.penjelasan_kesiapan %}
+                    <span style="color:#FF0000">*
+                    {{errors.penjelasan_kesiapan | first}}</span>
+                  {% endif %}
+                </div>
+
+                </div>
+              <button class="btn waves-effect waves-light">Create</button>
+            </form>
+          </div>
+
+</div>
+{% endif %}
+{% endblock %}
