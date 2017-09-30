@@ -27,7 +27,7 @@ class PoligamiModel extends BaseModel
     public function updatePoligami(array $data, $id)
     {
         $data = [
-            'user_id' => $data['user_id'],
+            'user_id' => $id,
             'kesiapan' => $data['kesiapan'],
             'penjelasan_kesiapan' => $data['penjelasan_kesiapan'],
             'alasan_poligami' => $data['alasan_poligami'],

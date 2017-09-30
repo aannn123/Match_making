@@ -70,29 +70,56 @@ class DipoligamiController extends BaseController
         $userToken = new UserToken($this->db);
         $token = $request->getHeader('Authorization')[0];
         $userId = $userToken->getUserId($token);
-        $poligami = new DipoligamiModel($this->db);
+        $dipoligami = new DipoligamiModel($this->db);
 
-        $find = $poligami->findWithoutDelete('user_id', $userId['id']);
+        $find = $dipoligami->find('user_id', $userId);
+        $query = $request->getQueryParams();
+        $findUser = $user->getUser('id', $userId);
+// var_dump($userId);die;
         if ($find) {
-            $datainput  = $request->getParsedBody();
-            $datainput['user_id'] = $userId['id'];
+            if ($findUser['gender'] == 'laki-laki') {
+                $data = $this->responseDetail(500, true, 'Anda tidak dapat mengakses halaman ini');
+            } else {
+                $dipoligami->updateDipoligami($request->getParsedBody(),$userId);
+                $afterUpdate = $dipoligami->find('user_id', $userId);
 
-            try {
-                $poligami->updateDiPoligami($datainput);
-                $find       = $poligami->findWithoutDelete('user_id', $userId['id']);
-
-                $data = $this->responseDetail(200, false, 'Data telah terupdate', [
-                        'data'  => $find
+                $data = $this->responseDetail(200, false, 'Data berhasil di perbaharui', [
+                        'data'  =>  $afterUpdate
                     ]);
-
-            } catch (Exception $e) {
-                $data = $this->responseDetail(500, true, $e->getMessage);
             }
-
         } else {
-            $data = $this->responseDetail(400, true, 'update data gagal');
+            $data = $this->responseDetail(404, true, 'Data tidak ditemukan');
         }
+
         return $data;
+
+        // $user = new UserModel($this->db);
+        // $userToken = new UserToken($this->db);
+        // $token = $request->getHeader('Authorization')[0];
+        // $userId = $userToken->getUserId($token);
+        // $poligami = new DipoligamiModel($this->db);
+
+        // $find = $poligami->findWithoutDelete('user_id', $userId['id']);
+        // if ($find) {
+        //     $datainput  = $request->getParsedBody();
+        //     $datainput['user_id'] = $userId['id'];
+
+        //     try {
+        //         $poligami->updateDiPoligami($datainput);
+        //         $find       = $poligami->findWithoutDelete('user_id', $userId['id']);
+
+        //         $data = $this->responseDetail(200, false, 'Data telah terupdate', [
+        //                 'data'  => $find
+        //             ]);
+
+        //     } catch (Exception $e) {
+        //         $data = $this->responseDetail(500, true, $e->getMessage);
+        //     }
+
+        // } else {
+        //     $data = $this->responseDetail(400, true, 'update data gagal');
+        // }
+        // return $data;
     }
 
 

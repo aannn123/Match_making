@@ -42,6 +42,15 @@ class KotaModel extends BaseModel
         return $this;
     }
 
+    // public function select($id)
+    // {
+    //     $qb = $this->db->createQueryBuilder();
+    //     $qb->select('id_provinsi')
+    //        ->from($this->table)
+    //        ->where('id_provinsi = '. $id);
+    //        ->execute();
+    // }
+
     public function findAllkota()
     {
         $qb = $this->db->createQueryBuilder();

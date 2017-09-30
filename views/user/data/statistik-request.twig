@@ -1,12 +1,70 @@
 {% extends 'user/templates/default.twig' %}
 {% block title %} Statistik {% endblock %}
 {% block content %}
-    
+{% if login.status == 2 %}
+<div class="container" style="width:100%;">
+    <div class="row">
+    <div class="col s12">
+      <ul class="tabs">
+        <li class="tab col s6"><a class="active" href="#photo">Request list</a></li>
+        <!-- <li class="tab col s4"><a href="#ktp">Take Ktp</a></li> -->
+        <li class="tab col s6"><a href="#galery" style="float:right">Taaruf list</a></li>
+      </ul>
+    </div>
+    <!-- tab request -->
+    <div id="photo" class="col s12">
+         <div class="divider"></div>
+        <p style="font-family:initial;font-style:oblique;font-size:20px">Request List</p>
      <div class="collection">
-    <a href="#!" class="collection-item"><span class="badge">1</span>Alan</a>
-    <a href="#!" class="collection-item"><span class="new badge">4</span>Alan</a>
-    <a href="#!" class="collection-item">Alan</a>
-    <a href="#!" class="collection-item"><span class="badge">14</span>Alan</a>
-  </div>
+             {% if login.gender == 'perempuan' %}
+            <div class="row section">
+              <div class="col s12 m12 l12">
+    </div><br><br>
+     {% for data in data %}
+         
+    <p class="collection-item"><span class="" style="float:right"><a href="{{ path_for('user.cancel-request', {id:data.id}) }}" style="color:red" data-position="bottom" data-delay="50" data-tooltip="Cancel Request" class="tooltipped"><i class="material-icons">clear</i></a></span><a href=""><img src="{{ base_url() }}/assets/picture/avatar.png"  class="circle responsive-img"  width="650" style="width:10%" alt=""></a><br>{{data.terequest}} <b style="color:black;float:right">Menunggu Response</b></p>
+     {% endfor %}
 
+     {% else %}
+
+     {% for data in data %}
+            
+    <p class="collection-item"><span class="" style="float:right"><a href="{{ path_for('user.cancel-request', {id:data.id}) }}" style="color:red" data-position="bottom" data-delay="50" data-tooltip="Cancel Request" class="tooltipped"><i class="material-icons">clear</i></a></span><a href=""><img src="{{ base_url() }}/assets/picture/woman.jpg"  class="circle responsive-img"  width="650" style="width:10%" alt=""></a><br>{{data.terequest}} <b style="color:black;float:right">Menunggu Response</b></p>
+     {% endfor %}
+    </div>
+    </div>
+    </div>
+     {% endif %}
+
+      <!-- tab taaruf -->
+    <div id="galery" class="col s12">
+         <div class="divider"></div>
+        <p style="font-family:initial;font-style:oblique;font-size:20px">Taaruf List</p>
+     <div class="collection">
+            <div class="row section">
+
+     {% for data in taaruf %}
+    {% if login.gender == 'laki-laki' %}
+    <p class="collection-item"><span class="" style="float:right"><a href="{{ path_for('user.cancel.taaruf', {id:data.id_terequest}) }}" style="color:red" data-position="bottom" data-delay="50" data-tooltip="Akhiri Taaruf" class="tooltipped"><i class="material-icons">clear</i></a></span>
+
+    <img src="{{ base_url() }}/assets/picture/avatar.png"  class="circle responsive-img"  width="650" style="width:10%" alt=""><b style="">{{data.perequest}}</b>&emsp;&emsp;&emsp;<b style="font-family:initial;font-style:oblique;font-size:15px">Sedang Taaruf Dengan</b>&emsp;&emsp;&emsp;
+    <img src="{{ base_url() }}/assets/picture/woman.jpg"  class="circle responsive-img"  width="650" style="width:10%;" alt=""><b style="">{{data.terequest}}</b>
+    </p>
+    {% else %}
+    <p class="collection-item"><span class="" style="float:right"><a href="{{ path_for('user.cancel.taaruf', {id:data.id_terequest}) }}" style="color:red" data-position="bottom" data-delay="50" data-tooltip="Akhiri Taaruf" class="tooltipped"><i class="material-icons">clear</i></a></span>
+
+    <img src="{{ base_url() }}/assets/picture/woman.png"  class="circle responsive-img"  width="650" style="width:10%" alt=""><b style="">{{data.perequest}}</b>&emsp;&emsp;&emsp;<b style="font-family:initial;font-style:oblique;font-size:15px">Sedang Taaruf Dengan</b>&emsp;&emsp;&emsp;
+    <img src="{{ base_url() }}/assets/picture/avatar.jpg"  class="circle responsive-img"  width="650" style="width:10%;" alt=""><b style="">{{data.terequest}}</b>
+    {% endif %}
+     {% endfor %}
+    </div>
+    </div>
+
+  </div>
+{% else %}
+<br>
+<center><b class="" style=" font-family:initial;font-style:oblique;font-size:20px">Anda Belum Mempunyai Akses Untuk Menggunakan Halaman Ini !!! Silahkan Lengkapi Data Diri Anda Dan Tunggu Persetujuan Dari Admin </b><br><br>
+<img src="{{ base_url() }}/assets/images/not-acces.png" style="width:50%" alt="">
+</center>      
+{% endif %}
 {% endblock %}

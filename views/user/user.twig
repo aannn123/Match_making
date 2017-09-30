@@ -3,13 +3,8 @@
     Home - Match Making
 {% endblock %}
 {% block content %}
-        <!-- <div class="col s10 m12" style="margin-top:-20px">
-          <div class="card blue darken-1">
-            <div class="card-content white-text">
-              <p>Total Member Terdaftar : <b>{{ counts.allUser }}</b></p>
-            </div>
-          </div>
-        </div> -->
+
+{% if login.status == 2 %}
 <a href="#modal3" class="modal-trigger"><span><i class="material-icons right">more_vert</i></span></a>
 
 {% if login.gender == 'perempuan' %}
@@ -18,15 +13,15 @@
     <div class="col s6 m6">
       <div class="card">
         <div class="card-image">
-          <img src="{{ base_url() }}/assets/images/avatar.png">
-          <a href="" class="btn-floating halfway-fab waves-effect waves-light blue tooltipped pulse" data-position="bottom" data-delay="50" data-tooltip="Send Request"><i class="fa fa-paper-plane -o" style="color:white"></i></a>
+          <img src="{{ base_url() }}/assets/picture/avatar.png">
+          <a href="{{ path_for('user.send-request', {id:profil.user_id}) }}" class="btn-floating halfway-fab waves-effect waves-light blue tooltipped pulse" data-position="bottom" data-delay="50" data-tooltip="Send Request"><i class="fa fa-paper-plane -o" style="color:white"></i></a>
         </div>
         <div class="card-content">
           <span class="card-title">{{ profil.nama_lengkap }}</span>
         <div class="card-action">
           </div>
           <p><b>Jenis Kelamin :</b> {{profil.jenis_kelamin}}.</p>
-          <p><b>Umur :</b> {{profil.umur}} Tahun.</p>
+          <p><b>Umur :</b> <!-- {{"now"|date("Y m d") - profil.tanggal_lahir}}  --> {{profil.umur}} Tahun.</p>
           <p><b>Domisili :</b></p>
           <p><b>- Negara :</b> {{profil.kewarganegaraan}}.</p>
           <p><b>- Provinsi : </b> {{profil.provinsi}}.</p>
@@ -35,19 +30,20 @@
           <p><b>Status : </b><a class="btn btn-floating pulse" style="width:10px;height:10px"></a><b style=" font-family:initial;font-style:oblique;font-size:12px"> Sedang Taaruf</b>.</p>
         </div>
          <div class="card-action">
-              <center><a href="{{ path_for('user.view.detail.user',  {id:profil.user_id}) }}"><button class="btn waves-effect waves-light blue">View Detail</button></a></center>
+              <center><a href="{{ path_for('user.view.detail.user',  {id:profil.user_id}) }}"><button class="btn waves-effect waves-light blue">Lihat Detail</button></a></center>
             </div>
       </div>
     </div>
     {% endfor %}
+
 {% else %}
   <div class="row" style="width:100%;margin-top:25px">
     {% for profil1 in user %} 
     <div class="col s6 m6">
       <div class="card">
         <div class="card-image">
-          <img src="{{ base_url() }}/assets/images/avatar.png">
-          <a href="{{ path_for('user.view.detail.user',  {id:profil1.id}) }}" class="btn-floating halfway-fab waves-effect waves-light blue tooltipped pulse" data-position="bottom" data-delay="50" data-tooltip="Send Request"><i class="fa fa-paper-plane -o" style="color:white"></i></a>
+          <img src="{{ base_url() }}/assets/picture/woman.jpg">
+          <a href="{{ path_for('user.send-request', {id:profil1.user_id}) }}" class="btn-floating halfway-fab waves-effect waves-light blue tooltipped pulse" data-position="bottom" data-delay="50" data-tooltip="Send Request"><i class="fa fa-paper-plane -o" style="color:white"></i></a>
         </div>
         <div class="card-content">
           <span class="card-title">{{ profil1.nama_lengkap }}</span>
@@ -66,18 +62,23 @@
           {% endif %}
         </div>
          <div class="card-action">
-              <center><a href="{{ path_for('user.view.detail.user', {id:profil1.user_id}) }}"><button class="btn waves-effect waves-light blue">View Detail</button></a></center>
+              <center><a href="{{ path_for('user.view.detail.user', {id:profil1.user_id}) }}"><button class="btn waves-effect waves-light blue">Lihat Detail</button></a></center>
             </div>
       </div>
     </div>
     {% endfor %}
+{% endif %}
+{% if pagination.total_data == null %}
+    <center><b style="font-family:initial;font-style:oblique;font-size:20px;color:red">User tidak ditemukan</b><br>
+    <a href="{{ path_for('user.home') }}"><button class="btn waves-effect waves-light blue">Kembali ke home</button></a>
+    </center>
 {% endif %}
   <div id="modal3" class="modal bottom-sheet">
           <div class="modal-content">
             <h4>Modal Header</h4>
             <ul class="collection">
               <li class="collection-item avatar">
-                <img src="{{ base_url() }}/assets/images/avatar.png" alt="" class="circle">
+                <img src="{{ base_url() }}/assets/picture/avatar.png" alt="" class="circle">
                 <span class="title">Title</span>
                 <p>First Line <br>
                    Second Line
@@ -112,4 +113,48 @@
           </div>
         </div>
       </div>
+      {% else %}
+<br>
+<center><b class="" style=" font-family:initial;font-style:oblique;font-size:20px">Anda Belum Mempunyai Akses Untuk Menggunakan Halaman Ini !!! Silahkan Lengkapi Data Diri Anda Dan Tunggu Persetujuan Dari </b><br><br>
+<img src="{{ base_url() }}/assets/picture/not-acces.png" style="width:50%" alt="">
+</center>
+          
+      {% endif %}
+
+    <center><ul class="pagination">
+      {% if pagination.current > pagination.first_page %}
+              <li class="page-item">
+                  <a class="page-link " href="{{ base_url() }}/user?page={{ pagination.first_page }}" aria-label="Previous">
+                      <span aria-hidden="true">&laquo; first page</span>
+                      <span class="sr-only">Previous</span>
+                  </a>
+              </li>
+               <li class="page-item">
+                  <a class="" href="{{ base_url() }}/user?page={{ pagination.current - 1 }}" aria-label="Previous">
+                      <span aria-hidden="true"></span>
+                      <span class="sr-only">Previous</span> {{ pagination.current - 1 }}
+                  </a>
+              </li>
+      {% endif %}
+              <li class="page-item"><a class="page-link" href="">{{ pagination.current }}</a></li>
+      {% if pagination.current < pagination.total_page %}
+               <li class="page-item">
+                  <a class="page-link" href="{{ base_url() }}/user?page={{ pagination.current + 1 }}" aria-label="Next">
+                      <span aria-hidden="true"></span>
+                      <span class="sr-only">Next</span> {{ pagination.current + 1 }}
+                  </a>
+              </li>
+              <li class="page-item">
+                  <a class="page-link" href="{{ base_url() }}/user?page={{ pagination.total_page }}" aria-label="Next">
+                      <span aria-hidden="true">last page &raquo;</span>
+                      <span class="sr-only">Next</span>
+                  </a>
+              </li>
+              {% endif %}
+          </ul>
+      </nav>
+  </div>
+</div></center>
+
+  
 {% endblock %}

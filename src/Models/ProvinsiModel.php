@@ -31,6 +31,15 @@ class ProvinsiModel extends BaseModel
         return $this->db->lastInsertId();
     }
 
+    public function select($id)
+    {
+        $qb = $this->db->createQueryBuilder();
+        $qb->select('id_negara')
+           ->from($this->table)
+           ->where('id_negara ='.$id )
+           ->execute();
+    }
+
     public function getAllProvinsi()
     {
         $qb = $this->db->createQueryBuilder();

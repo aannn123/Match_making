@@ -1,11 +1,15 @@
 <?php
 
-$app->group('/api', function() use ($app, $container) {
     $app->get('/activateaccount/{token}', 'App\Controllers\Api\Users\UserController:activateAccount')->setName('api.activate');
-    $app->post('/search', 'App\Controllers\Api\Users\UserController:searchUser')->setName('api.search.User');
+$app->group('/api', function() use ($app, $container) {
+
+    $app->post('/search/pria', 'App\Controllers\Api\Users\UserController:searchUserPria')->setName('api.search.User.Pria');
+
+    $app->post('/search/wanita', 'App\Controllers\Api\Users\UserController:searchUserWanita')->setName('api.search.User.Wanita');
+
     $app->get('/', 'App\Controllers\Api\HomeController:index')->setName('home');
     $app->post('/register', 'App\Controllers\Api\Users\UserController:register')->setName('register');
-    $app->post('/{id}/register/change-image', 'App\Controllers\Api\Users\UserController:postImage')->setname('api.user.image');
+    $app->post('/change-image', 'App\Controllers\Api\Users\UserController:postImage')->setname('api.user.image');
     $app->post('/login', 'App\Controllers\Api\Users\UserController:login')->setname('api.user.login');
     $app->post('/reset', 'App\Controllers\Api\Users\UserController:forgotPassword')->setName('api.forgot.password');
     $app->get('/password/reset/{token}', 'App\Controllers\Api\Users\UserController:getResetPassword')->setName('api.get.reset');
@@ -22,6 +26,8 @@ $app->group('/api', function() use ($app, $container) {
         $app->get('/show-request-all', 'App\Controllers\Api\AdminController:showRequestAll')->setName('admin.request.all');
         $app->get('/find/taaruf/{perequest}/{terequest}', 'App\Controllers\Api\AdminController:findTaaruf')->setName('admin.find.taaruf');
         $app->post('/search', 'App\Controllers\Api\Users\UserController:searchUserAll')->setName('api.search.user.all');
+        $app->get('/all-notification', 'App\Controllers\Api\AdminController:getAllNotification')->setName('admin.notification');
+
 
 
 
@@ -52,6 +58,7 @@ $app->group('/api', function() use ($app, $container) {
 
     $app->group('/user', function() use ($app, $container) {
         $app->get('', 'App\Controllers\Api\Users\UserController:getAllData')->setName('api.show.user');
+        $app->get('/find/request/{id}', 'App\Controllers\Api\Users\UserController:findRequest')->setName('api.show.request');
         $app->post('/change-password', 'App\Controllers\Api\Users\UserController:changePassword')->setName('api.user.change-password');
         $app->get('/join', 'App\Controllers\Api\Users\UserController:allJoinUser')->setName('api.show.user.join');
         $app->get('/find/{id}', 'App\Controllers\Api\Users\UserController:findByUser')->setName('api.find.user');
@@ -59,11 +66,18 @@ $app->group('/api', function() use ($app, $container) {
         $app->get('/send-request/{id}', 'App\Controllers\Api\Users\UserController:sendRequest')->setName('api.send.request');
         $app->get('/approve-request/{id}', 'App\Controllers\Api\Users\UserController:approveRequest')->setName('api.approve.request');
         $app->get('/notification', 'App\Controllers\Api\Users\UserController:getAllNotification')->setName('api.notification');
+        $app->get('/request/reject', 'App\Controllers\Api\Users\UserController:getAllRequestReject')->setName('api.request.reject');
         $app->get('/notification/blokir/{id}', 'App\Controllers\Api\Users\UserController:blokirRequestUser')->setName('api.notification.blokir.request');
         $app->get('/notification/blokir', 'App\Controllers\Api\Users\UserController:getAllBlokirRequest')->setName('api.notification.blokir');
         $app->get('/request-all', 'App\Controllers\Api\Users\UserController:getAllRequest')->setName('api.request.all');
         $app->get('/list-user-ikhwan', 'App\Controllers\Api\Users\UserController:getAllUserMan')->setName('api.show.user.man');
         $app->get('/list-user-akhwat', 'App\Controllers\Api\Users\UserController:getAllUserWoman')->setName('api.show.user.woman');
+        $app->get('/cancel-request/{id}', 'App\Controllers\Api\Users\UserController:cancelRequest')->setName('api.user.cancel-request');
+        $app->get('/all-notification-cancel', 'App\Controllers\Api\Users\UserController:getAllBlokirRequestUser')->setName('api.user.cancel-notification');
+        $app->get('/delete/notification/{id}', 'App\Controllers\Api\Users\UserController:deleteNotification')->setName('api.user.delete.notification');
+        $app->get('/image-all', 'App\Controllers\Api\Users\UserController:getImageUser')->setName('api.user.get.image');
+        $app->get('/get/taaruf', 'App\Controllers\Api\Users\UserController:getTaarufUser')->setName('api.user.get.taaruf');
+
 
         $app->group('/profile', function() use ($app, $container) {
             $app->get('', 'App\Controllers\Api\Users\ProfilController:showProfileUser')->setName('api.show.profile');
@@ -72,6 +86,7 @@ $app->group('/api', function() use ($app, $container) {
             $app->post('/create', 'App\Controllers\Api\Users\ProfilController:createProfile')->setName('api.user.create.profil');
             $app->put('/update', 'App\Controllers\Api\Users\ProfilController:updateProfile')->setName('api.user.update.profil');
             $app->get('/find/{id}', 'App\Controllers\Api\Users\ProfilController:findProfil')->setName('user.find.profil');
+
 
         });
 

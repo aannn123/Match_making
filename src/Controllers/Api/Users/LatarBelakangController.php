@@ -63,34 +63,57 @@ class LatarBelakangController extends BaseController
 
     public function updateLatarBelakang($request, $response, $args)
     {
-        $user      = new UserModel($this->db);
+        $user  = new UserModel($this->db);
         $userToken = new UserToken($this->db);
         $token = $request->getHeader('Authorization')[0];
-        $user = $userToken->getUserId($token);
+        $userId = $userToken->getUserId($token);
         $latar = new LatarBelakangModel($this->db);
 
-        $find       = $latar->findWithoutDelete('user_id', $user['id']);
-
+        $find = $latar->find('user_id', $userId);
+        $query = $request->getQueryParams();
+        $findUser = $user->getUser('id', $userId);
+// var_dump($findUser);die;
         if ($find) {
-            $datainput  = $request->getParsedBody();
-            $datainput['user_id'] = $user['id'];
+                $latar->updateLatar($request->getParsedBody(), $userId);
+                $afterUpdate = $latar->find('user_id', $userId);
 
-            try {
-                $latar->updateLatar($datainput);
-                $find  = $latar->findWithoutDelete('user_id', $user['id']);
-
-                $data = $this->responseDetail(200, false, 'Data telah terupdate', [
-                        'data'  => $find
+                $data = $this->responseDetail(200, false, 'Data berhasil di perbaharui', [
+                        'data'  =>  $afterUpdate
                     ]);
-
-            } catch (Exception $e) {
-                $data = $this->responseDetail(500, true, $e->getMessage);
-            }
-
         } else {
-            $data = $this->responseDetail(400, true, 'update data gagal');
+            $data = $this->responseDetail(404, true, 'Data tidak ditemukan');
         }
+
         return $data;
+
+        // $user      = new UserModel($this->db);
+        // $userToken = new UserToken($this->db);
+        // $token = $request->getHeader('Authorization')[0];
+        // $user = $userToken->getUserId($token);
+        // $latar = new LatarBelakangModel($this->db);
+
+        // $find       = $latar->findWithoutDelete('user_id', $user['id']);
+
+        // if ($find) {
+        //     $datainput  = $request->getParsedBody();
+        //     $datainput['user_id'] = $user['id'];
+
+        //     try {
+        //         $latar->updateLatar($datainput);
+        //         $find  = $latar->findWithoutDelete('user_id', $user['id']);
+
+        //         $data = $this->responseDetail(200, false, 'Data telah terupdate', [
+        //                 'data'  => $find
+        //             ]);
+
+        //     } catch (Exception $e) {
+        //         $data = $this->responseDetail(500, true, $e->getMessage);
+        //     }
+
+        // } else {
+        //     $data = $this->responseDetail(400, true, 'update data gagal');
+        // }
+        // return $data;
     }
 
     public function findData($request, $response, $args)

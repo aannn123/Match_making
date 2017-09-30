@@ -19,23 +19,59 @@ class RequestModel extends BaseModel
         return $this->db->lastInsertId();
     }
 
-    public function updateRequest(array $data)
-    {
-        $data = [
-            'id_perequest'  =>  $data['id_perequest'],
-            'id_terequest'   =>  $data['id_terequest'],
-        ];
-        $this->update($data, 'id_perequest', $data['id_perequest']);
-        return $this->db->lastInsertId();
+        public function updateRequest(array $data, $id)
+     {
+        // $data = [
+        //     'id_perequest'  =>   $id,
+        //     'id_terequest'   =>  $data['id_terequest'],
+        // ];
+        // $this->update($data, 'id_perequest', $id);
+        // return $this->db->lastInsertId();
     }
 
-    public function sendRequest($id)
+    public function sendRequest($id, $user)
     {
         $qb = $this->db->createQueryBuilder();
         $qb->update($this->table)
         ->set('status', 1)
-        ->where('id = ' . $id)
+        ->where('id_perequest = ' . $id)
+        ->andWhere('id_terequest = '. $user)
         ->execute();
+    }
+
+    public function sendRequestTwo($id, $user)
+    {
+        $qb = $this->db->createQueryBuilder();
+        $qb->update($this->table)
+        ->set('blokir', 0)
+        ->where('id_perequest = ' . $id)
+        ->andWhere('id_terequest = '. $user)
+        ->execute();
+    }
+
+     public function sendRequestThree($id, $user)
+    {
+        $qb = $this->db->createQueryBuilder();
+        $qb->update($this->table)
+        ->set('blokir', 0)
+        ->set('status', 1)
+        ->where('id_perequest = ' . $id)
+        ->andWhere('id_terequest = '. $user)
+        ->execute();
+    }
+
+     //HardDelete
+    public function deleteNotification($id)
+    {
+        $qb = $this->db->createQueryBuilder();
+
+        $qb->delete($this->table)
+            ->where('status = 1')
+            ->andWhere('blokir = 1')
+            ->orWhere('status = 2')
+            ->orWhere('blokir = 2')
+            ->andWhere('id_terequest = ' . $id)
+            ->execute();
     }
 
     public function cancelTaaruf($id)
@@ -47,12 +83,13 @@ class RequestModel extends BaseModel
         ->execute();
     }
 
-    public function approveUser($id)
+    public function approveUser($id, $user)
     {
         $qb = $this->db->createQueryBuilder();
         $qb->update($this->table)
         ->set('status', 2)
         ->where('id_perequest = ' . $id)
+        ->andWhere('id_terequest = '. $user)
         ->execute();
     }
 
@@ -65,25 +102,104 @@ class RequestModel extends BaseModel
         ->execute();
     }
 
+    public function cancelRequest($id)
+    {
+        $qb = $this->db->createQueryBuilder();
+
+        $qb->delete($this->table)
+            ->where('id = ' . $id)
+            // ->andWhere('id_perequest = '. $user)
+            ->execute();
+    }
+
+    // public function allNotification($id)
+    // {
+    //     $qb = $this->db->createQueryBuilder();
+    //     $this->query = $qb->select('*')
+    //         ->from($this->table)
+    //         ->where('status = 1 && blokir = 0 && id_terequest = '. $id)
+    //         ->orderBy('created_at', 'desc');
+    //     $query = $qb->execute();
+    //     return $this;
+    // }
+
     public function allNotification($id)
     {
         $qb = $this->db->createQueryBuilder();
-        $this->query = $qb->select('*')
-            ->from($this->table)
-            ->where('status = 1 && blokir = 0 && id_terequest = '. $id)
-            ->orderBy('created_at', 'desc');
-        $query = $qb->execute();
+        $this->query = $qb->select('req.id', 'id_perequest', 'user.username as perequest', 'id_terequest', 'req.status as request_status', 'req.blokir as request_blokir', 'req.created_at', 'req.updated_at')
+            ->from($this->table,'req')
+            ->join('req','users', 'user', 'req.id_perequest = user.id')
+            ->join('req','users', 'user1', 'req.id_terequest = user1.id')
+            ->where('req.status = 1 && req.blokir = 0 && id_terequest = '. $id);
+
+        $query = $qb->execute()->fetch();
         return $this;
     }
 
-    public function getAllRequest($id)
+    public function getAllNotification($id)
     {
         $qb = $this->db->createQueryBuilder();
-        $this->query = $qb->select('*')
-            ->from($this->table)
-            ->where('status = 1 && id_perequest = '. $id)
-            ->orderBy('created_at', 'desc');
-        $query = $qb->execute();
+        $this->query = $qb->select('req.id', 'id_perequest', 'user.username as perequest', 'user1.username as terequest', 'id_terequest', 'req.status as request_status', 'req.blokir as request_blokir', 'req.created_at', 'req.updated_at')
+            ->from($this->table,'req')
+            ->join('req','users', 'user', 'req.id_perequest = user.id')
+            ->join('req','users', 'user1', 'req.id_terequest = user1.id');
+
+        $query = $qb->execute()->fetch();
+        return $this;
+    }
+
+    public function getTaarufUser($id)
+    {
+        $qb = $this->db->createQueryBuilder();
+        $this->query = $qb->select('req.id', 'id_perequest', 'id_terequest', 'user.username as perequest', 'user1.username as terequest', 'id_terequest', 'req.status as request_status', 'req.blokir as request_blokir', 'req.created_at', 'req.updated_at')
+            ->from($this->table,'req')
+            ->join('req','users', 'user', 'req.id_perequest = user.id')
+            ->join('req','users', 'user1', 'req.id_terequest = user1.id')
+            ->where('req.status = 2')
+            ->andWhere('req.blokir = 0')
+            ->andWhere('id_perequest = '. $id)
+            ->orWhere('id_terequest = '. $id);
+
+        $query = $qb->execute()->fetch();
+        return $this;
+    }
+
+    public function getAllRequestReject($id)
+    {
+        $qb = $this->db->createQueryBuilder();
+        $this->query = $qb->select('req.id', 'id_perequest', 'id_terequest', 'user.username as perequest', 'user1.username as terequest', 'id_terequest', 'req.status as request_status', 'req.blokir as request_blokir', 'req.created_at', 'req.updated_at')
+            ->from($this->table,'req')
+            ->join('req','users', 'user', 'req.id_perequest = user.id')
+            ->join('req','users', 'user1', 'req.id_terequest = user1.id')
+            ->where('req.blokir = 1')
+            ->andWhere('id_perequest = '. $id);
+
+        $query = $qb->execute()->fetch();
+        return $this;
+    }
+
+    // public function getAllRequest($id)
+    // {
+    //     $qb = $this->db->createQueryBuilder();
+    //     $this->query = $qb->select('*')
+    //         ->from($this->table)
+    //         ->where('status = 1 && id_perequest = '. $id)
+    //         ->orderBy('created_at', 'desc');
+    //     $query = $qb->execute();
+    //     return $this;
+    // }
+
+      public function getAllRequest($id)
+    {
+        $qb = $this->db->createQueryBuilder();
+        $this->query = $qb->select('req.id', 'id_terequest', 'id_perequest' , 'user.username as terequest','user1.username as perequest', 'id_terequest', 'req.status as request_status', 'req.blokir as request_blokir', 'req.created_at', 'req.updated_at')
+            ->from($this->table,'req')
+            ->join('req','users', 'user', 'req.id_terequest = user.id')
+            ->join('req','users', 'user1', 'req.id_perequest = user1.id')
+            ->where('req.blokir = 0')
+            ->andWhere('req.status = 1 && id_perequest = '. $id);
+
+        $query = $qb->execute()->fetch();
         return $this;
     }
 
@@ -95,6 +211,19 @@ class RequestModel extends BaseModel
             ->where('blokir = 1 && id_terequest = '. $id)
             ->orderBy('created_at', 'desc');
         $query = $qb->execute();
+        return $this;
+    }
+
+     public function getAllBlokirRequest()
+    {
+        $qb = $this->db->createQueryBuilder();
+        $this->query = $qb->select('req.id', 'id_terequest', 'id_perequest', 'user.username as perequest', 'user1.username as terequest', 'req.status as request_status', 'req.blokir as request_blokir', 'req.created_at', 'req.updated_at')
+            ->from($this->table,'req')
+            ->join('req','users', 'user', 'req.id_perequest = user.id')
+            ->join('req','users', 'user1', 'req.id_terequest = user1.id')
+            ->where('req.status = 1')
+            ->andWhere('req.blokir = 1');
+        $query = $qb->execute()->fetch();
         return $this;
     }
 
@@ -139,7 +268,7 @@ class RequestModel extends BaseModel
     public function joinRequestAll()
     {
         $qb = $this->db->createQueryBuilder();
-        $this->query = $qb->select('req.id', 'user.username as perequest', 'user1.username as terequest', 'req.status as request_status', 'req.blokir', 'req.created_at', 'req.updated_at')
+        $this->query = $qb->select('req.id', 'req.id_perequest', 'req.id_terequest', 'user.username as perequest', 'user1.username as terequest', 'req.status as request_status', 'req.blokir', 'req.created_at', 'req.updated_at')
             ->from($this->table,'req')
             ->join('req','users', 'user', 'req.id_perequest = user.id')
             ->join('req','users', 'user1', 'req.id_terequest = user1.id');
@@ -158,7 +287,7 @@ class RequestModel extends BaseModel
             ->join('req','users', 'user1', 'req.id_terequest = user1.id')
             ->setParameter($param1, $val1)
             ->setParameter($param2, $val2)
-            ->where('user.username = :perequest' .'&&'. 'user1.username = :terequest');
+            ->where('id_perequest = :id_perequest' .'&&'. 'id_terequest = :id_terequest');
         $result = $qb->execute();
         return $result->fetchAll();
     }

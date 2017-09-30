@@ -4,7 +4,7 @@
 {% endblock %}
 {% block content %}
     
-
+{% if login.status == 1 %}
 <div class="card blue-grey darken-12">
             <div class="card-content white-text">
               <span class="card-title">Create Latar Belakang</span>
@@ -14,16 +14,16 @@
                 <div class="input-field col s12 {{ errors.pendidikan ? 'has-error' : '' }}">
                    <select name="pendidikan">
                     <option value = "" disabled selected>Pendidikan</option>
-                    <option value = "sd">SD</option>
-                    <option value = "smp">SMP</option>
-                    <option value = "sma">SMA</option>
-                    <option value = "diploma1">Diploma1</option>
-                    <option value = "diploma2">Diploma2</option>
-                    <option value = "diploma4">Diploma4</option>
-                    <option value = "strata 1">Starta 1</option>
-                    <option value = "magister">Magister</option>
-                    <option value = "doktor">Doktor</option>
-                    <option value = "lainya">Lainya</option>
+                    <option value = "sd" {% if old.pendidikan == 'sd' %} selected="selected" {% endif %} >SD</option>
+                    <option value = "smp" {% if old.pendidikan == 'smp' %} selected="selected" {% endif %} >SMP</option>
+                    <option value = "sma" {% if old.pendidikan == 'sma' %} selected="selected" {% endif %} >SMA</option>
+                    <option value = "diploma1" {% if old.pendidikan == 'diploma1' %} selected="selected" {% endif %} >Diploma1</option>
+                    <option value = "diploma2" {% if old.pendidikan == 'diploma2' %} selected="selected" {% endif %} >Diploma2</option>
+                    <option value = "diploma4" {% if old.pendidikan == 'diploma4' %} selected="selected" {% endif %} >Diploma4</option>
+                    <option value = "strata 1" {% if old.pendidikan == 'strata 1' %} selected="selected" {% endif %} >Starta 1</option>
+                    <option value = "magister" {% if old.pendidikan == 'magister' %} selected="selected" {% endif %} >Magister</option>
+                    <option value = "doktor" {% if old.pendidikan == 'doktor' %} selected="selected" {% endif %} >Doktor</option>
+                    <option value = "lainya" {% if old.pendidikan == 'lainya' %} selected="selected" {% endif %} >Lainya</option>
                   </select>
                   {% if errors.pendidikan %}
                     <span style="color:#FF0000">*
@@ -43,8 +43,8 @@
                 <div class="input-field col s12 {{ errors.muallaf ? 'has-error' : '' }}">
                   <select name="muallaf">
                     <option value = "" disabled selected>Muaalaf</option>
-                    <option value = "ya">Ya</option>
-                    <option value = "tidak">Tidak</option>
+                    <option value = "ya" {% if old.muallaf == 'ya' %} selected="selected" {% endif %} >Ya</option>
+                    <option value = "tidak" {% if old.muallaf == 'tidak' %} selected="selected" {% endif %} >Tidak</option>
                   </select>
                    {% if errors.muallaf %}
                     <span style="color:#FF0000">*
@@ -55,9 +55,9 @@
                 <div class="input-field col s12 {{ errors.agama ? 'has-error' : '' }}">
                    <select name="agama">
                     <option value = "" disabled selected>Agama</option>
-                    <option value = "ngaji sunnah">Ngaji Sunnah</option>
-                    <option value = "sedang hijrah">Sedang Hijrah</option>
-                    <option value = "islam biasa">Islam Biasa</option>
+                    <option value = "ngaji sunnah" {% if old.agama == 'ngaji sunnah' %} selected="selected" {% endif %} >Ngaji Sunnah</option>
+                    <option value = "sedang hijrah" {% if old.agama == 'sedang hijrah' %} selected="selected" {% endif %} >Sedang Hijrah</option>
+                    <option value = "islam biasa" {% if old.agama == 'islam biasa' %} selected="selected" {% endif %} >Islam Biasa</option>
                   </select>
                    {% if errors.agama %}
                     <span style="color:#FF0000">*
@@ -78,10 +78,10 @@
                 <div class="input-field col s12 {{ errors.baca_quran ? 'has-error' : '' }}">
                   <select name="baca_quran">
                     <option value = "" disabled selected>Baca Al-quran</option>
-                    <option value = "setiap hari">Setiap hari</option>
-                    <option value = "minimal seminggu sekali">Minimal seminggu sekali</option>
-                    <option value = "minimal sebulan sekali">Minimal sebulan sekali</option>
-                    <option value = "sedang belajar">Sedang belajar</option>
+                    <option value = "setiap hari" {% if old.baca_quran == 'setiap hari' %} selected="selected" {% endif %} >Setiap hari</option>
+                    <option value = "minimal seminggu sekali" {% if old.baca_quran == 'minimal seminggu sekali' %} selected="selected" {% endif %} >Minimal seminggu sekali</option>
+                    <option value = "minimal sebulan sekali" {% if old.baca_quran == 'minimal sebulan sekali' %} selected="selected" {% endif %} >Minimal sebulan sekali</option>
+                    <option value = "sedang belajar" {% if old.baca_quran == 'sedang belajar' %} selected="selected" {% endif %} >Sedang belajar</option>
                   </select>
                    {% if errors.baca_quran %}
                     <span style="color:#FF0000">*
@@ -93,11 +93,11 @@
                 <div class="input-field col s12 {{ errors.hafalan ? 'has-error' : '' }}">
                   <select name="hafalan">
                     <option value = "" disabled selected>Hafalan</option>
-                    <option value = "surat surat pendek">Surat-Surat pendek</option>
-                    <option value = "1-3 juz">1-3 Juz</option>
-                    <option value = "3-10 juz">3-10 Juz</option>
-                    <option value = "10-20 juz">10-20 Juz</option>
-                    <option value = "30 juz">30 Juz</option>
+                    <option value = "surat-surat pendek" {% if old.hafalan == 'surat-surat pendek' %} selected="selected" {% endif %} >Surat-Surat pendek</option>
+                    <option value = "1-3 juz" {% if old.hafalan == '1-3 juz' %} selected="selected" {% endif %} >1-3 Juz</option>
+                    <option value = "3-10 juz" {% if old.hafalan == '3-10 juz' %} selected="selected" {% endif %} >3-10 Juz</option>
+                    <option value = "10-20 juz" {% if old.hafalan == '10-20 juz' %} selected="selected" {% endif %} >10-20 Juz</option>
+                    <option value = "30 juz" {% if old.hafalan == '30 juz' %} selected="selected" {% endif %} >30 Juz</option>
                   </select>
                    {% if errors.hafalan %}
                     <span style="color:#FF0000">*
@@ -108,16 +108,15 @@
                 <div class="input-field col s12 {{ errors.keluarga ? 'has-error' : '' }}">
                   <select name="keluarga">
                     <option value = "" disabled selected>Keluarga</option>
-                    <option value = "sudah paham sunnah">Sudah paham sunnah</option>
-                    <option value = "islam biasa">Islam biasa</option>
-                    <option value = "sedang proses hijrah">sedang proses hijrah</option>
+                    <option value = "sudah paham sunnah" {% if old.keluarga == 'sudah paham sunnah' %} selected="selected" {% endif %} >Sudah paham sunnah</option>
+                    <option value = "islam biasa" {% if old.keluarga == 'islam biasa' %} selected="selected" {% endif %} >Islam biasa</option>
+                    <option value = "sedang proses hijrah" {% if old.keluarga == 'sedang proses hijrah' %} selected="selected" {% endif %} >sedang proses hijrah</option>
                   </select>
                    {% if errors.keluarga %}
                     <span style="color:#FF0000">*
                     {{errors.keluarga | first}}</span>
                   {% endif %}
                 </div>
-
                  <div class="input-field col s12 {{ errors.penjelasan_keluarga ? 'has-error' : '' }}">
                   <input type="text" class="validate" name="penjelasan_keluarga" value="{{old.penjelasan_keluarga}}">
                   <label style="color:#ecf0f1" for="icon_prefix">Penjelasan Keluarga</label>
@@ -130,10 +129,10 @@
                 <div class="input-field col s12 {{ errors.shalat ? 'has-error' : '' }}">
                   <select name="shalat">
                     <option value = "" disabled selected>Shalat</option>
-                    <option value = "5 waktu di masjid">5 Waktu di masjid</option>
-                    <option value = "5 waktu tidak di masjid">5 Waktu tidak di masjid</option>
-                    <option value = "belum 5 waktu">Belum 5 waktu</option>
-                    <option value = "belum shalat">Belum shalat</option>
+                    <option value = "5 waktu di masjid" {% if old.shalat == '5 waktu di masjid' %} selected="selected" {% endif %} >5 Waktu di masjid</option>
+                    <option value = "5 waktu tidak di masjid" {% if old.shalat == '5 waktu tidak di masjid' %} selected="selected" {% endif %} >5 Waktu tidak di masjid</option>
+                    <option value = "belum 5 waktu" {% if old.shalat == 'belum 5 waktu' %} selected="selected" {% endif %} >Belum 5 waktu</option>
+                    <option value = "belum shalat" {% if old.shalat == 'belum shalat' %} selected="selected" {% endif %} >Belum shalat</option>
                   </select>
                    {% if errors.shalat %}
                     <span style="color:#FF0000">*
@@ -146,4 +145,5 @@
           </div>
 
 </div>
+{% endif %}
 {% endblock %}

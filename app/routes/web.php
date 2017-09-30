@@ -13,7 +13,11 @@ $app->post('/forgot-password', 'App\Controllers\Web\UserController:forgotPasswor
 $app->get('/', 'App\Controllers\Web\UserController:getLogin')->setName('user.login');
 $app->post('/', 'App\Controllers\Web\UserController:login')->setName('post.login.user');
 
-$app->get('/register/{id}/change-image', 'App\Controllers\Web\UserController:changeImage')->setName('user.change.image');
+$app->get('/user/change-image', 'App\Controllers\Web\UserController:getChangeImage')->setName('user.change.image');
+$app->post('/user/{id}/change-image', 'App\Controllers\Web\UserController:changeImage')->setName('user.post.change.image');
+
+$app->get('/404', 'App\Controllers\Web\HomeController:notFound')->setName('not.found');
+
 // $app->post('/register/{id}/change-image', 'App\Controllers\Web\UserController:changeImage')->setName('user.post.change.image');
 
 
@@ -21,11 +25,13 @@ $app->group('', function() use ($app, $container) {
 
 $app->group('/admin', function() use ($app, $container) {
     $app->get('/home', 'App\Controllers\Web\HomeController:index')->setName('admin.home');
+        $app->get('/get/notification',  'App\Controllers\Web\AdminController:getNotification')->setName('admin.notification.all');
     $app->group('/user', function() use ($app, $container) {
         $app->get('',  'App\Controllers\Web\AdminController:getAllUser')->setName('admin.user');
         $app->post('/search',  'App\Controllers\Web\AdminController:searchUser')->setName('admin.user.search');
         $app->get('/setModerator/{id}',  'App\Controllers\Web\AdminController:setModerator')->setName('admin.setModerator.user');
         $app->get('/new',  'App\Controllers\Web\AdminController:getAllNewUser')->setName('admin.new.user.all');
+        $app->get('/new/detail/{id}',  'App\Controllers\Web\AdminController:getUserNewDetail')->setName('admin.new.detail.user');
         $app->get('/new/approve/{id}',  'App\Controllers\Web\AdminController:approveUser')->setName('admin.approve.new.user');
         $app->get('/new/cancel/{id}',  'App\Controllers\Web\AdminController:cancelUser')->setName('admin.cancel.new.user');
         $app->get('/profil/{id}',  'App\Controllers\Web\AdminController:getUserDetail')->setName('admin.detail.user');
@@ -56,7 +62,7 @@ $app->group('/admin', function() use ($app, $container) {
 })->add(new \App\Middlewares\web\AdminMiddleware($container));
 
     $app->group('/user', function() use ($app, $container) {
-        $app->get('',  'App\Controllers\Web\UserController:home')->setName('user.home');
+        $app->get('',  'App\Controllers\Web\UserController:getAllUserSearch')->setName('user.home');
         // $app->get('/list-user',  'App\Controllers\Web\UserController:getAllUserPria')->setName('user.list.pria');
         $app->get('/create/profil',  'App\Controllers\Web\UserController:getCreateProfil')->setName('user.create.profil');
         $app->post('/create/profil',  'App\Controllers\Web\UserController:createProfil')->setName('user.create.profil.post');
@@ -81,11 +87,13 @@ $app->group('/admin', function() use ($app, $container) {
 
         $app->post('/create/dipoligami',  'App\Controllers\Web\UserController:createDipoligami')->setName('user.post.create.dipoligami');
 
-        $app->get('/profil/{id}',  'App\Controllers\Web\UserController:viewProfile')->setName('user.my.profil');
+        $app->get('/profil',  'App\Controllers\Web\UserController:viewProfile')->setName('user.my.profil');
 
         $app->get('/statistik',  'App\Controllers\Web\UserController:statistikRequest')->setName('user.statistik');
 
         $app->get('/notification',  'App\Controllers\Web\UserController:getNotification')->setName('user.notification');
+
+        $app->get('/notification/{id}',  'App\Controllers\Web\UserController:viewDetailNotification')->setName('user.notification.detail');
 
         $app->get('/view/detail/{id}',  'App\Controllers\Web\UserController:viewDetailUser')->setName('user.view.detail.user');
 
@@ -116,8 +124,25 @@ $app->group('/admin', function() use ($app, $container) {
         $app->get('/change-password',  'App\Controllers\Web\UserController:getChangePassword')->setName('user.change-password');
 
         $app->post('/change-password',  'App\Controllers\Web\UserController:changePassword')->setName('user.post.change-password');
-       
 
+        $app->get('/send-request/{id}',  'App\Controllers\Web\UserController:sendRequest')->setName('user.send-request');
+
+        $app->get('/cancel-request/{id}',  'App\Controllers\Web\UserController:cancelRequest')->setName('user.cancel-request');
+
+        $app->get('/blokir-notification/{id}',  'App\Controllers\Web\UserController:blokirRequest')->setName('user.blokir-notification');
+
+        $app->get('/delete/notification/{id}',  'App\Controllers\Web\UserController:deleteNotification')->setName('user.delete.notification');
+
+        $app->get('/approve/request/{id}',  'App\Controllers\Web\UserController:approveRequest')->setName('user.approve.request');
+
+        $app->get('/change/image',  'App\Controllers\Web\UserController:getUploadImage')->setName('user.change-image');
+
+        $app->post('/change/image',  'App\Controllers\Web\UserController:uploadImage')->setName('user.post.change-image');
+
+        $app->get('/change/avatar',  'App\Controllers\Web\UserController:getChangeAvatar')->setName('user.change.avatar');
+
+        $app->get('/cancel/taaruf/{id}',  'App\Controllers\Web\UserController:cancelTaaruf')->setName('user.cancel.taaruf');
+       
     });
 
 })->add(new \App\Middlewares\web\AuthMiddleware($container));

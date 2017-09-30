@@ -31,7 +31,7 @@ class KeseharianModel extends BaseModel
     public function updateKeseharian(array $data, $id)
     {
         $data = [
-            'user_id'       =>  $data['user_id'],
+            'user_id'       =>  $id,
             'pekerjaan'     =>  $data['pekerjaan'],
             'status_pekerjaan'  =>  $data['status_pekerjaan'],
             'penghasilan_per_bulan' =>  $data['penghasilan_per_bulan'],

@@ -32,7 +32,7 @@ class LatarBelakangModel extends BaseModel
     public function updateLatar(array $data, $id)
     {
          $data = [
-            'user_id'               => $data['user_id'],
+            'user_id'               => $id,
             'pendidikan'            => $data['pendidikan'],
             'penjelasan_pendidikan' => $data['penjelasan_pendidikan'],
             'agama'                 => $data['agama'],

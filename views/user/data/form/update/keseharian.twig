@@ -97,11 +97,16 @@
 
                 <div class="input-field col s12 {{ errors.status_tinggal ? 'has-error' : '' }}">
                    <select name="status_tinggal">
+
                     <option value = "" disabled selected>Status Tempat Tinggal</option>
+
                     <option value = "rumah sendiri" {% if data.status_tinggal == 'rumah sendiri' %} selected="selected" {% endif %}>Rumah sendiri</option>
+
                     <option value = "rumah sewa" {% if data.status_tinggal == 'rumah sewa' %} selected="selected" {% endif %}>Rumah sewa</option>
-                    <option value = "bersama orang tua" {% if data.status_tinggal == 'bersama teman' %} selected="selected" {% endif %}>Bersama orang tua</option>
-                    <option value = "bersama teman">Bersama teman</option>
+
+                    <option value = "bersama orang tua" {% if data.status_tinggal == 'bersama orang tua' %} selected="selected" {% endif %}>Bersama orang tua</option>
+
+                    <option value = "bersama teman" {% if data.status_tinggal == 'bersama teman '%} selected="selected"{% endif %}>Bersama teman</option>
                   </select>
                    {% if errors.status_tinggal %}
                     <span style="color:#FF0000">*

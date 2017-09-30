@@ -29,6 +29,9 @@
           <div class="card">
             <div class="card-content white-text">
               <span class="card-title" style="color:black;font-size:20px; font-family:initial;font-style:oblique">Data User</span><hr><br>
+              <div class="col s12 m6 l3">
+              <img src="{{ base_url() }}/assets/picture/avatar.png" class="responsive-img materialboxed"  width="" style="width:" alt="">
+              </div> 
               <p id="tabs font" style="color:black"><b>Username : </b>{{user.username}}.</p>
               <p id="tabs font" style="color:black"><b>Jenis Kelamin : </b>{{user.gender}} .</p>
               <p id="tabs font" style="color:black"><b>Email : </b>{{user.email}} .</p>
@@ -139,6 +142,6 @@
       </div>
         </div>
         <a href="{{ path_for('user.home') }}" style="float:right"><button class="btn waves-effect waves-blue blue">Back</button></a>
-         <a href=""><button class="btn waves-effect waves-blue blue"><i class="fa fa-paper-plane" style="color:white"></i> Send Request</button></a>
+         <a href="{{ path_for('user.send-request', {id:profil.user_id}) }}"><button class="btn waves-effect waves-blue blue"><i class="fa fa-paper-plane" style="color:white"></i> Send Request</button></a>
   </div>
 {% endblock %}

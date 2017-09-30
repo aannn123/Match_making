@@ -9,6 +9,23 @@ class UserModel extends BaseModel
     protected $table = 'users';
     protected $column = ['id','username', 'gender', 'email', 'phone', 'password', 'photo', 'ktp', 'status', 'accepted_by', 'last_online', 'created_at', 'updated_at'];
 
+    public function createMember(array $data, $images)
+    {
+        $data = [
+            'username' => $data['username'],
+            'gender'   => $data['gender'],
+            'password' => password_hash($data['password'], PASSWORD_BCRYPT),
+            'email'    => $data['email'],
+            'phone'    => $data['phone'],
+            'photo'    => 'avatar.png' ,
+            'ktp'      => 'avatar.png' ,
+            'role'     => $data['role'],
+        ];
+
+        $this->createData($data);
+        return $this->db->lastInsertId();        
+    }
+
     public function register(array $data, $images)
     {
         $data = [
@@ -17,8 +34,8 @@ class UserModel extends BaseModel
             'password' => password_hash($data['password'], PASSWORD_BCRYPT),
             'email'    => $data['email'],
             'phone'    => $data['phone'],
-            'photo'    => $data['photo'],
-            'ktp'      => $data['ktp'],
+            'photo'    => 'avatar.png' ,
+            'ktp'      => 'avatar.png' ,
             'role'     => 0,
         ];
 
@@ -34,10 +51,21 @@ class UserModel extends BaseModel
             'password' => password_hash($data['password'], PASSWORD_BCRYPT),
             'email'    => $data['email'],
             'phone'    => $data['phone'],
-            'photo'    => $images,
+            'photo'     => $images,
             'ktp'      => $images,
         ];
         $this->updateData($data, $id);
+    }
+
+    public function getImage($id)
+    {
+        $qb = $this->db->createQueryBuilder();
+        $this->query = $qb->select('photo')
+           ->from($this->table)
+           ->where('id ='. $id)
+           ->orderBy('photo', 'asc');
+        $query = $qb->execute();
+        return $this;
     }
 
     public function getUser($column, $val)
@@ -71,7 +99,7 @@ class UserModel extends BaseModel
         $qb = $this->db->createQueryBuilder();
         $this->query = $qb->select('*')
             ->from($this->table)
-            ->where('status = 0 && role = 0')
+            ->where('status = 1 && role = 0')
             ->orderBy('created_at', 'desc');
         $query = $qb->execute();
         return $this;
@@ -134,7 +162,7 @@ class UserModel extends BaseModel
     {
         $qb = $this->db->createQueryBuilder();
         $qb->update($this->table)
-        ->set('status', 1)
+        ->set('status', 2)
         ->where('id = ' . $id)
         ->execute();
 
@@ -145,7 +173,7 @@ class UserModel extends BaseModel
     {
         $qb = $this->db->createQueryBuilder();
         $qb->update($this->table)
-        ->set('status', 2)
+        ->set('status', 1)
         ->where('id = ' . $id)
         ->execute();
     }

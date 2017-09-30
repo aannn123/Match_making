@@ -25,7 +25,7 @@ class DipoligamiModel extends BaseModel
     public function updateDiPoligami(array $data, $id)
     {
         $data = [
-            'user_id' => $data['user_id'],
+            'user_id' => $id,
             'kesiapan' => $data['kesiapan'],
             'penjelasan_kesiapan' => $data['penjelasan_kesiapan'],
         ];

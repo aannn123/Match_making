@@ -10,7 +10,7 @@
             <form class="col s12" action="{{ path_for('user.post.update.profil') }}" method="POST">
             <div class="row">
                 <div class="input-field col s12 {{ errors.nama_lengkap ? 'has-error' : '' }}">
-                  <input type="text" class="validate" name="nama_lengkap"  value="{{login.nama_lengkap}}">
+                  <input type="text" class="validate" name="nama_lengkap"  value="{{data.nama_lengkap}}">
                   <label style="color:#ecf0f1" for="icon_prefix">Nama Lengkap</label>
                   {% if errors.nama_lengkap %}
                     <span style="color:#FF0000">*

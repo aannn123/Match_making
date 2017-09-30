@@ -1,0 +1,85 @@
+{% extends 'templates/default.twig' %}
+{% block title %}Notification{% endblock %}
+{% block wrapper %} Notification {% endblock %}
+{% block breadcrumb %} Notification {% endblock %}
+{% block content %}
+<div class="app-content content container-fluid">
+    <div class="content-wrapper">
+        <div class="content-header row">
+            <div class="content-body">
+   
+      
+
+    <div class="row match-height">
+        <div class="col-lg-12 col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Notification</h4>
+                    <a class="heading-elements-toggle"><i class="icon-ellipsis font-medium-3"></i></a>
+                    <div class="heading-elements">
+                        <ul class="list-inline mb-0">
+                            <li><a data-action="reload"><i class="icon-reload"></i></a></li>
+                            <li><a data-action="expand"><i class="icon-expand2"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-body collapse in">
+                    <div class="card-block">
+                     <div class="col-xs-12">
+            <div class="card">
+                <div class="card-body">
+                        <ul class="nav nav-tabs nav-justified">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="active-tab" data-toggle="tab" href="#active" aria-controls="active" aria-expanded="true">User Request User <b class="tag tag-success">{{ counts.countNotification }}</b></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="link-tab" data-toggle="tab" href="#link" aria-controls="link" aria-expanded="false">User Cancel Request <b class="tag tag-success">{{ counts.countCancel }}</b></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="linkOpt-tab" data-toggle="tab" href="#linkOpt" aria-controls="linkOpt"> User Approve Request  <b class="tag tag-success">{{ counts.countTaaruf }}</b></a>
+                            </li>
+                        </ul>
+                        <div class="tab-content px-1 pt-1">
+                            <div role="tabpanel" class="tab-pane fade active in" id="active" aria-labelledby="active-tab" aria-expanded="true">
+                                <ul class="list-group">
+                        {% for data in data %}
+                            <li class="list-group-item">
+                                <b class="tag tag-success" style="float
+                                :left"><a href="{{ path_for('admin.detail.user', {id:data.id_perequest}) }}" data-placement="top" title="View Detail" data-toggle="tooltip">{{data.perequest}}</a></b>
+                                <div align="center">
+                               <span class="tag tag-info tag-pill float-xs-right"><b><a href="{{ path_for('admin.detail.user', {id:data.id_terequest}) }}" data-placement="top" title="View Detail" data-toggle="tooltip">{{data.terequest}}</a></b></span><span class="" style="align:center"><b class="">Mengirimkan Request Ke</b></span></div>
+                            </li>
+                        {% endfor %}
+                        </ul>
+                            </div>
+                            <div class="tab-pane fade" id="link" role="tabpanel" aria-labelledby="link-tab" aria-expanded="false">
+                        <ul class="list-group">
+                         {% for data in blokir %}
+                            <li class="list-group-item">
+                                <b class="tag tag-warning" style="float
+                                :left"><a href="{{ path_for('admin.detail.user', {id:data.id_terequest}) }}" data-placement="top" title="View Detail" data-toggle="tooltip">{{data.terequest}}</b></a>
+                                <div align="center">
+                               <span class="tag tag-danger tag-pill float-xs-right"><b><a href="{{ path_for('admin.detail.user', {id:data.id_perequest}) }}" data-placement="top" title="View Detail" data-toggle="tooltip">{{data.perequest}}</a></b></span><span class="" style="align:center"><b class="">Menolak Request Dari</b></span></div>
+                            </li>
+                        {% endfor %}
+                        </ul>
+                            </div>
+                            <div class="tab-pane fade" id="linkOpt" role="tabpanel" aria-labelledby="linkOpt-tab" aria-expanded="false">
+                                <ul class="list-group">
+                         {% for data in approve %}
+                            <li class="list-group-item">
+                                <b class="tag tag-info" style="float
+                                :left"><a href="{{ path_for('admin.detail.user', {id:data.id_terequest}) }}" data-placement="top" title="View Detail" data-toggle="tooltip">{{data.terequest}}</b></a>
+                                <div align="center">
+                               <span class="tag tag-success tag-pill float-xs-right"><b><a href="{{ path_for('admin.detail.user', {id:data.id_perequest}) }}" data-placement="top" title="View Detail" data-toggle="tooltip">{{data.perequest}}</a></b></span><span class="" style="align:center"><b class="">Menerima Requesrt Dari</b></span></div>
+                            </li>
+                        {% endfor %}
+                        </ul>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+</section>
+       
+{% endblock %}

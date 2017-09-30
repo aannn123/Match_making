@@ -182,12 +182,13 @@ class UserController extends BaseController
     public function register($request, $response)
     {
         $user = new UserModel($this->db);
+        $mailer = new \App\Extensions\Mailers\Mailer();
         $registers = new RegisterModel($this->db);
 
         $this->validator
-        ->rule('required', ['username', 'gender', 'phone', 'email', 'photo', 'ktp', 'password'])
+        ->rule('required', ['username', 'gender', 'phone', 'email','password'])
         ->message('{field} harus diisi')
-        ->label('Username', 'gender', 'Nomor Telepon', 'Email', 'Foto', 'Foto ktp', 'password');
+        ->label('Username', 'gender', 'Nomor Telepon', 'Email','password');
         $this->validator->rule('email', 'email');
         $this->validator->rule('alphaNum', 'username');
         $this->validator->rule('lengthMin', ['username', 'password'], 5);
@@ -204,8 +205,66 @@ class UserController extends BaseController
             } else {
                 $userId = $user->register($request->getParsedBody());
                 $newUser = $user->getUser('id', $userId);
+                 $token = md5(openssl_random_pseudo_bytes(8));
+                $tokenId = $registers->setToken($newUser['id'] , $token);
+                $userToken = $registers->find('id', $tokenId);
+                // var_dump($userToken);die();
 
-                $data = $this->responseDetail(201, false, 'Pendaftaran berhasil. silakan menunggu persetujuan admin', [
+                $keyToken = $userToken['token'];
+
+                // $activateUrl = '< a href = '.$request->getUri()->getBaseUrl()."/activateaccount/".$keyToken.'>;
+                $base = $request->getUri()->getBaseUrl();
+                 $activateUrl = '<a href ='.$base ."/activateaccount/".$keyToken.'>
+
+                <h3>AKTIFKAN AKUN</h3></a>';
+                  $content = '<html><head></head>
+                <body style="font-family: Verdana;font-size: 12.0px;">
+                <table border="0" cellpadding="0" cellspacing="0" style="max-width: 600.0px;">
+                <tbody><tr><td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tbody><tr><td align="left">
+                </td></tr></tbody></table></td></tr><tr height="16"></tr><tr><td>
+                <table bgcolor="#11A86" border="0" cellpadding="0" cellspacing="0"
+                style="min-width: 332.0px;max-width: 600.0px;border: 1.0px solid rgb(224,224,224);
+                border-bottom: 0;" width="100%">
+                <tbody><tr><td colspan="3" height="42px"></td></tr>
+                <tr><td width="32px"></td>
+                <td style="font-family: Roboto-Regular , Helvetica , Arial , sans-serif;font-size: 24.0px;
+                color: rgb(255,255,255);line-height: 1.25;">Aktivasi Akun Match making</td>
+                <td width="32px"></td></tr>
+                <tr><td colspan="3" height="18px"></td></tr></tbody></table></td></tr>
+                <tr><td><table bgcolor="#FAFAFA" border="0" cellpadding="0" cellspacing="0"
+                style="min-width: 332.0px;max-width: 600.0px;border: 1.0px solid rgb(240,240,240);
+                border-bottom: 1.0px solid rgb(192,192,192);border-top: 0;" width="100%">
+                <tbody><tr height="16px"><td rowspan="3" width="32px"></td><td></td>
+                <td rowspan="3" width="32px"></td></tr>
+                <tr><td><p>Yang terhormat '.$request->getParsedBody()['username'].',</p>
+                <p>Terima kasih telah mendaftar di Match Making.
+                Untuk mengaktifkan akun Anda, silakan klik tautan di bawah ini.</p>
+                <div style="text-align: center;"><p>
+                <strong style="text-align: center;font-size: 24.0px;font-weight: bold;">
+                '.$activateUrl.'</strong></p></div>
+                <p>Jika tautan tidak bekerja, Anda dapat menyalin atau mengetik kembali
+                 tautan di bawah ini.</p>
+                '.$base .'/activateaccount/'.$keyToken.'<p><br>
+                <p>Terima kasih, <br /><br /> Admin Match Making</p></td></tr>
+                <tr height="32px"></tr></tbody></table></td></tr>
+                <tr height="16"></tr>
+                <tr><td style="max-width: 600.0px;font-family: Roboto-Regular , Helvetica , Arial , sans-serif;
+                font-size: 10.0px;color: rgb(188,188,188);line-height: 1.5;"></td>
+                </tr><tr><td></td></tr></tbody></table></body></html>';
+
+                $mail = [
+                'subject'   =>  'Match Making - Verifikasi Email',
+                'from'      =>  'farhan.mustqm@gmail.com',
+                'to'        =>  $newUser['email'],
+                'sender'    =>  'Match Making',
+                'receiver'  =>  $newUser['name'],
+                'content'   =>  $content,
+                ];
+
+                $mailer->send($mail);
+            
+                $data = $this->responseDetail(201, false, 'Pendaftaran berhasil. silakan verifikasi email anda', [
                     'data' => $newUser
                 ]);
             }
@@ -274,11 +333,14 @@ class UserController extends BaseController
                         'data'   => $user,
                         'key'     => $key
                     ]);
-                } elseif ($user['status'] == 1) {
-                    $data = $this->responseDetail(400, true, 'Akun sudah di setujui oleh admin, silahkan verifikasi email anda');
+                } elseif ($user['status'] == 1 && $user['role'] == 0) {
+                    $data = $this->responseDetail(200, false, 'Selamat Datang, silahkan isi data diri anda', [
+                            'data' => $user,
+                            'key' => $key
+                        ]);
                 //  Login Admin
                 } elseif ($user['status'] == 0 ) {
-                    $data = $this->responseDetail(400, true, 'Silahkan menunggu persetujuan admin');
+                    $data = $this->responseDetail(400, true, 'Email belum diverifikasi, silahkan verifikasi email anda');
                 } else {
 
 
@@ -478,18 +540,21 @@ class UserController extends BaseController
 
     }
 
-    public function postImage($request, $response, $args)
+    public function postImage($request, $response)
     {
         $user = new UserModel($this->db);
-
-        $findUser = $user->getUser('id', $args['id']);
+// return $this->responseDetail(200, false, 'test', [
+//                     'data' => 'ddd'
+//                 ]);
+        $id = $request->getParsedBody()['id'];
+        $findUser = $user->getUser('id', $id);
 
         if (!$findUser) {
             $data = $this->responseDetail(404, true, 'Akun tidak ditemukan');
         }
-            if (!empty($request->getUploadedFiles()['photo'])) {
+            if (!empty($request->getUploadedFiles()['image'])) {
                 $storage = new \Upload\Storage\FileSystem('assets/images');
-                $image = new \Upload\File('photo',$storage);
+                $image = new \Upload\File('image',$storage);
 
                 $image->setName(uniqid('img-'.date('Ymd').'-'));
                 $image->addValidations(array(
@@ -501,8 +566,8 @@ class UserController extends BaseController
                 $image->upload();
                 $data['photo'] = $image->getNameWithExtension();
 
-                $user->updateData($data, $args['id']);
-                $newUser = $user->getUser('id', $args['id']);
+                $user->updateData($data, $id);
+                $newUser = $user->getUser('id', $id);
                 if (file_exists('assets/images/'.$findUser['photo'])) {
                     unlink('assets/images/'.$findUser['photo']);
                 }
@@ -521,8 +586,8 @@ class UserController extends BaseController
             //     $image->upload();
             //     $data['ktp'] = $image->getNameWithExtension();
 
-            //     $user->updateData($data, $args['id']);
-            //     $newUser = $user->getUser('id', $args['id']);
+            //     $user->updateData($data, $id);
+            //     $newUser = $user->getUser('id', $id);
             //     if (file_exists('assets/images/'.$findUser['ktp']['ktp'])) {
             //         unlink('assets/images/'.$findUser['ktp']);
             //     }
@@ -548,8 +613,8 @@ class UserController extends BaseController
                 $image->upload();
                 $data['ktp'] = $image->getNameWithExtension();
 
-                $user->updateData($data, $args['id']);
-                $newUser = $user->getUser('id', $args['id']);
+                $user->updateData($data, $id);
+                $newUser = $user->getUser('id', $id);
                 if (file_exists('assets/images/'.$findUser['ktp'])) {
                     unlink('assets/images/'.$findUser['ktp']);
                 }
@@ -557,16 +622,15 @@ class UserController extends BaseController
                     'data' => $newUser
                 ]);
             } elseif (empty($request->getUploadedFiles()['ktp']) 
-                        && empty($request->getUploadedFiles()['phot'])) {
+                        && empty($request->getUploadedFiles()['image'])) {
                 
                 return $this->responseDetail(400, true, 'File belum dipilih');
                 
             }
     }
 
-    public function searchUser($request, $response)
+    public function searchUserPria($request, $response)
     {
-        $user = new UserModel($this->db);
         $profil = new \App\Models\Users\ProfilModel($this->db);
         $token = $request->getHeader('Authorization')[0];
         $userToken = new UserToken($this->db);
@@ -574,19 +638,59 @@ class UserController extends BaseController
         $query = $request->getQueryParams();
 
         $search = $request->getParams()['search'];
+        $data = $profil->joinSearchPria($search, $userId)->fetchAll();
+        $get = count($data);
 
-        $data['user'] = $profil->joinSearch($search, $userId);
-        $data['count'] = count($data['user']);
+        if ($get) {
+            $page = !$request->getQueryParam('page') ? 1 : $request->getQueryParam('page');
+            $perPage = $request->getQueryParam('perpage');
+            $getUser = $profil->joinSearchPria($search, $userId)->setPaginate($page, $perPage);
 
-        if ($data['count']) {
-            $data = $this->responseDetail(200, false, 'Berhasil menampilkan data search '.$search, [
-                    'query'     =>  $query,
-                    'data'    =>  $data
-                ]);
+            if ($getUser) {
+                $data = $this->responseDetail(200, false,  'Berhasil menampilkan data search '.$search, [
+                        'data'          =>  $getUser['data'],
+                        'pagination'    =>  $getUser['pagination'],
+                    ]);
+            } else {
+                $data = $this->responseDetail(404, true, 'Data tidak ditemukan');
+            }
         } else {
-            $data = $this->responseDetail(404, true, 'Data tidak ditemukan');
+            $data = $this->responseDetail(404, false, 'Data search '.$search . ' ' . 'tidak ada');
         }
-            return $data;
+
+        return $data;
+    }
+
+     public function searchUserWanita($request, $response)
+    {
+        $profil = new \App\Models\Users\ProfilModel($this->db);
+        $token = $request->getHeader('Authorization')[0];
+        $userToken = new UserToken($this->db);
+        $userId = $userToken->getUserId($token);
+        $query = $request->getQueryParams();
+
+        $search = $request->getParams()['search'];
+        $data = $profil->joinSearchWanita($search, $userId)->fetchAll();
+        $get = count($data);
+
+        if ($get) {
+            $page = !$request->getQueryParam('page') ? 1 : $request->getQueryParam('page');
+            $perPage = $request->getQueryParam('perpage');
+            $getUser = $profil->joinSearchWanita($search, $userId)->setPaginate($page, $perPage);
+
+            if ($getUser) {
+                $data = $this->responseDetail(200, false,  'Berhasil menampilkan data search '.$search, [
+                        'data'          =>  $getUser['data'],
+                        'pagination'    =>  $getUser['pagination'],
+                    ]);
+            } else {
+                $data = $this->responseDetail(404, true, 'Data tidak ditemukan');
+            }
+        } else {
+            $data = $this->responseDetail(404, false, 'Data search '.$search . ' ' . 'tidak ada');
+        }
+
+        return $data;
     }
 
     public function sendRequest($request, $response, $args)
@@ -597,18 +701,34 @@ class UserController extends BaseController
         $token = $request->getHeader('Authorization')[0];
         $userId = $userToken->getUserId($token);
         $findUser = $requests->findTwo('id_terequest', $args['id'], 'id_perequest', $userId);
-        $find = $user->getUser('id', $args['id']);
-        // var_dump($find['role']);die();
+        // $find = $user->getUser('id', $args['id']);
+        $find = $requests->getRequest('id_terequest', $args['id']);
+        // var_dump($find['id_perequest'] && $find['id_terequest'] && $find['blokir'] == 0);die();
         $data = [
             'id_terequest'  =>  $args['id'],
             'id_perequest' => $userId,
         ];
-
         if ($findUser) {
             $data = $this->responseDetail(404, true, 'Data tidak ditemukan');
+
+            if ($find['id_perequest'] && $find['id_terequest'] && $find['blokir'] == 1 && $find['status'] == 1) {
+                $requests->sendRequestTwo($userId, $args['id']);
+                $data = $this->responseDetail(200, false, 'Berhasilkan mengirimkan request', [
+                        'data' => $data
+                    ]);
+            } elseif ($find['id_perequest'] && $find['id_terequest'] && $find['blokir'] == 2 && $find['status'] == 2) {
+                $requests->sendRequestThree($userId, $args['id']);
+                $data = $this->responseDetail(200, false, 'Berhasilkan mengirimkan request', [
+                        'data' => $data
+                    ]);
+            } elseif ($find['id_perequest'] && $find['id_terequest'] && $find['status'] == 1 && $find['blokir'] == 0) {
+                $data = $this->responseDetail(404, true, 'User sudah direquest');
+            } elseif ($find['id_perequest'] && $find['id_terequest'] && $find['status'] == 2 && $find['blokir'] == 0) {
+                $data = $this->responseDetail(404, true, 'User sedang proses dengan anda');  
+            }
         } else {
             $sendRequest = $requests->createRequest($data);
-            $requests->sendRequest($sendRequest);
+            $requests->sendRequest($userId, $args['id']);
             $data = $this->responseDetail(200, false, 'Berhasilkan mengirimkan request', [
                     'data' => $data
                 ]);
@@ -633,7 +753,7 @@ class UserController extends BaseController
             } elseif ($find['blokir'] == 1) {
                 $data = $this->responseDetail(200, false, 'Request tidak bisa di approve');
             } else {
-                $approve = $requests->approveUser($args['id'], $args['id']);
+                $approve = $requests->approveUser($args['id'], $userId);
                 $finds = $requests->find('id_perequest', $approve);
 
                 $data = $this->responseDetail(200, false, 'Berhasil menerima request', [
@@ -664,6 +784,39 @@ class UserController extends BaseController
             $page = !$request->getQueryParam('page') ? 1 : $request->getQueryParam('page');
             $perPage = $request->getQueryParam('perpage');
             $getNotification = $requests->allNotification($userId)->setPaginate($page, $perPage);
+
+            if ($getNotification) {
+                $data = $this->responseDetail(200, false,  'Data notification tersedia', [
+                        'data'          =>  $getNotification['data'],
+                        'pagination'    =>  $getNotification['pagination'],
+                    ]);
+            } else {
+                $data = $this->responseDetail(404, true, 'Notification tidak ditemukan');
+            }
+        } else {
+            $data = $this->responseDetail(204, false, 'Tidak ada konten');
+        }
+
+        return $data;
+    }
+
+     public function getAllRequestReject($request, $response)
+    {
+        $user = new UserModel($this->db);
+        $userToken = new userToken($this->db);
+        $requests = new \App\Models\Users\RequestModel($this->db);
+        $token = $request->getHeader('Authorization')[0];
+        $userId = $userToken->getUserId($token);
+
+        $get = $requests->getAllRequestReject($userId);
+        // $gender = $user->find('gender');
+        // var_dump($userId);die();
+        $countUser = count($get);
+        $query = $request->getQueryParams();
+        if ($get) {
+            $page = !$request->getQueryParam('page') ? 1 : $request->getQueryParam('page');
+            $perPage = $request->getQueryParam('perpage');
+            $getNotification = $requests->getAllRequestReject($userId)->setPaginate($page, $perPage);
 
             if ($getNotification) {
                 $data = $this->responseDetail(200, false,  'Data notification tersedia', [
@@ -849,6 +1002,171 @@ class UserController extends BaseController
         } else {
             return $this->responseDetail(400, true, 'Password lama tidak sesuai');
         }
+    }
+
+    public function cancelRequest($request, $response, $args)
+    {
+        $user = new UserModel($this->db);
+        $requests = new \App\Models\Users\RequestModel($this->db);
+        $userToken = new UserToken($this->db);
+        $token = $request->getHeader('Authorization')[0];
+        $userId = $userToken->getUserId($token);
+
+        $findUser = $requests->find('id', $args['id']);
+        // var_dump($userId);die;
+        if ($findUser) {
+            $cancel = $requests->cancelRequest($args['id']);
+            // var_dump($cancel);die;
+            $findUser = $requests->find('id', $args['id']);
+
+            $data = $this->responseDetail(201, false, 'Request Berhasil Di cancel', [
+                    'data' => $finduser,
+                ]);
+
+        } else {
+            $data = $this->responseDetail(404, true, 'Data tidak ditemukan');
+        }
+
+        return $data;
+    }
+
+     public function getAllBlokirRequestUser($request, $response, $args)
+    {
+        $user = new UserModel($this->db);
+        $userToken = new userToken($this->db);
+        $requests = new \App\Models\Users\RequestModel($this->db);
+        $token = $request->getHeader('Authorization')[0];
+        $userId = $userToken->getUserId($token);
+
+        $get = $requests->getAllBlokirRequest();
+        // $gender = $user->find('gender');
+        $countUser = count($get);
+        // var_dump($countUser);die();
+        $query = $request->getQueryParams();
+        if ($get) {
+            $page = !$request->getQueryParam('page') ? 1 : $request->getQueryParam('page');
+            $perPage = $request->getQueryParam('perpage');
+            $getNotification = $requests->getAllBlokirRequest()->setPaginate($page, $perPage);
+
+            if ($getNotification) {
+                $data = $this->responseDetail(200, false,  'Data request yang di tolak tersedia', [
+                        'data'          =>  $getNotification['data'],
+                        'pagination'    =>  $getNotification['pagination'],
+                    ]);
+            } else {
+                $data = $this->responseDetail(404, true, 'Data request yang di tolak tidak ditemukan');
+            }
+        } else {
+            $data = $this->responseDetail(204, false, 'Tidak ada konten');
+        }
+
+        return $data;
+    }
+
+
+    public function deleteNotification($request, $response, $args)
+    {
+      $requests = new \App\Models\Users\RequestModel($this->db);
+      $userToken = new UserToken($this->db);
+      $token = $request->getHeader('Authorization')[0];
+      $userId = $userToken->getUserId($token);
+
+      $findUser = $requests->findTwo('id_terequest', $args['id'], 'id_perequest', $userId);
+      // var_dump($findUser);die;
+      if ($findUser) {
+          $requests->deleteNotification($args['id']);
+          $findUsers = $requests->findTwo('id_terequest', $args['id'], 'id_perequest', $userId);
+          $data = $this->responseDetail(200, false, 'Notification berhasil dihapus', [
+                'data' => $findUsers,
+            ]);
+      } else {
+          $data = $this->responseDetail(404, true, 'Data tidak ditemukan');
+      }
+        return $data;
+      
+    }
+
+    public function getImageUser($request, $response)
+    {
+         $user = new UserModel($this->db);
+        $userToken = new userToken($this->db);
+        $token = $request->getHeader('Authorization')[0];
+        $userId = $userToken->getUserId($token);
+
+        $get = $user->getImage($userId);
+        $gender = $user->find('gender');
+        // var_dump($gender);die();
+        $countUser = count($get);
+        $query = $request->getQueryParams();
+        if ($get) {
+            $page = !$request->getQueryParam('page') ? 1 : $request->getQueryParam('page');
+            $perPage = $request->getQueryParam('perpage');
+            $getUser = $user->getImage($userId)->setPaginate($page, $perPage);
+
+            if ($getUser) {
+                $data = $this->responseDetail(200, false,  'Data tersedia', [
+                        'data'          =>  $getUser['data'],
+                        'pagination'    =>  $getUser['pagination'],
+                    ]);
+            } else {
+                $data = $this->responseDetail(404, true, 'Data tidak ditemukan');
+            }
+        } else {
+            $data = $this->responseDetail(204, false, 'Tidak ada konten');
+        }
+
+        return $data;
+    }
+
+    public function findRequest($request, $response, $args)
+    {
+          $user = new UserModel($this->db);
+        $userToken = new userToken($this->db);
+        $requests = new \App\Models\Users\RequestModel($this->db);
+        $token = $request->getHeader('Authorization')[0];
+        $userId = $userToken->getUserId($token);
+
+        $findUser = $requests->findTwoRequest('id_perequest', $userId, 'id_terequest', $args['id']);
+        var_dump($findUser);die;
+
+        if ($findRequest) {
+            return $data = $this->responseDetail(200, false, 'Data tersedia');
+        } else {
+            return $data = $this->responseDetail(404, false, 'Data tidak ditemukan');
+        }
+    }
+
+     public function getTaarufUser($request, $response)
+    {
+        $user = new UserModel($this->db);
+        $userToken = new userToken($this->db);
+        $requests = new \App\Models\Users\RequestModel($this->db);
+        $token = $request->getHeader('Authorization')[0];
+        $userId = $userToken->getUserId($token);
+
+        $get = $requests->getTaarufUser($userId);
+        // $gender = $user->find('gender');
+        // var_dump($userId);die();
+        $countUser = count($get);
+        $query = $request->getQueryParams();
+        if ($get) {
+            $page = !$request->getQueryParam('page') ? 1 : $request->getQueryParam('page');
+            $perPage = $request->getQueryParam('perpage');
+            $getNotification = $requests->getTaarufUser($userId)->setPaginate($page, $perPage);
+
+            if ($getNotification) {
+                $data = $this->responseDetail(200, false,  'Data taaruf tersedia', [
+                        'data'          =>  $getNotification['data'],
+                        'pagination'    =>  $getNotification['pagination'],
+                    ]);
+            } else {
+                $data = $this->responseDetail(404, true, 'Notification tidak ditemukan');
+            }
+        } else {
+            $data = $this->responseDetail(204, false, 'Tidak ada konten');
+        }
+
+        return $data;
     }
 
 }

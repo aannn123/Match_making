@@ -33,7 +33,7 @@ class ProfilModel extends BaseModel
     public function updateProfil(array $data, $id)
     {
          $data = [
-            'user_id'   => $data['user_id'],
+            'user_id'   => $id,
             'nama_lengkap' => $data['nama_lengkap'],
             'tanggal_lahir' => $data['tanggal_lahir'],
             'tempat_lahir'  => $data['tempat_lahir'],
@@ -70,25 +70,54 @@ class ProfilModel extends BaseModel
         return $result->fetchAll();
     }
 
-    public function joinSearch($val, $id)
+    public function joinSearchPria($val, $id)
     {
         $qb = $this->db->createQueryBuilder();
-        $this->query = $qb->select('prof.*','kot.nama as kota','prov.nama as provinsi','negara.nama as kewarganegaraan')
+        $this->query = $qb->select('prof.*','kot.nama as kota','prov.nama as provinsi','negara.nama as kewarganegaraan', 'user.gender as jenis_kelamin', 'user.status as status_user')
             ->from($this->table,'prof')
             ->join('prof','kota', 'kot', 'kot.id = prof.kota')
             ->join('prof','provinsi', 'prov', 'prov.id = prof.provinsi')
+            ->join('prof','users', 'user', 'user.id = prof.user_id')
             ->join('prof','negara', 'negara', 'negara.id = prof.kewarganegaraan')
             ->where('umur LIKE :val')
                  ->orWhere('kot.nama LIKE :val')
                  ->orWhere('prov.nama LIKE :val')
                  ->orWhere('negara.nama LIKE :val')
                  ->andWhere('user_id != '. $id)
+                 ->andWhere('user.gender = "laki-laki"')
+                 ->andWhere('user.status = 2')
+                 // ->andWhere()
                  // ->andWhere('status != 1')
                  // ->andWhere('deleted = 0')
                  ->setParameter('val', '%'.$val.'%');
         // $query = $qb->execute();
                  $result = $this->query->execute();
-        return $result->fetchAll();
+        return $this;
+
+    }
+
+     public function joinSearchWanita($val, $id)
+    {
+        $qb = $this->db->createQueryBuilder();
+        $this->query = $qb->select('prof.*','kot.nama as kota','prov.nama as provinsi','negara.nama as kewarganegaraan', 'user.gender as jenis_kelamin', 'user.status as status_user')
+            ->from($this->table,'prof')
+            ->join('prof','kota', 'kot', 'kot.id = prof.kota')
+            ->join('prof','provinsi', 'prov', 'prov.id = prof.provinsi')
+            ->join('prof','users', 'user', 'user.id = prof.user_id')
+            ->join('prof','negara', 'negara', 'negara.id = prof.kewarganegaraan')
+            ->where('umur LIKE :val')
+                 ->orWhere('kot.nama LIKE :val')
+                 ->orWhere('prov.nama LIKE :val')
+                 ->orWhere('negara.nama LIKE :val')
+                 ->andWhere('user_id != '. $id)
+                 ->andWhere('user.gender = "perempuan"')
+                 ->andWhere('user.status = 2')
+                 // ->andWhere('status != 1')
+                 // ->andWhere('deleted = 0')
+                 ->setParameter('val', '%'.$val.'%');
+        // $query = $qb->execute();
+                 $result = $this->query->execute();
+        return $this;
 
     }
 
@@ -123,13 +152,14 @@ class ProfilModel extends BaseModel
      public function joinProfilePria()
     {
         $qb = $this->db->createQueryBuilder();
-        $this->query = $qb->select('prof.*','kot.nama as kota','prov.nama as provinsi','negara.nama as kewarganegaraan', 'user.gender as jenis_kelamin')
+        $this->query = $qb->select('prof.*','kot.nama as kota','prov.nama as provinsi','negara.nama as kewarganegaraan', 'user.gender as jenis_kelamin', 'user.status as status_user')
             ->from($this->table,'prof')
             ->join('prof','kota', 'kot', 'kot.id = prof.kota')
             ->join('prof','provinsi', 'prov', 'prov.id = prof.provinsi')
             ->join('prof','users', 'user', 'user.id = prof.user_id')
             ->join('prof','negara', 'negara', 'negara.id = prof.kewarganegaraan')
-            ->where('user.gender = "laki-laki"');
+            ->where('user.gender = "laki-laki"')
+            ->andWhere('user.status = 2');
         $query = $qb->execute();
         // var_dump($this);die;
         return $this;
@@ -138,13 +168,14 @@ class ProfilModel extends BaseModel
     public function joinProfileWanita()
     {
         $qb = $this->db->createQueryBuilder();
-        $this->query = $qb->select('prof.*','kot.nama as kota','prov.nama as provinsi','negara.nama as kewarganegaraan', 'user.gender as jenis_kelamin')
+        $this->query = $qb->select('prof.*','kot.nama as kota','prov.nama as provinsi','negara.nama as kewarganegaraan', 'user.gender as jenis_kelamin', 'user.status as status_user')
             ->from($this->table,'prof')
             ->join('prof','kota', 'kot', 'kot.id = prof.kota')
             ->join('prof','provinsi', 'prov', 'prov.id = prof.provinsi')
             ->join('prof','users', 'user', 'user.id = prof.user_id')
             ->join('prof','negara', 'negara', 'negara.id = prof.kewarganegaraan')
-            ->where('user.gender = "perempuan"');
+            ->where('user.gender = "perempuan"')
+            ->andWhere('user.status = 2' );
         $query = $qb->execute();
         // var_dump($this);die;
         return $this;

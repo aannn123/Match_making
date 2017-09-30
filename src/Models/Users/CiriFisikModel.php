@@ -49,7 +49,7 @@ class CiriFisikModel extends BaseModel
     public function updatePria(array $data, $id)
     {
          $data = [
-            'user_id'           => $data['user_id'],
+            'user_id'           => $id,
             'tinggi'            => $data['tinggi'],
             'berat'             => $data['berat'],
             'warna_kulit'       => $data['warna_kulit'],
@@ -67,7 +67,7 @@ class CiriFisikModel extends BaseModel
     public function updateWanita(array $data, $id)
     {
         $data = [
-            'user_id'           => $data['user_id'],
+            'user_id'           => $id,
             'tinggi'            => $data['tinggi'],
             'berat'             => $data['berat'],
             'warna_kulit'       => $data['warna_kulit'],

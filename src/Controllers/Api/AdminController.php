@@ -150,7 +150,7 @@ class AdminController extends BaseController
         $users = $user->getUser('id', $args['id']);
         // var_dump($findUser);die();
         if ($findUser) {
-            if ($users['status'] == 1) {
+            if ($users['status'] == 2) {
                 $data = $this->responseDetail(404, true, 'User sudah di approve');
             } elseif ($users['role'] == 1 || $users['role'] == 2 ) {
                 $data = $this->responseDetail(404, true, 'Dia bukan member');
@@ -159,18 +159,7 @@ class AdminController extends BaseController
             $responseUser = $user->find('id', $args['id']);
             // var_dump($acceptBy);die();
             $newUser = $user->getUser('id', $args['id']);
-                $token = md5(openssl_random_pseudo_bytes(8));
-                $tokenId = $registers->setToken($newUser['id'] , $token);
-                $userToken = $registers->find('id', $tokenId);
-                // var_dump($userToken);die();
-
-                $keyToken = $userToken['token'];
-
-                // $activateUrl = '< a href = '.$request->getUri()->getBaseUrl()."/activateaccount/".$keyToken.'>;
-
-                 $activateUrl = '<a href ='.$base ."/activateaccount/".$keyToken.'>
-
-                <h3>AKTIFKAN AKUN</h3></a>';
+               '<h3>Notification</h3></a>';
                   $content = '<html><head></head>
                 <body style="font-family: Verdana;font-size: 12.0px;">
                 <table border="0" cellpadding="0" cellspacing="0" style="max-width: 600.0px;">
@@ -183,7 +172,7 @@ class AdminController extends BaseController
                 <tbody><tr><td colspan="3" height="42px"></td></tr>
                 <tr><td width="32px"></td>
                 <td style="font-family: Roboto-Regular , Helvetica , Arial , sans-serif;font-size: 24.0px;
-                color: rgb(255,255,255);line-height: 1.25;">Aktivasi Akun Match making</td>
+                color: rgb(255,255,255);line-height: 1.25;"><center>Notification Akun Match making</center></td>
                 <td width="32px"></td></tr>
                 <tr><td colspan="3" height="18px"></td></tr></tbody></table></td></tr>
                 <tr><td><table bgcolor="#FAFAFA" border="0" cellpadding="0" cellspacing="0"
@@ -191,15 +180,10 @@ class AdminController extends BaseController
                 border-bottom: 1.0px solid rgb(192,192,192);border-top: 0;" width="100%">
                 <tbody><tr height="16px"><td rowspan="3" width="32px"></td><td></td>
                 <td rowspan="3" width="32px"></td></tr>
-                <tr><td><p>Yang terhormat '.$request->getParsedBody()['username'].',</p>
-                <p>Terima kasih telah mendaftar di Match Making.
-                Untuk mengaktifkan akun Anda, silakan klik tautan di bawah ini.</p>
-                <div style="text-align: center;"><p>
-                <strong style="text-align: center;font-size: 24.0px;font-weight: bold;">
-                '.$activateUrl.'</strong></p></div>
-                <p>Jika tautan tidak bekerja, Anda dapat menyalin atau mengetik kembali
-                 tautan di bawah ini.</p>
-                '.$base .'/activateaccount/'.$keyToken.'<p><br>
+                <tr><td><p>Yang terhormat '.$newUser['username'].',</p>
+                <p>Selamat, anda diterima sebagai member match making, silahkan anda login kembali untuk bisa mengakses halaman user.</p>
+                <center><p><a href="{{ base_url }}/login"><button type="submit" class="btn btn-primary" style="width:40%">Login</button></a></p></center>
+                <p>Terima kasih sudah mendaftar di Match Maki</a>ng.</p>
                 <p>Terima kasih, <br /><br /> Admin Match Making</p></td></tr>
                 <tr height="32px"></tr></tbody></table></td></tr>
                 <tr height="16"></tr>
@@ -208,11 +192,11 @@ class AdminController extends BaseController
                 </tr><tr><td></td></tr></tbody></table></body></html>';
 
                 $mail = [
-                'subject'   =>  'Match Making - Verifikasi Email',
+                'subject'   =>  'Match Making - Notification',
                 'from'      =>  'farhan.mustqm@gmail.com',
                 'to'        =>  $newUser['email'],
                 'sender'    =>  'Match Making',
-                'receiver'  =>  $newUser['name'],
+                'receiver'  =>  $newUser['username'],
                 'content'   =>  $content,
                 ];
 
@@ -436,5 +420,44 @@ class AdminController extends BaseController
 
         return $data;
     }
+
+     public function getAllNotification($request, $response)
+    {
+        $user = new UserModel($this->db);
+        $userToken = new userToken($this->db);
+        $requests = new \App\Models\Users\RequestModel($this->db);
+        $token = $request->getHeader('Authorization')[0];
+        $userId = $userToken->getUserId($token);
+
+        $get = $requests->getAllNotification($userId);
+        // $gender = $user->find('gender');
+        // var_dump($userId);die();
+        $countUser = count($get);
+        $query = $request->getQueryParams();
+        if ($get) {
+            $page = !$request->getQueryParam('page') ? 1 : $request->getQueryParam('page');
+            $perPage = $request->getQueryParam('perpage');
+            $getNotification = $requests->getAllNotification($userId)->setPaginate($page, $perPage);
+
+            if ($getNotification) {
+                $data = $this->responseDetail(200, false,  'Data notification tersedia', [
+                        'data'          =>  $getNotification['data'],
+                        'pagination'    =>  $getNotification['pagination'],
+                    ]);
+            } else {
+                $data = $this->responseDetail(404, true, 'Notification tidak ditemukan');
+            }
+        } else {
+            $data = $this->responseDetail(204, false, 'Tidak ada konten');
+        }
+
+        return $data;
+    }
+
+    // public function createMember($)
+    // {
+        
+    // }
+
 
 }

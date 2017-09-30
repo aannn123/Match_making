@@ -4,7 +4,7 @@
 {% endblock %}
 {% block content %}
     
-
+{% if login.status == 1 %}
 <div class="card blue-grey darken-12">
             <div class="card-content white-text">
               <span class="card-title">Create Ciri Fisik</span>
@@ -36,13 +36,13 @@
                 <div class="input-field col s12 {{ errors.warna_kulit ? 'has-error' : '' }}">
                   <select name="warna_kulit">
                     <option value = "" disabled selected>Warna Kulit</option>
-                    <option value = "sangat putih">Sangat putih</option>
-                    <option value = "putih">Putih</option>
-                    <option value = "kuning langsat">Kuning langsat</option>
-                    <option value = "kuning">Kuning</option>
-                    <option value = "sawo matang">Sawo matang</option>
-                    <option value = "coklat">Coklat</option>
-                    <option value = "gelap">Gelap</option>
+                    <option value = "sangat putih" {% if old.warna_kulit == 'sangat putih' %} selected="selected" {% endif %} >Sangat putih</option>
+                    <option value = "putih" {% if old.warna_kulit == 'putih' %} selected="selected" {% endif %} >Putih</option>
+                    <option value = "kuning langsat" {% if old.warna_kulit == 'kuning langsat' %} selected="selected" {% endif %} >Kuning langsat</option>
+                    <option value = "kuning" {% if old.warna_kulit == 'kuning' %} selected="selected" {% endif %} >Kuning</option>
+                    <option value = "sawo matang" {% if old.warna_kulit == 'sawo matang' %} selected="selected" {% endif %} >Sawo matang</option>
+                    <option value = "coklat" {% if old.warna_kulit == 'coklat' %} selected="selected" {% endif %} >Coklat</option>
+                    <option value = "gelap" {% if old.warna_kulit == 'gelap' %} selected="selected" {% endif %} >Gelap</option>
                   </select>
                    {% if errors.warna_kulit %}
                     <span style="color:#FF0000">*
@@ -64,10 +64,10 @@
                 <div class="input-field col s12 {{ errors.jenggot ? 'has-error' : '' }}">
                  <select name="jenggot">
                     <option value = "" disabled selected>Jenggot</option>
-                    <option value = "dicukur">Dicukur</option>
-                    <option value = "tipis">Tipis</option>
-                    <option value = "sedang">Sedang</option>
-                    <option value = "panjang">Panjang</option>
+                    <option value = "dicukur" {% if old.jenggot == 'dicukur' %} selected="selected" {% endif %} >Dicukur</option>
+                    <option value = "tipis" {% if old.jenggot == 'tipis' %} selected="selected" {% endif %} >Tipis</option>
+                    <option value = "sedang" {% if old.jenggot == 'sedang' %} selected="selected" {% endif %} >Sedang</option>
+                    <option value = "panjang" {% if old.jenggot == 'panjang' %} selected="selected" {% endif %} >Panjang</option>
                   </select>
                    {% if errors.jenggot %}
                     <span style="color:#FF0000">*
@@ -80,11 +80,11 @@
                 <div class="input-field col s12 {{ errors.hijab ? 'has-error' : '' }}">
                   <select name="hijab">
                     <option value = "" disabled selected>Hijab</option>
-                    <option value = "sangat panjang">Sangat panjang</option>
-                    <option value = "panjang">Panjang</option>
-                    <option value = "sedang">Sedang</option>
-                    <option value = "kecil">Kecil</option>
-                    <option value = "belum berhijab">Belum berhijab</option>
+                    <option value = "sangat panjang" {% if old.hijab == 'sangat panjang' %} selected="selected" {% endif %} >Sangat panjang</option>
+                    <option value = "panjang" {% if old.hijab == 'panjang' %} selected="selected" {% endif %} >Panjang</option>
+                    <option value = "sedang" {% if old.hijab == 'sedang' %} selected="selected" {% endif %} >Sedang</option>
+                    <option value = "kecil" {% if old.hijab == 'kecil' %} selected="selected" {% endif %} >Kecil</option>
+                    <option value = "belum berhijab" {% if old.hijab == 'belum berhijab' %} selected="selected" {% endif %} >Belum berhijab</option>
                   </select>
                    {% if errors.hijab %}
                     <span style="color:#FF0000">*
@@ -95,9 +95,9 @@
                 <div class="input-field col s12 {{ errors.cadar ? 'has-error' : '' }}">
                    <select name="cadar">
                     <option value = "" disabled selected>Cadar</option>
-                    <option value = "ya">Ya</option>
-                    <option value = "tidak">Tidak</option>
-                    <option value = "setelah menikah">Setelah Menikah</option>
+                    <option value = "ya" {% if old.cadar == 'ya' %} selected="selected" {% endif %} >Ya</option>
+                    <option value = "tidak" {% if old.cadar == 'tidak' %} selected="selected" {% endif %} >Tidak</option>
+                    <option value = "setelah menikah" {% if old.cadar == 'pernah' %} selected="selected" {% endif %} >Setelah Menikah</option>
                   </select>
                    {% if errors.cadar %}
                     <span style="color:#FF0000">*
@@ -109,8 +109,8 @@
                 <div class="input-field col s12 {{ errors.kaca_mata ? 'has-error' : '' }}">
                    <select name="kaca_mata">
                     <option value = "" disabled selected>Kaca Mata</option>
-                    <option value = "ya">Ya</option>
-                    <option value = "tidak">Tidak</option>
+                    <option value = "ya" {% if old.kaca_mata == 'ya' %} selected="selected" {% endif %} >Ya</option>
+                    <option value = "tidak" {% if old.kaca_mata == 'tidak' %} selected="selected" {% endif %} >Tidak</option>
                   </select>
                    {% if errors.kaca_mata %}
                     <span style="color:#FF0000">*
@@ -121,10 +121,10 @@
                  <div class="input-field col s12 {{ errors.status_kesehatan ? 'has-error' : '' }}">
                    <select name="status_kesehatan">
                     <option value = "" disabled selected>Status Kesehatan</option>
-                    <option value = "sehat">Sehat</option>
-                    <option value = "masalah kesehatan serius">Masalah Kesehatan Serius</option>
-                    <option value = "cacat fisik ringan">Cacat fisik ringan</option>
-                    <option value = "cacat fisik serius">Cacat fisik serius</option>
+                    <option value = "sehat" {% if old.status_kesehatan == 'sehat' %} selected="selected" {% endif %} >Sehat</option>
+                    <option value = "masalah kesehatan serius" {% if old.status_kesehatan == 'masalah kesehatan serius' %} selected="selected" {% endif %} >Masalah Kesehatan Serius</option>
+                    <option value = "cacat fisik ringan" {% if old.status_kesehatan == 'cacat fisik ringan' %} selected="selected" {% endif %} >Cacat fisik ringan</option>
+                    <option value = "cacat fisik serius" {% if old.status_kesehatan == 'cacat fisik serius' %} selected="selected" {% endif %} >Cacat fisik serius</option>
                   </select>
                    {% if errors.status_kesehatan %}
                     <span style="color:#FF0000">*
@@ -146,4 +146,5 @@
           </div>
 
 </div>
+{% endif %}
 {% endblock %}

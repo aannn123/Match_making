@@ -15,12 +15,12 @@ class UserToken extends BaseModel
             'user_id' => $id,
             'token' => md5(openssl_random_pseudo_bytes(8)),
             'login_at' => date('Y-m-d H:i:s'),
-            'expired_date' => date('Y-m-d H:i:s', strtotime('+5 hour'))
+            'expired_date' => date('Y-m-d H:i:s')
         ];
 
         $findUserId = $this->find('user_id', $id);
 
-        if ($findUserId && $findUserId['expired_date'] < strtotime("now")) {
+        if ($findUserId) {
             $data = array_reverse($data);
             $pop = array_pop($data);
 

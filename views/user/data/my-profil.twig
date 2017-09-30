@@ -13,35 +13,40 @@
 </style>
   <div class="row">
     <div class="col s12 m6 l3">
-      <img src="https://pbs.twimg.com/profile_images/378800000383884561/e46af00398c2abd99ba4c179bd510a84_400x400.jpeg" class="circle responsive-img" style="width:70%" alt="">
-      </div>
+      <img src="{{ base_url() }}/assets/images/{{user.photo}}" class="responsive-img materialboxed"  width="" style="width:" alt="">
+      </div> 
     <div class="col s12 m6 l3"><p style=" font-family:initial;font-style:oblique">{{profil.nama_lengkap}}</p>
      <a href="{{ path_for('user.update.profil') }}"><button class="btn waves-effect waves-blue btn-small" style="font-size:xx-small;background:rgba(16, 164, 201, 0.33)"><b style="color:black">update profil</b></button></a>
     <a href="#modal2" class="tooltipped modal-trigger pulse" data-position="bottom" data-delay="50" data-tooltip="Settings"><i class="tiny material-icons">settings</i></a><br>
+    {% if login.status == 2 %}{% endif %}
     <a class="btn btn-floating pulse" style="width:10px;height:10px"></a><b style=" font-family:initial;font-style:oblique;font-size:12px"> Sedang Taaruf</b>
     </div>
     </div>
+   <!--  {% if login.status == 2 %}
      <div class="row">
     <div class="col s3 m6 l3"><p class="">Request Diterima</p><center><b>1</b></center></div>
     <div class="col s3 m6 l3"><p class="">Request Ditolak</p><center><b>1</b></center></div>
     <div class="col s3 m6 l3"><p class="">Direquest Terima</p><center><b>1</b></center></div>
     <div class="col s3 m6 l3"><p class="">Direquest Tolak</p><center><b>1</b></center></div>
-  </div>
+    {% endif %}
+ --> 
+  <!-- </div> -->
     <br><hr>
   <!-- Modal Structure -->
   <div id="modal2" class="modal" style="width:50%">
     <div class="modal-content">
       <div class="collection">
-        <center><a id="set" href="{{ path_for('user.change-password') }}" class="collection-item">Change Password</a>
-        <a id="set" href="#!" class="collection-item">Change Image</a>
-        <a id="set" href="#!" class="collection-item">Update User</a>
-        <a id="set" href="{{path_for('logout')}}" class="collection-item">Log Out</a>
+        <center><a id="set" href="{{ path_for('user.change-password') }}" class="collection-item">Change password</a>
+        <center><a id="set" href="{{ path_for('user.change-password') }}" class="collection-item">Statistik Request</a>
+        <a id="set" href="{{ path_for('user.change.avatar') }}" class="collection-item">Change avatar</a>
+        <a id="set" href="{{ path_for('user.change-image') }}" class="collection-item">Change image</a>
+        <a id="set" href="{{path_for('logout')}}" class="collection-item">Log out</a>
         <a id="set" href="#!" class="collection-item modal-action modal-close">Cancel</a></center>
       </div>
     </div>
   </div>
 
-    <center><span class="black-text" style="font-family:initial;font-style:oblique;font-size:20px">Data User</center>
+    <!-- <center><span class="black-text" style="font-family:initial;font-style:oblique;font-size:20px">Data User</center> -->
 
     <ul class="collapsible popout" data-collapsible="accordion">
     <li>
@@ -56,7 +61,7 @@
                 
                 <p>Tempat Lahir : <b>{{profil.tempat_lahir}}</b></p>
                 
-                <p>Umur : <b>{{profil.umur}} Tahun</b></p>
+                <p>Umur : <b>{{"now"|date('Y m d') - profil.tanggal_lahir}} Tahun</b></p>
                 
                 <p>Alamat :  <b>{{profil.alamat}}</b></p>
                       

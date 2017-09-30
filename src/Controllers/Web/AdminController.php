@@ -12,40 +12,29 @@ class AdminController extends BaseController
 {
     public function getAllUser(Request $request,Response $response)
     {
-         try {
-            $result = $this->client->request('GET',
-            $this->router->pathFor('api.show.user'), [
+        try {
+            $result = $this->client->request('POST',
+            $this->router->pathFor('api.search.user.all'), [
+            'form_params' => [
+                        'search' => $request->getParam('search'),
+            ], 
                  'query' => [
                      'perpage' => 5,
                      'page' => $request->getQueryParam('page'),
                      'id' => $_SESSION['login']['id']
             ]]);
-
-                try {
-                $search = $this->client->request('POST',  $this->router->pathFor('api.search.user.all'),
-                    ['form_params' => [
-                        'search'          => $request->getParam('search'),
-                    ]
-                ]);
-            } catch (GuzzleException $e) {
-                $search = $e->getResponse();
-            }
-
-        $content = $search->getBody()->getContents();
-        $searchUser = json_decode($content, true);
-        //     // $content = json_decode($result->getBody()->getContents());
+            // $content = json_decode($result->getBody()->getContents());
         } catch (GuzzleException $e) {
             $result = $e->getResponse();
         }
         $data = json_decode($result->getBody()->getContents(), true);
-        // var_dump($data['data']);die();
+        // var_dump($data);die();
         $this->flash->addMessage('succes', 'sadasdsa');
-        // var_dump($searchUser['data']['user']);die;
-
         return $this->view->render($response, 'admin/user/all-user.twig', [
-            'data'          =>  $searchUser['data'],
+            'data'          =>  $data['data'] ,
             'pagination'    =>  $data['pagination']
-        ]);    //
+        ]);    // 
+
     }
 
     public function getAllNewUser(Request $request,Response $response)
@@ -54,7 +43,7 @@ class AdminController extends BaseController
             $result = $this->client->request('GET',
             $this->router->pathFor('api.new.user'), [
                  'query' => [
-                     'perpage' => 5,
+                     'perpage' => 10,
                      'page' => $request->getQueryParam('page'),
                      'id' => $_SESSION['login']['id']
             ]]);
@@ -69,6 +58,133 @@ class AdminController extends BaseController
             'pagination'    =>  $data['pagination']
         ]);    //
     }
+
+    public function getUserNewDetail(Request $request, Response $response, $args)
+    {
+        try {
+            $result1 = $this->client->request('GET',
+            $this->router->pathFor('api.find.user', ['id' => $args['id']]), [
+                'query' => [
+                    // 'page'    => $request->getQueryparam('page'),
+                    'perpage' => 5,
+                    'id' => $args['id']
+                    ]
+                ]);
+        try {
+                $result2 = $this->client->request('GET',
+                $this->router->pathFor('user.find.profil', ['id' => $args['id']]), [
+                        'query' => [
+                            'perpage' => 5,
+                            'page'    => $request->getQueryParam('page')
+                        ]
+                    ]);
+
+
+                } catch (GuzzleException $e) {
+                    $result2 = $e->getResponse();
+                }
+
+                $profil = json_decode($result2->getBody()->getContents(), true);
+
+                    try {
+                    $result3 = $this->client->request('GET',
+                    $this->router->pathFor('user.find.keseharian', ['id' => $args['id']]), [
+                            'query' => [
+                                'perpage' => 5,
+                                'page'    => $request->getQueryParam('page')
+                            ]
+                        ]);
+
+
+                    } catch (GuzzleException $e) {
+                        $result3 = $e->getResponse();
+                    }
+
+                    $keseharian = json_decode($result3->getBody()->getContents(), true);
+
+                        try {
+                        $result3 = $this->client->request('GET',
+                        $this->router->pathFor('user.find.latar-belakang', ['id' => $args['id']]), [
+                                'query' => [
+                                    'perpage' => 5,
+                                    'page'    => $request->getQueryParam('page')
+                                ]
+                            ]);
+
+
+                        } catch (GuzzleException $e) {
+                            $result3 = $e->getResponse();
+                        }
+
+                        $latar = json_decode($result3->getBody()->getContents(), true);
+
+                            try {
+                            $result4 = $this->client->request('GET',
+                            $this->router->pathFor('user.find.ciri-fisik', ['id' => $args['id']]), [
+                                    'query' => [
+                                        'perpage' => 5,
+                                        'page'    => $request->getQueryParam('page')
+                                    ]
+                                ]);
+
+
+                            } catch (GuzzleException $e) {
+                                $result4 = $e->getResponse();
+                            }
+
+                            $fisik = json_decode($result4->getBody()->getContents(), true);
+
+                                try {
+                                $result5 = $this->client->request('GET',
+                                $this->router->pathFor('user.find.poligami', ['id' => $args['id']]), [
+                                        'query' => [
+                                            'perpage' => 9,
+                                            'page'    => $request->getQueryParam('page')
+                                        ]
+                                    ]);
+
+
+                                } catch (GuzzleException $e) {
+                                    $result5 = $e->getResponse();
+                                }
+
+                                $poligami = json_decode($result5->getBody()->getContents(), true);
+
+                                    try {
+                                    $result6 = $this->client->request('GET',
+                                    $this->router->pathFor('user.find.dipoligami', ['id' => $args['id']]), [
+                                            'query' => [
+                                                'perpage' => 5,
+                                                'page'    => $request->getQueryParam('page')
+                                            ]
+                                        ]);
+
+
+                                    } catch (GuzzleException $e) {
+                                        $result6 = $e->getResponse();
+                                    }
+
+                                    $dipoligami = json_decode($result6->getBody()->getContents(), true);
+                                    // var_dump($dipoligami);die();
+        } catch (GuzzleException $e) {
+              $result = $e->getResponse();
+             }
+         $user = json_decode($result1->getBody()->getContents(), true);
+
+        // echo "<br />";
+        // var_dump($profil['data']);die();
+        return $this->view->render($response, 'admin/user/new-view-detail.twig', [
+            'user' => $user['data'],
+            'profil'    => $profil['data'],
+            'keseharian' => $keseharian['data'],
+            'latar' => $latar['data'],
+            'fisik' => $fisik['data'],
+            'poligami' => $poligami['data'],
+            'dipoligami' => $dipoligami['data'],
+            'pagination'    => $data['pagination'],
+        ]);
+    }
+
 
     public function getAllUserMan(Request $request,Response $response)
     {
@@ -120,7 +236,7 @@ class AdminController extends BaseController
             $result = $this->client->request('GET',
             $this->router->pathFor('api.admin.kota'), [
                  'query' => [
-                     'perpage' => 5,
+                     'perpage' => 10,
                      'page' => $request->getQueryParam('page'),
                      'id' => $_SESSION['login']['id']
             ]]);
@@ -183,7 +299,7 @@ class AdminController extends BaseController
             $result = $this->client->request('GET',
             $this->router->pathFor('admin.provinsi'), [
                  'query' => [
-                     'perpage' => 5,
+                     'perpage' => 10,
                      'page' => $request->getQueryParam('page'),
                      'id' => $_SESSION['login']['id']
             ]]);
@@ -650,7 +766,7 @@ class AdminController extends BaseController
         $content = $result->getBody()->getContents();
         $data = json_decode($content, true);
         // var_dump($data);die;
-        $this->flash->addMessage('succes', 'yoi');
+        // $this->flash->addMessage('succes', 'yoi');
         if (empty($result)) {
             // var_dump('ok');die;
             return $this->view->render($response, 'admin/user/all-user.twig', [
@@ -681,4 +797,78 @@ class AdminController extends BaseController
         //     var_dump($data);die;
         // return $this->view->render($response, 'admin/user/result-search.twig');
     }
+
+     public function getNotification(Request $request, Response $response)
+    {
+
+        $notification = new \App\Models\Users\RequestModel($this->db);
+        $countNotification = count($notification->getAllNotification()->fetchAll());
+        $countCancelNotification = count($notification->getAllBlokirRequest()->fetchAll());
+        $countTaarufNotification = count($notification->joinRequest()->fetchAll());
+        // var_dump($countCancelNotification);die;
+        try {
+            $result = $this->client->request('GET',
+            $this->router->pathFor('admin.notification'), [
+                    'query' => [
+                        'id_terequest' => $_SESSION['login']['id'],
+                        'perpage' => 10,
+                        'page'    => $request->getQueryParam('page')
+                    ]
+                ]);
+
+            try {
+                $result1 = $this->client->request('GET',
+                $this->router->pathFor('api.user.cancel-notification'), [
+                        'query' => [
+                            'id_terequest' => $_SESSION['login']['id'],
+                            'perpage' => 10,
+                            'page'    => $request->getQueryParam('page')
+                        ]
+                    ]);
+
+
+                } catch (GuzzleException $e) {
+                    $result1 = $e->getResponse();
+                }
+
+            $blokir = json_decode($result1->getBody()->getContents(), true);
+
+                 try {
+                    $result2 = $this->client->request('GET',
+                    $this->router->pathFor('admin.get.taaruf'), [
+                         'query' => [
+                             'perpage' => 5,
+                             'page' => $request->getQueryParam('page'),
+                             'id' => $_SESSION['login']['id']
+                    ]]);
+                    // $content = json_decode($result2->getBody()->getContents());
+                } catch (GuzzleException $e) {
+                    $result2 = $e->getResponse();
+                }
+                $approve = json_decode($result2->getBody()->getContents(), true);
+                // var_dump($approve);die;
+            } catch (GuzzleException $e) {
+                $result = $e->getResponse();
+            }
+
+      $data = json_decode($result->getBody()->getContents(), true);
+      // var_dump($data['data']);die;  
+      return $this->view->render($response, 'admin/notification.twig', [
+          'data' => $data['data'],
+          'blokir' => $blokir['data'],
+          'counts' => [
+            'countNotification' => $countNotification,
+            'countCancel' => $countCancelNotification,
+            'countTaaruf' => $countTaarufNotification,
+          ],
+          'approve' => $approve['data'],
+          'pagination' => $data['pagination'],
+        ]);
+
+    }
+
+    // public function createMember($)
+    // {
+        
+    // }
 }

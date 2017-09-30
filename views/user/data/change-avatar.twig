@@ -1,0 +1,93 @@
+{% extends 'user/templates/default.twig' %}
+{% block title %}
+    change avatar
+{% endblock %}
+{% block content %}
+    &nbsp;<b style="font-family:initial;font-style:oblique;font-size:20px">Change Image</b>
+    <div class="container" style="width:100%">
+    <div class="row">
+    <div class="col s12">
+      <ul class="tabs">
+        <li class="tab col s12"><a href="#galery" class="active">Change Avatar</a></li>
+      </ul>
+    </div>
+ {% if login.gender == 'laki-laki' %}
+    <div id="galery" class="col s12">
+     <div class="divider"></div>
+            <div class="row section">
+        <div class="col s4 m4 l4">
+          <div class="card">
+            <div class="card-image">
+              <a href="#upload" class="modal-trigger"><img src="{{ base_url() }}/assets/picture/avatar.png" style="width:100%;height:200px"></a>
+            </div>
+        </div>
+      </div>
+       <div class="col s4 m4 l4">
+          <div class="card">
+            <div class="card-image">
+              <a href="#upload" class="modal-trigger"><img src="{{ base_url() }}/assets/picture/male.jpg" style="width:100%;height:200px"></a>
+            </div>
+        </div>
+      </div>
+       <div class="col s4 m4 l4">
+          <div class="card">
+            <div class="card-image">
+              <a href="#upload" class="modal-trigger"><img src="{{ base_url() }}/assets/picture/man.jpg" style="width:100%;height:200px"></a>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% else %}
+     <div id="galery" class="col s12">
+     <div class="divider"></div>
+            <div class="row section">
+        <div class="col s4 m4 l4">
+          <div class="card">
+            <div class="card-image">
+              <a href="#upload" class="modal-trigger"><img src="{{ base_url() }}/assets/picture/female.jpg" style="width:100%;height:200px"></a>
+            </div>
+        </div>
+      </div>
+       <div class="col s4 m4 l4">
+          <div class="card">
+            <div class="card-image">
+              <a href="#upload" class="modal-trigger"><img src="{{ base_url() }}/assets/picture/woman.jpg" style="width:100%;height:200px"></a>
+            </div>
+        </div>
+      </div>
+       <div class="col s4 m4 l4">
+          <div class="card">
+            <div class="card-image">
+              <a href="#upload" class="modal-trigger"><img src="{{ base_url() }}/assets/picture/q.jpg" style="width:100%;height:200px"></a>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endif %}
+  <!-- Modal Structure -->
+  <div id="upload" class="modal modal-fixed-footer">
+    <div class="modal-content">
+      <div class="col s12 m12 l12">
+            <p style="font-family:initial;font-style:oblique;font-size:20px;text-decoration:underline">Take a avatar</p>
+          </div>
+      <p>
+        <div class="row section">
+         
+          <div class="col s12 m12 l12"  ><br>
+          <form action="">
+             <center><img class="responsive-img" style="width:50%;border: 5px solid #ecf0f1" src="{{ base_url() }}/assets/picture/avatar.png" alt=""></center>
+          </div><br>
+        <center><a href=""><button style="margin:10px" class="btn waves-effect waves-light blue">change avatar</button></a></center>
+        </form>
+        </div> 
+      </p>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Close</a>
+    </div>
+  </div>
+          
+
+{% endblock %}

@@ -14,8 +14,8 @@
                 <div class="input-field col s12 {{ errors.kesiapan ? 'has-error' : '' }}">
                   <select name="kesiapan">
                       <option value = "" disabled selected>Kesiapan</option>
-                      <option value = "siap" {% if data.kesiapan == 'siap' %} selected="selected" {% endif %}>Siap</option>
-                      <option value = "belum siap" {% if data.kesiapan == 'belum siap' %} selected="selected" {% endif %}>Belum siap</option>
+                      <option value = "siap" {% if poligami.kesiapan == 'siap' %} selected="selected" {% endif %}>Siap</option>
+                      <option value = "belum siap" {% if poligami.kesiapan == 'belum siap' %} selected="selected" {% endif %}>Belum siap</option>
                   </select>
                   {% if errors.kesiapan %}
                     <span style="color:#FF0000">*
@@ -44,10 +44,10 @@
                 <div class="input-field col s12 {{ errors.kondisi_istri ? 'has-error' : '' }}">
                  <select name="kondisi_istri">
                       <option value = "" disabled selected>Kondisi Istri</option>
-                      <option value = "belum mengizinkan" {% if data.kondisi_istri == 'belum mengizinkan' %} selected="selected" {% endif %}>Belum Mengizinkan</option>
-                      <option value = "sudah mengizinkan" {% if data.kondisi_istri == 'sudah mengizinkan' %} selected="selected" {% endif %}>Sudah Mengizinkan</option>
-                      <option value = "mendukung dan mencarikan" {% if data.kondisi_istri == 'mendukung dan mencarikan' %} selected="selected" {% endif %}>Mendukung dan Mencarikan</option>
-                      <option value = "belum punya istri" {% if data.kondisi_istri == 'belum punya istri' %} selected="selected" {% endif %}>Belum punya istri</option>
+                      <option value = "belum mengizinkan" {% if poligami.kondisi_istri == 'belum mengizinkan' %} selected="selected" {% endif %}>Belum Mengizinkan</option>
+                      <option value = "sudah mengizinkan" {% if poligami.kondisi_istri == 'sudah mengizinkan' %} selected="selected" {% endif %}>Sudah Mengizinkan</option>
+                      <option value = "mendukung dan mencarikan" {% if poligami.kondisi_istri == 'mendukung dan mencarikan' %} selected="selected" {% endif %}>Mendukung dan Mencarikan</option>
+                      <option value = "belum punya istri" {% if poligami.kondisi_istri == 'belum punya istri' %} selected="selected" {% endif %}>Belum punya istri</option>
                   </select>
                    {% if errors.kondisi_istri %}
                     <span style="color:#FF0000">*
@@ -70,9 +70,12 @@
         <div class="row">
             <div class="input-field col s12 {{ errors.kesiapan ? 'has-error' : '' }}">
               <select name="kesiapan">
+
                   <option value = "" disabled selected>Kesiapan</option>
-                  <option value = "siap" {% if data.kesiapan == 'siap' %} selected="selected" {% endif %}>Siap</option>
-                  <option value = "belum siap" {% if data.kesiapan == 'belum siap' %} selected="selected" {% endif %}>Belum siap</option>
+                  
+                  <option value = "siap" {% if dipoligami.kesiapan == 'siap' %} selected="selected" {% endif %}>Siap</option>
+
+                  <option value = "belum siap" {% if dipoligami.kesiapan == 'belum siap' %} selected="selected" {% endif %}>Belum siap</option>
               </select>
               {% if errors.kesiapan %}
                 <span style="color:#FF0000">*

@@ -115,31 +115,57 @@ class ProfilController extends BaseController
         $user   = new UserModel($this->db);
         $userToken = new UserToken($this->db);
         $token = $request->getHeader('Authorization')[0];
-        $user = $userToken->getUserId($token);
+        $userId = $userToken->getUserId($token);
         $profil = new ProfilModel($this->db);
+        $prov = new \App\Models\ProvinsiModel($this->db);
 
-        $find   = $profil->findWithoutDelete('user_id', $user['id']);
-
+        $find = $profil->find('user_id', $userId);
+        $query = $request->getQueryParams();
+        $findUser = $user->getUser('id', $userId);
+        $kewarganegaraan = $request->getParsedBody()['kewarganegaraan'];
+// var_dump($request->getParsedBody()['kewarganegaraan']);die;
         if ($find) {
-            $datainput  = $request->getParsedBody();
-            $datainput['user_id'] = $user['id'];
+                $prov->select($kewarganegaraan);
+                $profil->updateProfil($request->getParsedBody(), $userId);
+                $afterUpdate = $profil->find('user_id', $userId);
 
-            try {
-                $profil->updateProfil($datainput);
-                $find  = $profil->findWithoutDelete('user_id', $user['id']);
-
-                $data = $this->responseDetail(200, false, 'Data telah terupdate', [
-                        'data'  => $find
+                $data = $this->responseDetail(200, false, 'Data berhasil di perbaharui', [
+                        'data'  =>  $afterUpdate
                     ]);
-
-            } catch (Exception $e) {
-                $data = $this->responseDetail(500, true, $e->getMessage);
-            }
-
         } else {
-            $data = $this->responseDetail(400, true, 'update data gagal');
+            $data = $this->responseDetail(404, true, 'Data tidak ditemukan');
         }
+
         return $data;
+
+        // $user   = new UserModel($this->db);
+        // $userToken = new UserToken($this->db);
+        // $token = $request->getHeader('Authorization')[0];
+        // $user = $userToken->getUserId($token);
+        // $profil = new ProfilModel($this->db);
+
+        // $find   = $profil->findWithoutDelete('user_id', $user['id']);
+
+        // if ($find) {
+        //     $datainput  = $request->getParsedBody();
+        //     $datainput['user_id'] = $user['id'];
+
+        //     try {
+        //         $profil->updateProfil($datainput);
+        //         $find  = $profil->findWithoutDelete('user_id', $user['id']);
+
+        //         $data = $this->responseDetail(200, false, 'Data telah terupdate', [
+        //                 'data'  => $find
+        //             ]);
+
+        //     } catch (Exception $e) {
+        //         $data = $this->responseDetail(500, true, $e->getMessage);
+        //     }
+
+        // } else {
+        //     $data = $this->responseDetail(400, true, 'update data gagal');
+        // }
+        // return $data;
     }
 
     public function findProfil($request, $response, $args)

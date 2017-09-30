@@ -46,7 +46,7 @@ class PoligamiController extends BaseController
         $find = $user->getUser('id', $userId);
         // var_dump($find);die();
         
-        $this->validator->rule('required', ['kesiapan', 'penjelasan_kesiapan', 'alasan_poligami', 'kondisi_istri']);
+        $this->validator->rule('required', ['kesiapan', 'penjelasan_kesiapan']);
 
         if ($this->validator->validate()) {
             if ($find['gender'] == 'perempuan') {
@@ -55,7 +55,7 @@ class PoligamiController extends BaseController
                 $create = $poligami->createPoligami($request->getParsedBody(), $userId);
                 // var_dump($create);die();
                 $find = $poligami->find('id', $create);
-                $data = $this->responseDetail(201, false, 'Profile berhasil dibuat', [
+                $data = $this->responseDetail(201, false, 'Data poligami berhasil dibuat', [
                         'data' => $find,
                     ]);
             }
@@ -67,33 +67,61 @@ class PoligamiController extends BaseController
 
     public function updatePoligami($request, $response, $args)
     {
+
         $user = new UserModel($this->db);
         $userToken = new UserToken($this->db);
         $token = $request->getHeader('Authorization')[0];
         $userId = $userToken->getUserId($token);
         $poligami = new PoligamiModel($this->db);
 
-        $find = $poligami->findWithoutDelete('user_id', $userId['id']);
+        $find = $poligami->find('user_id', $userId);
+        $query = $request->getQueryParams();
+        $findUser = $user->getUser('id', $userId);
+// var_dump($findUser);die;
         if ($find) {
-            $datainput  = $request->getParsedBody();
-            $datainput['user_id'] = $userId['id'];
+            if ($findUser['gender'] == 'laki-laki') {
+                $poligami->updatePoligami($request->getParsedBody(),$userId);
+                $afterUpdate = $poligami->find('user_id', $userId);
 
-            try {
-                $poligami->updatePoligami($datainput);
-                $find       = $poligami->findWithoutDelete('user_id', $userId['id']);
-
-                $data = $this->responseDetail(200, false, 'Data telah terupdate', [
-                        'data'  => $find
+                $data = $this->responseDetail(200, false, 'Data berhasil di perbaharui', [
+                        'data'  =>  $afterUpdate
                     ]);
-
-            } catch (Exception $e) {
-                $data = $this->responseDetail(500, true, $e->getMessage);
+            } else {
+                $data = $this->responseDetail(500, true, 'Anda tidak dapat mengakses halaman ini');
             }
-
         } else {
-            $data = $this->responseDetail(400, true, 'update data gagal');
+            $data = $this->responseDetail(404, true, 'Data tidak ditemukan');
         }
+
         return $data;
+        // $user = new UserModel($this->db);
+        // $userToken = new UserToken($this->db);
+        // $token = $request->getHeader('Authorization')[0];
+        // $userId = $userToken->getUserId($token);
+        // $poligami = new PoligamiModel($this->db);
+
+        // $find = $poligami->find('user_id', $userId);
+        // // var_dump($find);die;
+        // if ($find) {
+        //     $datainput  = $request->getParsedBody();
+        //     $datainput['user_id'] = $userId['id'];
+
+        //     try {
+        //         $poligami->updatePoligami($datainput);
+        //         $find       = $poligami->findWithoutDelete('user_id', $userId);
+
+        //         $data = $this->responseDetail(201, false, 'Data telah terupdate', [
+        //                 'data'  => $find
+        //             ]);
+
+        //     } catch (Exception $e) {
+        //         $data = $this->responseDetail(500, true, $e->getMessage);
+        //     }
+
+        // } else {
+        //     $data = $this->responseDetail(400, true, 'update data gagal');
+        // }
+        // return $data;
     }
 
 

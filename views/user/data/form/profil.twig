@@ -2,7 +2,7 @@
 {% block title %}Create Profile{% endblock %}
 {% block content %}
     
-
+{% if login.status == 1 %}
 <div class="card blue-grey darken-12">
             <div class="card-content white-text">
               <span class="card-title">Create Profile</span>
@@ -58,7 +58,7 @@
                  <select name="kewarganegaraan">
                     <option value = "0" disabled selected>Pilih Negara</option>
                     {% for negara in negara %}
-                    <option value = "{{negara.id}}">{{negara.nama}}</option>
+                    <option value = "{{negara.id}}" {% if old.kewarganegaraan  == '{{negara.if}}' %} selected="selected" {% endif %}>{{negara.nama}}</option>
                     {% endfor %}
                   </select>
                    {% if errors.kewarganegaraan %}
@@ -71,7 +71,7 @@
                  <select name="provinsi">
                     <option value = "0" disabled selected>Pilih Provinsi</option>
                     {% for provinsi in provinsi %}
-                    <option value = "{{provinsi.id}}">{{provinsi.nama}}</option>
+                    <option value = "{{provinsi.id}}" {% if old.provinsi == '{{provinsi.id}}' %} selected="selected" {% endif %}>{{provinsi.nama}}</option>
                     {% endfor %}
                   </select>
                    {% if errors.provinsi %}
@@ -84,7 +84,7 @@
                  <select name="kota">
                     <option value = "0" disabled selected>Pilih Kota</option>
                     {% for kota in kota %}
-                    <option value = "{{kota.id}}">{{kota.nama}}</option>
+                    <option value = "{{kota.id}}" {% if old.kota == '{{kota.id}}' %} selected="selected" {% endif %}>{{kota.nama}}</option>
                     {% endfor %}
                   </select>
                    {% if errors.kota %}
@@ -125,4 +125,5 @@
           </div>
 
 </div>
+{% endif %}
 {% endblock %}

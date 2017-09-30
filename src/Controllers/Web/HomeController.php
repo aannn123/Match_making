@@ -43,6 +43,26 @@ class HomeController extends BaseController
             ]);
         return $data;
     }
+
+    public function requestProfil(Request $request, Response $response, $args)
+    {
+        $users = new \App\Models\Users\UserModel($this->db);
+        $requests = new \App\Models\Users\RequestModel($this->db);
+
+        $allNotification = count($requests->allNotification()->fetchAll());
+        var_dump($allNotification);die;
+        $data = $this->view->render($response, 'user/user.twig', [
+                'counts'=> [
+                    'allNotification'         =>  $allNotification,
+                ]
+            ]);
+        return $data;
+    }
+
+    public function notFound($request, $response)
+    {
+        return $this->view->render($response, 'response/404.twig');
+    }
 }
 
 

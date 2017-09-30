@@ -132,75 +132,95 @@ class CiriFisikController extends BaseController
 
     public function updateFisikPria($request, $response, $args)
     {
-        $users = new UserModel($this->db);
+       $user = new UserModel($this->db);
         $userToken = new UserToken($this->db);
         $token = $request->getHeader('Authorization')[0];
-        $user = $userToken->getUserId($token);
+        $userId = $userToken->getUserId($token);
         $fisik = new CiriFisikModel($this->db);
 
-
-        $find  = $fisik->findWithoutDelete('user_id', $user);
-        $findUser = $users->getUser('id', $user);
-
+        $find = $fisik->find('user_id', $userId);
+        $query = $request->getQueryParams();
+        $findUser = $user->getUser('id', $userId);
+// var_dump($findUser);die;
         if ($find) {
-            if ($findUser['gender'] == 'perempuan') {
-                $data = $this->responseDetail(400, true, 'Maaf anda tidak mempunyai akses untuk mengupate data ini');
+            if ($findUser['gender'] == 'laki-laki') {
+                $fisik->updatePria($request->getParsedBody(),$userId);
+                $afterUpdate = $fisik->find('user_id', $userId);
+
+                $data = $this->responseDetail(200, false, 'Data berhasil di perbaharui', [
+                        'data'  =>  $afterUpdate
+                    ]);
             } else {
-                $datainput  = $request->getParsedBody();
-                $datainput['user_id'] = $user['id'];
-
-                try {
-                    $fisik->updatePria($datainput);
-                    $find  = $fisik->findWithoutDelete('user_id', $user);
-
-                    $data = $this->responseDetail(201, false, 'Data telah terupdate', [
-                            'data'  => $find
-                        ]);
-
-                } catch (Exception $e) {
-                    $data = $this->responseDetail(500, true, $e->getMessage);
-                }
+                $data = $this->responseDetail(500, true, 'Anda tidak dapat mengakses halaman ini');
             }
         } else {
-            $data = $this->responseDetail(400, true, 'update data gagal');
+            $data = $this->responseDetail(404, true, 'Data tidak ditemukan');
         }
-            return $data;
+
+        return $data;
     }
 
     public function updateFisikWanita($request, $response, $args)
     {
-        $users = new UserModel($this->db);
+        $user = new UserModel($this->db);
         $userToken = new UserToken($this->db);
         $token = $request->getHeader('Authorization')[0];
-        $user = $userToken->getUserId($token);
+        $userId = $userToken->getUserId($token);
         $fisik = new CiriFisikModel($this->db);
-        
-        $find  = $fisik->findWithoutDelete('user_id', $user);
-        $findUser = $users->getUser('id', $user); 
-        // var_dump($find);die();
+
+        $find = $fisik->find('user_id', $userId);
+        $query = $request->getQueryParams();
+        $findUser = $user->getUser('id', $userId);
+// var_dump($findUser);die;
         if ($find) {
-            if ($findUser['gender'] == 'laki-laki') {
-                $data = $this->responseDetail(400, true, 'Maaf anda tidak mempunyai akses untuk mengupate data ini');
+            if ($findUser['gender'] == 'perempuan') {
+                $fisik->updateWanita($request->getParsedBody(),$userId);
+                $afterUpdate = $fisik->find('user_id', $userId);
+
+                $data = $this->responseDetail(200, false, 'Data berhasil di perbaharui', [
+                        'data'  =>  $afterUpdate
+                    ]);
             } else {
-                $datainput  = $request->getParsedBody();
-                $datainput['user_id'] = $user['id'];
-
-                try {
-                    $fisik->updateWanita($datainput);
-                    $find  = $fisik->findWithoutDelete('user_id', $user);
-
-                    $data = $this->responseDetail(201, false, 'Data telah terupdate', [
-                            'data'  => $find
-                        ]);
-
-                } catch (Exception $e) {
-                    $data = $this->responseDetail(500, true, $e->getMessage);
-                }
+                $data = $this->responseDetail(500, true, 'Anda tidak dapat mengakses halaman ini');
             }
-            } else {
-                $data = $this->responseDetail(400, true, 'update data gagal');
-            }
-            return $data;
+        } else {
+            $data = $this->responseDetail(404, true, 'Data tidak ditemukan');
+        }
+
+        return $data;
+
+        // $users = new UserModel($this->db);
+        // $userToken = new UserToken($this->db);
+        // $token = $request->getHeader('Authorization')[0];
+        // $userId = $userToken->getUserId($token);
+        // $fisik = new CiriFisikModel($this->db);
+        
+        // $find  = $fisik->findWithoutDelete('user_id', $user);
+        // $findUser = $users->getUser('id', $user); 
+        // // var_dump($userId);die();
+        // if ($find) {
+        //     if ($findUser['gender'] == 'laki-laki') {
+        //         $data = $this->responseDetail(400, true, 'Maaf anda tidak mempunyai akses untuk mengupate data ini');
+        //     } else {
+        //         $datainput  = $request->getParsedBody();
+        //         $datainput['user_id'] = $user['id'];
+
+        //         try {
+        //             $fisik->updateWanita($datainput);
+        //             $find  = $fisik->findWithoutDelete('user_id', $user);
+
+        //             $data = $this->responseDetail(201, false, 'Data telah terupdate', [
+        //                     'data'  => $find
+        //                 ]);
+
+        //         } catch (Exception $e) {
+        //             $data = $this->responseDetail(500, true, $e->getMessage);
+        //         }
+        //     }
+        //     } else {
+        //         $data = $this->responseDetail(400, true, 'update data gagal');
+        //     }
+        //     return $data;
     }
 
     public function findData($request, $response, $args)

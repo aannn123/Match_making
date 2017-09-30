@@ -4,7 +4,7 @@
 {% endblock %}
 {% block content %}
     
-{% if login.gender == 'laki-laki' %}
+{% if (login.gender == 'laki-laki') and (login.status == 1) %}
 <div class="card blue-grey darken-12">
             <div class="card-content white-text">
               <span class="card-title">Create Data Poligami</span>

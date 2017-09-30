@@ -49,97 +49,46 @@
                                 </td>
                                 <td>
                                     <a href="{{ path_for('admin.cancel.new.user', {'id':user.id}) }}" style="color:red" data-toggle="tooltip" data-placement="top" title="Delete User"><i class="icon-close2"></i></a>
-                                    <a href="" style="color: #1a53ff"  data-placement="top" title="View Detail" data-toggle="modal" data-keyboard="false" data-target="#{{user.id}}"><i class="icon-eye4"></i></a>
+                                    <a href="{{ path_for('admin.new.detail.user', {id:user.id}) }}" style="color: #1a53ff"  data-placement="top" title="View Detail" data-toggle="tooltip"><i class="icon-eye4"></i></a>
+                                    <a href="{{ path_for('admin.approve.new.user', {id:user.id}) }}" style="color:green"  data-placement="top" title="Approve User" data-toggle="tooltip"><i class="icon-check"></i></a>
                                 </td>
                             </tr>
-                           
-                <!-- Modal -->
-                <div class="modal fade text-xs-left" id="{{user.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="true">
-                  <div class="modal-dialog modal-lg" role="document">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
-                        <h4 class="modal-title" id="myModalLabel3">Detail user</h4>
-                      </div>
-                      <div class="modal-body">
-                        <div class="card-body">
-        
-                <div class="row match-height">
-                    <div class="col-lg-12 col-md-12 col-sm-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h4 class="card-title text-xs-center">Detail User</h4>
-                            </div>
-                            <div class="card-body collapse in">
-                                <div class="card-block">
-                                <b >Nama &emsp;&emsp;&emsp;&emsp;&nbsp;:<code>{{user.username}}</code></b>
-                                <br>
-                                <b >Jenis Kelamin &nbsp;&nbsp;:<code>{{user.gender}}</code></b><br>
-                                <b >Email &emsp;&emsp;&emsp;&emsp;&nbsp;:<code>{{user.email}}</code></b><br>
-                                <b >No telepon &emsp;&emsp;:<code>{{user.phone}}</code></b><br>
-                                <b >Tanggal Daftar &nbsp;:<code>{{user.created_at | date("j F Y")}}</code></b><br>
-                                </div>
-                                <br>
-                                <div class="row match-height">
-
-                <div class="card-body">
-                    <div class="card-block">
-
-                        <ul class="nav nav-tabs nav-justified">
-                            <li class="nav-item">
-                                <a class="nav-link active" id="active-tab" data-toggle="tab" href="#active" aria-controls="active" aria-expanded="true">Foto</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="link-tab" data-toggle="tab" href="#link" aria-controls="link" aria-expanded="false">Foto ktp</a>
-                            </li>
-                        </ul>
-                        <div class="tab-content px-1 pt-1">
-                            <div role="tabpanel" class="tab-pane fade active in" id="active" aria-labelledby="active-tab" aria-expanded="true">
-                            <div class="img-responsive">
-                               <img src="{{ base_url() }}/assets/images/{{ user.photo }}" class="img-thumbnail" style="width:100%;height:30%" alt="">
-                            </div>
-                            </div>
-                            <div class="tab-pane fade" id="link" role="tabpanel" aria-labelledby="link-tab" aria-expanded="false">
-                               <div class="img-responsive">
-                               <img src="{{ base_url() }}/assets/images/{{ user.ktp }}" class="img-thumbnail" style="width:100%;height:30%" alt="">
-                            </div>
-                            </div> 
-                        </div>
-                    </div>
-                           
-                  <div class="modal-footer">
-                    <button type="button" class="btn grey btn-outline-secondary" data-dismiss="modal">Close</button>
-                    <a href="{{ path_for('admin.approve.new.user', {'id':user.id}) }}"><button type="button" class="btn btn-outline-primary">Approve user</button></a>
-                  </div>
-                </div>
-              </div>
-
-            {% endfor %}
+                            {% endfor %}
                         </tbody>
                     </table>
 
-                        <div class="text-xs-right mb-3">
+                         <div class="text-xs-right mb-3">
                             <nav aria-label="Page navigation">
                                 <ul class="pagination">
+                            {% if pagination.current > pagination.first_page %}
                                     <li class="page-item">
-                                        <a class="page-link" href="#" aria-label="Previous">
-                                            <span aria-hidden="true">&laquo; Prev</span>
+                                        <a class="page-link" href="{{ base_url() }}/admin/user/new?page={{ pagination.first_page }}" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo; First Page</span>
                                             <span class="sr-only">Previous</span>
                                         </a>
                                     </li>
-                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item active"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">4</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">5</a></li>
+                                     <li class="page-item">
+                                        <a class="page-link" href="{{ base_url() }}/admin/user/new?page={{ pagination.current - 1 }}" aria-label="Previous">
+                                            <span aria-hidden="true"></span>
+                                            <span class="sr-only">Previous</span> {{ pagination.current - 1 }}
+                                        </a>
+                                    </li>
+                            {% endif %}
+                                    <li class="page-item"><a class="page-link" href="">{{ pagination.current }}</a></li>
+                            {% if pagination.current < pagination.total_page %}
+                                     <li class="page-item">
+                                        <a class="page-link" href="{{ base_url() }}/admin/user/new?page={{ pagination.current + 1 }}" aria-label="Next">
+                                            <span aria-hidden="true"></span>
+                                            <span class="sr-only">Next</span> {{ pagination.current + 1 }}
+                                        </a>
+                                    </li>
                                     <li class="page-item">
-                                        <a class="page-link" href="#" aria-label="Next">
-                                            <span aria-hidden="true">Next &raquo;</span>
+                                        <a class="page-link" href="{{ base_url() }}/admin/user/new?page={{ pagination.total_page }}" aria-label="Next">
+                                            <span aria-hidden="true">Last Page &raquo;</span>
                                             <span class="sr-only">Next</span>
                                         </a>
                                     </li>
+                                    {% endif %}
                                 </ul>
                             </nav>
                         </div>

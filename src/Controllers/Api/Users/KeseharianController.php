@@ -52,7 +52,7 @@ class KeseharianController extends BaseController
         if ($this->validator->validate()) {
             $createData = $keseharian->create($request->getParsedBody(), $userId);
             $finds = $keseharian->find('id', $createData);
-            $data = $this->responseDetail(201, false, 'Berhasil menambahkan data profil', [
+            $data = $this->responseDetail(201, false, 'Berhasil menambahkan data keseharian', [
                     'data' => $finds
                 ]); 
         } else {
@@ -63,34 +63,57 @@ class KeseharianController extends BaseController
 
     public function updateKeseharian($request, $response, $args)
     {
-        $user      = new UserModel($this->db);
+        $user  = new UserModel($this->db);
         $userToken = new UserToken($this->db);
         $token = $request->getHeader('Authorization')[0];
-        $user = $userToken->getUserId($token);
+        $userId = $userToken->getUserId($token);
         $keseharian = new KeseharianModel($this->db);
 
-        $find       = $keseharian->findWithoutDelete('user_id', $user);
-
+        $find = $keseharian->find('user_id', $userId);
+        $query = $request->getQueryParams();
+        $findUser = $user->getUser('id', $userId);
+// var_dump($findUser);die;
         if ($find) {
-            $datainput  = $request->getParsedBody();
-            $datainput['user_id'] = $user['id'];
+                $keseharian->updateKeseharian($request->getParsedBody(), $userId);
+                $afterUpdate = $keseharian->find('user_id', $userId);
 
-            try {
-                $keseharian->updateKeseharian($datainput);
-                $find       = $keseharian->findWithoutDelete('user_id', $user['id']);
-
-                $data = $this->responseDetail(201, false, 'Data telah terupdate', [
-                        'data'  => $find
+                $data = $this->responseDetail(200, false, 'Data berhasil di perbaharui', [
+                        'data'  =>  $afterUpdate
                     ]);
-
-            } catch (Exception $e) {
-                $data = $this->responseDetail(500, true, $e->getMessage);
-            }
-
         } else {
-            $data = $this->responseDetail(400, true, 'update data gagal');
+            $data = $this->responseDetail(404, true, 'Data tidak ditemukan');
         }
+
         return $data;
+
+        // $user      = new UserModel($this->db);
+        // $userToken = new UserToken($this->db);
+        // $token = $request->getHeader('Authorization')[0];
+        // $user = $userToken->getUserId($token);
+        // $keseharian = new KeseharianModel($this->db);
+
+        // $find       = $keseharian->findWithoutDelete('user_id', $user);
+
+        // if ($find) {
+        //     $datainput  = $request->getParsedBody();
+        //     $datainput['user_id'] = $user['id'];
+
+        //     try {
+        //         $keseharian->updateKeseharian($datainput);
+        //         $find       = $keseharian->findWithoutDelete('user_id', $user['id']);
+
+        //         $data = $this->responseDetail(201, false, 'Data telah terupdate', [
+        //                 'data'  => $find
+        //             ]);
+
+        //     } catch (Exception $e) {
+        //         $data = $this->responseDetail(500, true, $e->getMessage);
+        //     }
+
+        // } else {
+        //     $data = $this->responseDetail(400, true, 'update data gagal');
+        // }
+        // return $data;
     }
 
     public function findData($request, $response, $args)
