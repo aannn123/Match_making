@@ -858,7 +858,22 @@ class UserController extends BaseController
               $result = $e->getResponse();
              }
          $user = json_decode($result1->getBody()->getContents(), true);
+          // try {
+          //       $req = $this->client->request('GET',
+          //       $this->router->pathFor('api.show.find.request', ['id' => $id]), [
+          //               'query' => [
+          //                   'perpage' => 5,
+          //                   'page'    => $request->getQueryParam('page')
+          //               ]
+          //           ]);
 
+
+          //       } catch (GuzzleException $e) {
+          //           $req = $e->getResponse();
+          //       }
+
+          //       $requst = json_decode($req->getBody()->getContents(), true);
+          //       var_dump($request);die;
         // echo "<br />";
         // var_dump($profil['data']);die();
         return $this->view->render($response, 'user/data/my-profil.twig', [
@@ -1828,7 +1843,7 @@ class UserController extends BaseController
             $result2= $this->client->request('GET',
             $this->router->pathFor('admin.request.all'), [
                  'query' => [
-                     'perpage' => 5,
+                     'perpage' => 6,
                      'page' => $request->getQueryParam('page'),
                      'id' => $_SESSION['login']['id']
             ]]);
@@ -1837,13 +1852,31 @@ class UserController extends BaseController
             $result2= $e->getResponse();
         }
           $request = json_decode($result2->getBody()->getContents(), true); 
+
+          try {
+            $result3 = $this->client->request('GET', $this->router->pathFor('api.notification'),
+            ['query' => [
+                // 'user_id'  => $_SESSION['login']['id'],
+                // 'page'     => $request->getQueryParam('page'),
+                'perpage'  => 10,
+                ]
+            ]);
+        } catch (GuzzleException $e) {
+            $result3 = $e->getResponse();
+        }
+        $notif = json_decode($result3->getBody()->getContents(), true);
+        if ($notif['message'] == 'Data ditemukan') {
+            $_SESSION['notif'] = $notif['data'];
+        }
+        // var_dump($notif['message']);die;
+
         // var_dump($request);die;
         // $this->flash->addMessage('succes', 'sadasdsa');
         return $this->view->render($response, 'user/user.twig', [
             'data'          =>  $data['data'] ,
             'user'          =>  $profil['data'] ,
             'request'       =>  $request['data'] ,
-            'pagination'    =>  $data['pagination'],
+            'paginate'    =>  $data['pagination'],
             'pagination'    =>  $profil['pagination']
         ]);    // 
 
@@ -1908,9 +1941,25 @@ class UserController extends BaseController
               $users = $e->getResponse();
              }
          $user = json_decode($users->getBody()->getContents(), true);
-        // var_dump($user);die();
+
+           try {
+            $img = $this->client->request('GET',
+            $this->router->pathFor('api.user.get.image'), [
+                'query' => [
+                    'id' => $_SESSION['login']['id'],
+                     'perpage' => 9,
+                     'page' => $request->getQueryParam('page'),
+                    ]
+                ]);
+        } catch (GuzzleException $e) {
+              $img = $e->getResponse();
+             }
+         $image = json_decode($img->getBody()->getContents(), true);
+        // var_dump($image);die();
       return $this->view->render($response, 'user/data/change-image.twig', [
             'data' => $user['data'],
+            'img' => $image['data'],
+            'pagination' => $image['pagination']
         ]);
     }
 
@@ -1923,10 +1972,10 @@ class UserController extends BaseController
         $idl = $_SESSION['login']['id'];
 // var_dump($_FILES);die;
         try {
-            $result = $this->client->request('POST', $this->router->pathFor('api.user.image') , [
+            $result = $this->client->request('POST', $this->router->pathFor('api.user.change.image') , [
                 'multipart' => [
                     [
-                        'name'     => 'image',
+                        'name'     => 'images',
                         'filename' => $name,
                         'Mime-Type'=> $mime,
                         'contents' => fopen( $path, 'r' )
@@ -1946,7 +1995,55 @@ class UserController extends BaseController
 
 
         if ($data['error'] == false) {
-            $this->flash->addMessage('success_material', 'Foto profil berhasil diubah');
+            $this->flash->addMessage('success_material', 'Foto profil di upload');
+            return $response->withRedirect($this->router->pathFor('user.change-image'));
+            $_SESSION['login'] = $newUser['data'];
+        } else {
+            $this->flash->addMessage('warning_material', $data['message']);
+            return $response->withRedirect($this->router->pathFor('user.change-image'));
+        }
+    }
+
+    public function changeImageGalery(Request $requst, Response $response, $args)
+    {
+       try {
+            $result1 = $this->client->request('POST',
+            $this->router->pathFor('api.user.post.image', ['images' => $args['images']] ), [
+                 'query' => [
+                     'id' => $_SESSION['login']['id']
+            ]]);
+            // $content = json_decode($result1->getBody()->getContents());
+        } catch (GuzzleException $e) {
+            $result1 = $e->getResponse();
+        }
+        $change = json_decode($result1->getBody()->getContents(), true);
+
+        if ($data['error'] == false) {
+            $this->flash->addMessage('success_material', 'Foto profil di ubah');
+            return $response->withRedirect($this->router->pathFor('user.change-image'));
+            $_SESSION['login'] = $newUser['data'];
+        } else {
+            $this->flash->addMessage('warning_material', $data['message']);
+            return $response->withRedirect($this->router->pathFor('user.change-image'));
+        }
+    }
+
+    public function deleteImageGalery(Request $request, Response $response, $args)
+    {
+       try {
+            $result1 = $this->client->request('GET',
+            $this->router->pathFor('api.user.delete.image', ['id' => $args['id']] ), [
+                 'query' => [
+                     'id' => $_SESSION['login']['id']
+            ]]);
+            // $content = json_decode($result1->getBody()->getContents());
+        } catch (GuzzleException $e) {
+            $result1 = $e->getResponse();
+        }
+        $delete = json_decode($result1->getBody()->getContents(), true);
+
+        if ($data['error'] == false) {
+            $this->flash->addMessage('success_material', 'Foto berhasil dihapus');
             return $response->withRedirect($this->router->pathFor('user.change-image'));
             $_SESSION['login'] = $newUser['data'];
         } else {

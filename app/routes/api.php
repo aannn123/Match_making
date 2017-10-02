@@ -3,9 +3,6 @@
     $app->get('/activateaccount/{token}', 'App\Controllers\Api\Users\UserController:activateAccount')->setName('api.activate');
 $app->group('/api', function() use ($app, $container) {
 
-    $app->post('/search/pria', 'App\Controllers\Api\Users\UserController:searchUserPria')->setName('api.search.User.Pria');
-
-    $app->post('/search/wanita', 'App\Controllers\Api\Users\UserController:searchUserWanita')->setName('api.search.User.Wanita');
 
     $app->get('/', 'App\Controllers\Api\HomeController:index')->setName('home');
     $app->post('/register', 'App\Controllers\Api\Users\UserController:register')->setName('register');
@@ -17,6 +14,8 @@ $app->group('/api', function() use ($app, $container) {
     $app->get('/test', 'App\Controllers\Api\AdminController:test')->setName('test');
 
     $app->group('/admin', function() use ($app, $container) {
+        $app->post('/create/member', 'App\Controllers\Api\Users\UserController:createMember')->setName('api.admin.create.user');
+
         $app->get('/setModerator/{id}', 'App\Controllers\Api\AdminController:setModerator')->setName('admin.setModerator');
         $app->get('/approveUser/{id}', 'App\Controllers\Api\AdminController:approveUser')->setName('admin.approve.user');
         $app->get('/user/cancel/{id}', 'App\Controllers\Api\AdminController:cancelUser')->setName('admin.cancel.user');
@@ -58,7 +57,7 @@ $app->group('/api', function() use ($app, $container) {
 
     $app->group('/user', function() use ($app, $container) {
         $app->get('', 'App\Controllers\Api\Users\UserController:getAllData')->setName('api.show.user');
-        $app->get('/find/request/{id}', 'App\Controllers\Api\Users\UserController:findRequest')->setName('api.show.request');
+        $app->get('/find/request/{id}', 'App\Controllers\Api\Users\UserController:findRequest')->setName('api.show.find.request');
         $app->post('/change-password', 'App\Controllers\Api\Users\UserController:changePassword')->setName('api.user.change-password');
         $app->get('/join', 'App\Controllers\Api\Users\UserController:allJoinUser')->setName('api.show.user.join');
         $app->get('/find/{id}', 'App\Controllers\Api\Users\UserController:findByUser')->setName('api.find.user');
@@ -75,8 +74,19 @@ $app->group('/api', function() use ($app, $container) {
         $app->get('/cancel-request/{id}', 'App\Controllers\Api\Users\UserController:cancelRequest')->setName('api.user.cancel-request');
         $app->get('/all-notification-cancel', 'App\Controllers\Api\Users\UserController:getAllBlokirRequestUser')->setName('api.user.cancel-notification');
         $app->get('/delete/notification/{id}', 'App\Controllers\Api\Users\UserController:deleteNotification')->setName('api.user.delete.notification');
-        $app->get('/image-all', 'App\Controllers\Api\Users\UserController:getImageUser')->setName('api.user.get.image');
         $app->get('/get/taaruf', 'App\Controllers\Api\Users\UserController:getTaarufUser')->setName('api.user.get.taaruf');
+
+        $app->get('/image-all', 'App\Controllers\Api\Users\UserController:getImageUser')->setName('api.user.get.image');
+        $app->post('/image-all/post/{images}', 'App\Controllers\Api\Users\UserController:postChangeImage')->setName('api.user.post.image');
+        $app->get('/image-all/delete/{id}', 'App\Controllers\Api\Users\UserController:deleteImageGalery')->setName('api.user.delete.image');
+
+        $app->get('/find/image/{id}', 'App\Controllers\Api\Users\UserController:findImage')->setName('api.user.find.image');
+
+        $app->post('/change/images', 'App\Controllers\Api\Users\UserController:changeImage')->setName('api.user.change.image');
+
+        $app->post('/search/pria', 'App\Controllers\Api\Users\UserController:searchUserPria')->setName('api.search.User.Pria');
+
+        $app->post('/search/wanita', 'App\Controllers\Api\Users\UserController:searchUserWanita')->setName('api.search.User.Wanita');
 
 
         $app->group('/profile', function() use ($app, $container) {

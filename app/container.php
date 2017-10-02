@@ -49,6 +49,10 @@ $container['view'] = function ($container) {
 		$view->getEnvironment()->addGlobal('back', $_SESSION['back']);
 	}
 
+    if (@$_SESSION['notif']) {
+        $view->getEnvironment()->addGlobal('notif', $_SESSION['notif']);
+    }
+
 	$view->getEnvironment()->addGlobal('flash', $container->flash);
 
 	return $view;

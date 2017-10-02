@@ -2,11 +2,12 @@
 <nav style="width:100%;">
     <div class="blue">
         <div class="nav-wrapper">
-          &nbsp;<a href="{{ path_for('user.home') }}" class=""><i class="fa fa-instagram fa-2x"></i><b style="font-size:20px; font-family:initial;font-style:oblique"> Match Making</b></a>
+          &nbsp;<a href="{{ path_for('user.home') }}" class=""><!-- <i class="fa fa-instagram fa-2x"></i> --><b style="font-size:20px; font-family:initial;font-style:oblique"> Match Making</b></a>
           <ul class="right">
             <li><a href="#modal1" class="modal-trigger" ><i class="material-icons">search</i></a></li>
             <li><a href="{{ path_for('user.statistik') }}" style=""><i class="material-icons">equalizer</i></a></li>
-            <li><a href="{{ path_for('user.notification') }}"><i class="material-icons">notifications_none</i><span class="new badge red" style="position:absolute;margin:3px;border-radius:100px;top:2px;right:46px" data-badge-caption="10"></span></a></li>
+            
+            <li><a href="{{ path_for('user.notification') }}"><i class="material-icons">notifications_none</i><!-- <span class="new badge red" style="position:absolute;margin:3px;border-radius:100px;top:2px;right:46px" data-badge-caption="{{notif.count}}"></span> --></a></li>
             <li><a href="{{ path_for('user.my.profil') }}"><i class="material-icons">account_circle</i></a></li>
           </ul>
         </div>
@@ -39,7 +40,7 @@
           <ul class="right">
             <li class="disabled" style="cursor: not-allowed"><a href="#modal1" class="modal-trigger" ><i class="material-icons">search</i></a></li>
             <li class="disabled" style="cursor: not-allowed"><a href="{{ path_for('user.statistik') }}" style=""><i class="material-icons">equalizer</i></a></li>
-            <li class="disabled" style="cursor: not-allowed"><a href="{{ path_for('user.notification') }}"><i class="material-icons">notifications_none</i><span class="new badge red" style="position:absolute;margin:3px;border-radius:100px;top:2px;right:46px" data-badge-caption="10"></span></a></li>
+            <li class="disabled" style="cursor: not-allowed"><a href="{{ path_for('user.notification') }}"><i class="material-icons">notifications_none</i><!-- <span class="new badge red" style="position:absolute;margin:3px;border-radius:100px;top:2px;right:46px" data-badge-caption="10"></span> --></a></li>
             <li><a href="{{ path_for('user.my.profil', {id:login.id}) }}"><i class="material-icons">account_circle</i></a></li>
           </ul>
         </div>

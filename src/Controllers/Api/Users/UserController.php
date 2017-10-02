@@ -178,6 +178,62 @@ class UserController extends BaseController
 
         return $data;
     }
+    // Method create Member
+    public function createMember($request, $response)
+    {
+        $user = new UserModel($this->db);
+        $userToken = new UserToken($this->db);
+        $token = $request->getHeader('Authorization')[0];
+        $userId = $userToken->getUserId($token);
+
+         $this->validator
+        ->rule('required', ['username', 'gender', 'phone', 'email','password', 'role'])
+        ->message('{field} harus diisi')
+        ->label('Username', 'gender', 'Nomor Telepon', 'Email','password');
+        $this->validator->rule('email', 'email');
+        $this->validator->rule('alphaNum', 'username');
+        $this->validator->rule('lengthMin', ['username', 'password'], 5);
+        $this->validator->rule('lengthMax', ['username', 'password'], 50);
+
+        if ($this->validator->validate()) {
+            $register = $user->checkDuplicate($request->getParsedBody()['username'], $request->getParsedBody()['email']);
+            if ($register == 3) {
+                $data = $this->responseDetail(409, true, 'Username dan Email sudah digunakan');
+            } elseif ($register == 1) {
+                $data = $this->responseDetail(409, true, 'Username sudah digunakan');
+            } elseif ($register == 2) {
+                $data = $this->responseDetail(409, true, 'Email sudah digunakan');
+            } else {
+                if ($request->getParsedBody()['role'] == 0) {
+
+                    $createMember = $user->createMember($request->getParsedBody());
+                    $user->setActive($createMember);
+                    $findUser = $user->find('id', $createMember);
+                    $data = $this->responseDetail(201, false, 'User Berhasil Di Tambahkan', [
+                            'data' => $findUser,
+                        ]);
+                    
+                } elseif ($request->getParsedBody()['role'] == 2) {
+                    $createModerator = $user->createMember($request->getParsedBody());
+                    $user->setApproveUser($createModerator);
+                    $findUser = $user->find('id', $createModerator);
+                    $data = $this->responseDetail(201, false, 'Moderator Berhasil Di Tambahkan', [
+                            'data' => $findUser,
+                        ]);
+                } else {
+                    $createAdmin = $user->createMember($request->getParsedBody());
+                    $findUser = $user->find('id', $createAdmin);
+                    $data = $this->responseDetail(201, false, 'Admin Berhasil Di Tambahkan', [
+                            'data' => $findUser,
+                        ]);
+                }
+        } 
+    } else {
+        $data = $this->responseDetail(400, true, $this->validator->errors());
+    }
+        return $data;
+}
+
     // Method register
     public function register($request, $response)
     {
@@ -191,6 +247,7 @@ class UserController extends BaseController
         ->label('Username', 'gender', 'Nomor Telepon', 'Email','password');
         $this->validator->rule('email', 'email');
         $this->validator->rule('alphaNum', 'username');
+        $this->validator->rule('numeric', 'phone');
         $this->validator->rule('lengthMin', ['username', 'password'], 5);
         $this->validator->rule('lengthMax', ['username', 'password'], 50);
 
@@ -1086,37 +1143,6 @@ class UserController extends BaseController
       
     }
 
-    public function getImageUser($request, $response)
-    {
-         $user = new UserModel($this->db);
-        $userToken = new userToken($this->db);
-        $token = $request->getHeader('Authorization')[0];
-        $userId = $userToken->getUserId($token);
-
-        $get = $user->getImage($userId);
-        $gender = $user->find('gender');
-        // var_dump($gender);die();
-        $countUser = count($get);
-        $query = $request->getQueryParams();
-        if ($get) {
-            $page = !$request->getQueryParam('page') ? 1 : $request->getQueryParam('page');
-            $perPage = $request->getQueryParam('perpage');
-            $getUser = $user->getImage($userId)->setPaginate($page, $perPage);
-
-            if ($getUser) {
-                $data = $this->responseDetail(200, false,  'Data tersedia', [
-                        'data'          =>  $getUser['data'],
-                        'pagination'    =>  $getUser['pagination'],
-                    ]);
-            } else {
-                $data = $this->responseDetail(404, true, 'Data tidak ditemukan');
-            }
-        } else {
-            $data = $this->responseDetail(204, false, 'Tidak ada konten');
-        }
-
-        return $data;
-    }
 
     public function findRequest($request, $response, $args)
     {
@@ -1127,7 +1153,7 @@ class UserController extends BaseController
         $userId = $userToken->getUserId($token);
 
         $findUser = $requests->findTwoRequest('id_perequest', $userId, 'id_terequest', $args['id']);
-        var_dump($findUser);die;
+        // var_dump($findUser);die;
 
         if ($findRequest) {
             return $data = $this->responseDetail(200, false, 'Data tersedia');
@@ -1168,5 +1194,161 @@ class UserController extends BaseController
 
         return $data;
     }
+
+    public function changeImage($request, $response)
+    {
+        $user = new UserModel($this->db);
+        $userToken = new userToken($this->db);
+        $token = $request->getHeader('Authorization')[0];
+        $userId = $userToken->getUserId($token);
+        $img = new \App\Models\Users\ImageModel($this->db);
+
+       $findUser = $user->getUser('id', $userId);
+       $findImage = $img->getImages('user_id', $userId);
+
+       // var_dump($findUser);die;
+        if (!$findUser) {
+            return $this->responseDetail(404, true, 'Akun tidak ditemukan');
+        }
+        if ($this->validator->validate()) {
+
+            if (!empty($request->getUploadedFiles()['images'])) {
+                $storage = new \Upload\Storage\FileSystem('assets/images');
+                $image = new \Upload\File('images',$storage);
+
+                $image->setName(uniqid('img-'.date('Ymd').'-'));
+                $image->addValidations(array(
+                    new \Upload\Validation\Mimetype(array('image/png', 'image/gif',
+                    'image/jpg', 'image/jpeg')),
+                    new \Upload\Validation\Size('2M')
+                ));
+
+                $image->upload();
+                $data['user_id'] = $userId;
+                $data['images'] = $image->getNameWithExtension();
+                $photo['photo'] = $image->getNameWithExtension();
+                // var_dump($data);die;
+                $img->postImage($data);
+                $user->updateData($photo, $userId);
+                // $newImg = $img->find('id', $userId);
+                if (file_exists('assets/images/'.$findImage['images'])) {
+                    // unlink('assets/images/'.$findImage['images']);die();
+                }
+                return  $this->responseDetail(200, false, 'Foto berhasil diunggah', [
+                    'data' => $findImage
+                ]);
+
+            } else {
+                return $this->responseDetail(400, true, 'File foto belum dipilih');
+
+            }
+        } else {
+            $errors = $this->validator->errors();
+
+            return  $this->responseDetail(400, true, $errors);
+        }      
+    }
+
+    public function getImageUser($request, $response)
+    {
+        $user = new UserModel($this->db);
+        $img = new \App\Models\Users\ImageModel($this->db);
+        $userToken = new userToken($this->db);
+        $token = $request->getHeader('Authorization')[0];
+        $userId = $userToken->getUserId($token);
+
+        $get = $img->getImage($userId);
+        $gender = $user->find('gender');
+        // var_dump($gender);die();
+        $countUser = count($get);
+        $query = $request->getQueryParams();
+        if ($get) {
+            $page = !$request->getQueryParam('page') ? 1 : $request->getQueryParam('page');
+            $perPage = $request->getQueryParam('perpage');
+            $getUser = $img->getImage($userId)->setPaginate($page, $perPage);
+
+            if ($getUser) {
+                $data = $this->responseDetail(200, false,  'Data tersedia', [
+                        'data'          =>  $getUser['data'],
+                        'pagination'    =>  $getUser['pagination'],
+                    ]);
+            } else {
+                $data = $this->responseDetail(404, true, 'Data tidak ditemukan');
+            }
+        } else {
+            $data = $this->responseDetail(204, false, 'Tidak ada konten');
+        }
+
+        return $data;
+    }
+
+    public function postChangeImage($request, $response, $args)
+    {
+        $user = new UserModel($this->db);
+        $img = new \App\Models\Users\ImageModel($this->db);
+        $userToken = new userToken($this->db);
+        $token = $request->getHeader('Authorization')[0];
+        $userId = $userToken->getUserId($token);
+
+        // $findImage = $img->find('images', $args['images']);
+        $images = $img->getImages('images', $args['images']);
+        // var_dump($images['images']);die;
+        $data['photo'] = $images['images'];
+        // var_dump($userId);die;
+        if ($images) {
+            $update = $user->updateData($data, $userId);
+            $images = $user->find('photo', $args['images']);
+            $data = $this->responseDetail(200, false, 'Foto berhasil di perbarui', [
+                    'data' => $images
+                ]);
+        } else {
+            $data = $this->responseDetail(404, true, 'Foto tidak ditemukan');
+        }
+            return $data;
+    }
+
+     public function deleteImageGalery($request, $response, $args)
+    {
+        $user = new UserModel($this->db);
+        $img = new \App\Models\Users\ImageModel($this->db);
+        $userToken = new userToken($this->db);
+        $token = $request->getHeader('Authorization')[0];
+        $userId = $userToken->getUserId($token);
+
+        // $findImage = $img->find('images', $args['images']);
+        $findImage = $img->find('id', $args['id']);
+        // var_dump($images['images']);die;
+        // $data['photo'] = $images['images'];
+        // var_dump($userId);die;
+        if ($findImage) {
+            $delete = $img->deleteImage($args['id'], $userId);
+            $images = $img->find('id', $args['id']);
+            $data = $this->responseDetail(200, false, 'Foto berhasil di hapus', [
+                    'data' => $images
+                ]);
+        } else {
+            $data = $this->responseDetail(404, true, 'Foto tidak ditemukan');
+        }
+            return $data;
+    }
+
+    //  public function findImage($request, $response, $args)
+    // {
+    //     $img = new ImageModel($this->db);
+    //     $userToken = new userToken($this->db);
+    //     $token = $request->getHeader('Authorization')[0];
+    //     $userId = $userToken->getUserId($token);
+    //     $finduser = $img->find('user_id', $args['id']);
+    //     var_dump($find['blokir']);die;
+    //     // if ($finduser) {
+    //     //     $data = $this->responseDetail(200, false, 'Berhasil menampilkan user berdasarkan id', [
+    //     //         'data' => $finduser
+    //     //     ]);
+    //     // } else {
+    //     //     $data = $this->responseDetail(404, true, 'User tidak ditemukan');
+    //     // }
+
+    //     // return $data;
+    // }
 
 }

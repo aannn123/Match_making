@@ -867,8 +867,61 @@ class AdminController extends BaseController
 
     }
 
-    // public function createMember($)
-    // {
-        
-    // }
+    public function getCreateMember(Request $request, Response $response)
+    {
+        return $this->view->render($response, 'admin/crud/user/create.twig');
+    }
+
+    public function createMember(Request $request, Response $response)
+    {
+        $this->validator->rule('required', ['username', 'email', 'password', 'phone', 'gender', 'role'])
+        ->labels(array(
+            'username' => 'Username', 
+            'email' => 'Email', 
+            'password' => 'Password', 
+            'phone' => 'Nomor Telepon', 
+            'gender' => 'Jenis Kelamin', 
+            'roel' => 'Status Member', 
+
+        ));
+        $this->validator->rule('email', 'email');
+        $this->validator->rule('numeric', 'phone');
+        $this->validator->rule('alphaNum', 'username');
+        $this->validator->rule('lengthMin', ['username', 'password'], 5);
+        $this->validator->rule('lengthMax', ['username', 'password'], 20);
+        try {
+               $result = $this->client->request('POST',
+               $this->router->pathFor('api.admin.create.user'),
+                   ['form_params' => [
+                       'username' => $request->getParam('username'),
+                       'email' => $request->getParam('email'),
+                       'phone' => $request->getParam('phone'),
+                       'password' => $request->getParam('password'),
+                       'gender' => $request->getParam('gender'),
+                       'role' => $request->getParam('role'),
+                       'photo' => 'avatar.png',
+                       'ktp' => 'avatar.png',
+                   ]
+               ]);
+           } catch (GuzzleException $e) {
+               $result = $e->getResponse();
+           }
+           $data = json_decode($result->getBody()->getContents(), true);
+           
+            // var_dump($data['message']);die;
+        if ($this->validator->validate()) {
+           if ($data['code'] == 201 ) {
+                $this->flash->addMessage('success', $data['message']);
+                return $response->withRedirect($this->router->pathFor('admin.create.user'));
+           } else {
+               $_SESSION['old'] = $request->getParams();
+                $this->flash->addMessage('errors', $data['message']);
+                return $response->withRedirect($this->router->pathFor('admin.create.user'));
+           }
+       } else {
+        $_SESSION['errors'] = $this->validator->errors();
+        $_SESSION['old'] = $request->getParams();
+        return $response->withRedirect($this->router->pathFor('admin.create.user'));
+       }
+    }
 }

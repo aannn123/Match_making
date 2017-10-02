@@ -24,7 +24,7 @@ $app->get('/404', 'App\Controllers\Web\HomeController:notFound')->setName('not.f
 $app->group('', function() use ($app, $container) {
 
 $app->group('/admin', function() use ($app, $container) {
-    $app->get('/home', 'App\Controllers\Web\HomeController:index')->setName('admin.home');
+        $app->get('/home', 'App\Controllers\Web\HomeController:index')->setName('admin.home');
         $app->get('/get/notification',  'App\Controllers\Web\AdminController:getNotification')->setName('admin.notification.all');
     $app->group('/user', function() use ($app, $container) {
         $app->get('',  'App\Controllers\Web\AdminController:getAllUser')->setName('admin.user');
@@ -41,6 +41,8 @@ $app->group('/admin', function() use ($app, $container) {
         $app->get('/get-taaruf/find/{perequest}/{terequest}',  'App\Controllers\Web\AdminController:findTaaruf')->setName('admin.find.taaruf');
         $app->get('/get-request-all',  'App\Controllers\Web\AdminController:getAllRequest')->setName('admin.show.all.request');
         $app->get('/get-taaruf/cancel/taaruf/{id}',  'App\Controllers\Web\AdminController:cancelTaaruf')->setName('admin.cancel.taaruf');
+        $app->get('/create', 'App\Controllers\Web\AdminController:getCreateMember')->setName('admin.create.user');
+        $app->post('/create/user', 'App\Controllers\Web\AdminController:createMember')->setName('admin.post.create.user');
         // $app->get('/search-user',  'App\Controllers\Web\AdminController:searchUser')->setName('admin.search.user');
 
     });
@@ -136,6 +138,10 @@ $app->group('/admin', function() use ($app, $container) {
         $app->get('/approve/request/{id}',  'App\Controllers\Web\UserController:approveRequest')->setName('user.approve.request');
 
         $app->get('/change/image',  'App\Controllers\Web\UserController:getUploadImage')->setName('user.change-image');
+
+        $app->post('/change/image/{images}',  'App\Controllers\Web\UserController:changeImageGalery')->setName('user.change-image.post.galery');
+        
+        $app->get('/change/image/delete/{id}',  'App\Controllers\Web\UserController:deleteImageGalery')->setName('user.change-image.delete.galery');
 
         $app->post('/change/image',  'App\Controllers\Web\UserController:uploadImage')->setName('user.post.change-image');
 

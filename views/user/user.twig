@@ -11,7 +11,7 @@
     <div class="row" style="width:100%;margin-top:25px">
     {% for profil in data %} 
     <div class="col s6 m6">
-      <div class="card">
+      <div class="card" style="">
         <div class="card-image">
           <img src="{{ base_url() }}/assets/picture/avatar.png">
           <a href="{{ path_for('user.send-request', {id:profil.user_id}) }}" class="btn-floating halfway-fab waves-effect waves-light blue tooltipped pulse" data-position="bottom" data-delay="50" data-tooltip="Send Request"><i class="fa fa-paper-plane -o" style="color:white"></i></a>
@@ -55,10 +55,10 @@
           <p><b>- Negara :</b> {{profil1.kewarganegaraan}}.</p>
           <p><b>- Provinsi : </b> {{profil1.provinsi}}.</p>
           <p><b>- Kota : </b> {{profil1.kota}}.</p>
-          {% if profil1.status_request == 2 %}
-          <p><b>Status : </b> <span class="new badge" data-badge-caption="Sedang Taaruf."></span>.</p>
-          {% elseif profil1.status_request == 1 %}
-          <p><b>Status : </b><b class="badge" style="color:white">Available</b>.</p>
+          {% if profil1.status_request == 2  %}
+          <p><b>Status : </b> <span class="new badge" data-badge-caption="Sedang Taaruf."></span></p>
+          {% else %}
+           <p><b>Status : </b> <span class="new badge" data-badge-caption="Available."></span>.</p>
           {% endif %}
         </div>
          <div class="card-action">
@@ -121,6 +121,7 @@
           
       {% endif %}
 
+
     <center><ul class="pagination">
       {% if pagination.current > pagination.first_page %}
               <li class="page-item">
@@ -155,6 +156,8 @@
       </nav>
   </div>
 </div></center>
+
+
 
   
 {% endblock %}

@@ -35,15 +35,15 @@
               <li><a href="{{ base_url() }}/admin/provinsi" data-i18n="nav.gallery_pages.gallery_grid" class="menu-item">Provinsi</a>
               </li>
               <li><a href="{{ base_url() }}/admin/kota" data-i18n="nav.search_pages.search_page" class="menu-item">Kota</a>
-              <li><a href="{{ base_url() }}/admin/kota" data-i18n="nav.search_pages.search_page" class="menu-item">Member</a>
+              <li><a href="{{ base_url() }}/admin/user/create" data-i18n="nav.search_pages.search_page" class="menu-item">Member</a>
               </li>
             </ul>
           </li>
           <li class=" nav-item"><a href="#"><i class="icon-ios-albums-outline"></i><span data-i18n="nav.cards.main" class="menu-title">Notification</span></a>
             <ul class="menu-content">
-              <li><a href="card-bootstrap.html" data-i18n="nav.cards.card_bootstrap" class="menu-item">Bootstrap Cards</a>
+              <li><a href="{{ path_for('admin.notification.all') }}" data-i18n="nav.cards.card_bootstrap" class="menu-item">All Notification</a>
               </li>
-              <li><a href="card-actions.html" data-i18n="nav.cards.card_actions" class="menu-item">Card Action</a>
+              <!-- <li><a href="card-actions.html" data-i18n="nav.cards.card_actions" class="menu-item">Card Action</a> -->
               </li>
             </ul>
           </li>

@@ -1,0 +1,117 @@
+{% extends 'templates/default.twig' %}
+{% block title %}
+    create member
+{% endblock %}
+{% block wrapper %} Create Member {% endblock %}
+{% block breadcrumb %} CRUD {% endblock %}
+{% block breadcrumb_active %} Member {% endblock %}
+{% block content %}
+<div class="app-content content container-fluid">
+    <div class="content-wrapper">
+        <div class="content-body">
+        <div class="row">
+    <div class="col-xs-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Create Member</h4>
+                <a class="heading-elements-toggle"><i class="icon-ellipsis font-medium-3"></i></a>
+                <div class="heading-elements">
+                    <ul class="list-inline mb-0">
+                        <li><a data-action="reload"><i class="icon-reload"></i></a></li>
+                        <li><a data-action="expand"><i class="icon-expand2"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-block">
+                    <form action="{{ path_for('admin.post.create.user') }}" method="POST">
+
+                            <div class="col-md-6 ">
+                                <div class="form-group  {{ errors.username ? 'has-error' : '' }}">
+                            <label for="complaintinput6">Username :</label>
+                            <input type="text" id="complaintinput6" class="form-control" placeholder="Username" name="username" value="{{old.username}}">
+                            {% if errors.username %}
+                                <span style="color:#FF0000">*
+                                {{errors.username | first}}</span>
+                            {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group {{ errors.email ? 'has-error' : '' }}">
+                            <label for="complaintinput6">Email :</label>
+                            <input type="email" id="complaintinput6" class="form-control" placeholder="Email" name="email" value="{{old.email}}">
+                            {% if errors.email %}
+                                <span style="color:#FF0000">*
+                                {{errors.email | first}}</span>
+                            {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group {{ errors.phone ? 'has-error' : '' }}">
+                            <label for="complaintinput6">Nomor Telepon :</label>
+                            <input type="text" id="complaintinput6" class="form-control" placeholder="Nomor Telepon" name="phone" value="{{old.phone}}">
+                            {% if errors.phone %}
+                                <span style="color:#FF0000">*
+                                {{errors.phone | first}}</span>
+                            {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group {{ errors.password ? 'has-error' : '' }}">
+                            <label for="complaintinput6">Password :</label>
+                            <input type="password" id="complaintinput6" class="form-control" placeholder="Password" name="password" value="{{old.password}}">
+                            {% if errors.password %}
+                                <span style="color:#FF0000">*
+                                {{errors.password | first}}</span>
+                            {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group {{ errors.gender ? 'has-error' : '' }}">
+                            <label for="complaintinput6">Jenis Kelamin :</label>
+                            <select name="gender" id="complaintinput6" class="form-control" >
+                                <option value="">Pilih Jenis Kelamin</option>
+                                <option value="laki-laki" {% if old.gender == 'laki-laki' %} selected="selected" {% endif %}>laki-laki</option>
+                                <option value="perempuan" {% if old.gender == 'perempuan' %} selected="selected" {% endif %}>perempuan</option>
+                            </select>
+                            {% if errors.gender %}
+                                <span style="color:#FF0000">*
+                                {{errors.gender | first}}</span>
+                            {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group {{ errors.role ? 'has-error' : '' }}">
+                            <label for="complaintinput6">Status Member :</label>
+                            <select name="role" id="complaintinput6" class="form-control" >
+                                <option value="">Pilih Status Member</option>
+                                <option value="0" {% if old.role == '0' %}{% endif %}>Member</option>
+                                <option value="1" {% if old.role == '1' %}{% endif %}>Admin</option>
+                                <option value="2" {% if old.role == '2' %}{% endif %}>Moderator</option>
+                            </select>
+                            {% if errors.role %}
+                                <span style="color:#FF0000">*
+                                {{errors.role | first}}</span>
+                            {% endif %}
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-outline-primary" style="float:right">Save changes</button>
+                            </form>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

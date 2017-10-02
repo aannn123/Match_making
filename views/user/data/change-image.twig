@@ -48,7 +48,18 @@
     <div id="galery" class="col s12">
      <div class="divider"></div>
             <div class="row section">
-        <div class="col s4 m4 l4">
+
+      {% for image in img %}
+       <div class="col s4 m4 l4">
+          <div class="card">
+            <div class="card-image">
+              <a href="#{{image.id}}" class="modal-trigger"><img src="{{ base_url() }}/assets/images/{{image.images}}" style="width:150px;height:150px" class="responsive-img"></a>
+            </div>
+        </div>
+      </div>
+      {% endfor %}
+
+      <!--  <div class="col s4 m4 l4">
           <div class="card">
             <div class="card-image">
               <a href="#upload" class="modal-trigger"><img src="{{ base_url() }}/assets/picture/avatar.png"></a>
@@ -61,36 +72,23 @@
               <a href="#upload" class="modal-trigger"><img src="{{ base_url() }}/assets/picture/avatar.png"></a>
             </div>
         </div>
-      </div>
-       <div class="col s4 m4 l4">
-          <div class="card">
-            <div class="card-image">
-              <a href="#upload" class="modal-trigger"><img src="{{ base_url() }}/assets/picture/avatar.png"></a>
-            </div>
-        </div>
-      </div>
-       <div class="col s4 m4 l4">
-          <div class="card">
-            <div class="card-image">
-              <a href="#upload" class="modal-trigger"><img src="{{ base_url() }}/assets/picture/avatar.png"></a>
-            </div>
-        </div>
-      </div>
+      </div> -->
     </div>
   </div>
 
   <!-- Modal Structure -->
-  <div id="upload" class="modal modal-fixed-footer">
+  {% for image in img %}
+  <div id="{{image.id}}" class="modal modal-fixed-footer">
     <div class="modal-content">
       <div class="col s12 m12 l12">
-            <p style="font-family:initial;font-style:oblique;font-size:20px;text-decoration:underline">Take a picture</p>
           </div>
+            <p style="font-family:initial;font-style:oblique;font-size:20px;text-decoration:underline">Take a picture</p>
       <p>
         <div class="row section">
          
           <div class="col s12 m12 l12"><br>
-          <form action="">
-             <center><img class="responsive-img" style="width:50%;border: 5px solid #ecf0f1" src="{{ base_url() }}/assets/picture/avatar.png" alt=""></center>
+          <form action="{{ path_for('user.change-image.post.galery', {images:image.images}) }}" method="POST">
+             <center><img class="responsive-img materialboxed" style="width:50%;border: 5px solid #ecf0f1" src="{{ base_url() }}/assets/images/{{image.images}}" alt="" class="responsive-img materialboxed"></center>
           </div><br>
         <center><a href=""><button style="margin:10px" class="btn waves-effect waves-light blue">change image</button></a></center>
         </form>
@@ -98,10 +96,54 @@
       </p>
     </div>
     <div class="modal-footer">
-      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Close</a>
+      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat " style="color:green">Close</a>
+      <a href="{{path_for('user.change-image.delete.galery', {id:image.id})}}" class="waves-effect waves-green btn-flat" style="color:red">Delete</a>
     </div>
   </div>
-          
+  
+  {% endfor %}
+   <center><ul class="pagination">
+      {% if pagination.current > pagination.first_page %}
+              <li class="page-item">
+                  <a class="page-link " href="{{ base_url() }}/user/change/image?page={{ pagination.first_page }}" aria-label="Previous">
+                      <span aria-hidden="true">&laquo; first page</span>
+                      <span class="sr-only">Previous</span>
+                  </a>
+              </li>
+               <li class="page-item">
+                  <a class="" href="{{ base_url() }}/user/change/image?page={{ pagination.current - 1 }}" aria-label="Previous">
+                      <span aria-hidden="true"></span>
+                      <span class="sr-only">Previous</span> {{ pagination.current - 1 }}
+                  </a>
+              </li>
+      {% endif %}
+              <li class="page-item"><a class="page-link" href="">{{ pagination.current }}</a></li>
+      {% if pagination.current < pagination.total_page %}
+               <li class="page-item">
+                  <a class="page-link" href="{{ base_url() }}/user/change/image?page={{ pagination.current + 1 }}" aria-label="Next">
+                      <span aria-hidden="true"></span>
+                      <span class="sr-only">Next</span> {{ pagination.current + 1 }}
+                  </a>
+              </li>
+              <li class="page-item">
+                  <a class="page-link" href="{{ base_url() }}/user/change/image?page={{ pagination.total_page }}" aria-label="Next">
+                      <span aria-hidden="true">last page &raquo;</span>
+                      <span class="sr-only">Next</span>
+                  </a>
+              </li>
+              {% endif %}
+          </ul>
+      </nav>
+  </div>
+</div></center>
+  </div>
+  </div>
+
+  </div>
+  </div>
+  </div>
+
+      
 {% block js %}
     <script src="{{ base_url() }}/assets/assets/js/dropify.min.js" type="text/javascript"></script>
     

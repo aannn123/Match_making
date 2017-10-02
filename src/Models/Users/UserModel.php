@@ -43,6 +43,15 @@ class UserModel extends BaseModel
         return $this->db->lastInsertId();
     }
 
+    // public function updateImage(array $data, $id)
+    // {
+    //     $data = [
+    //         'photo' => $data['photo'],
+    //     ];
+    //     $this->updateData($data, $id);
+    //     return $this->db->lastInsertId();
+    // }
+
     public function updateUser(array $data, $images, $id)
     {
         $data = [
