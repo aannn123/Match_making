@@ -27,7 +27,12 @@
           <p><b>- Provinsi : </b> {{profil.provinsi}}.</p>
           <p><b>- Kota : </b> {{profil.kota}}.</p>
           <!-- <p><b>Status : </b> <span class="new badge" data-badge-caption="Sedang Taaruf."></span>.</p> -->
+          {% if profil.status_request == null %}
+          <p><b>Status : </b><a class="btn btn-floating pulse" style="width:10px;height:10px"></a><b style=" font-family:initial;font-style:oblique;font-size:12px"> Available</b>.</p>
+          {% else %}
           <p><b>Status : </b><a class="btn btn-floating pulse" style="width:10px;height:10px"></a><b style=" font-family:initial;font-style:oblique;font-size:12px"> Sedang Taaruf</b>.</p>
+              
+          {% endif %}
         </div>
          <div class="card-action">
               <center><a href="{{ path_for('user.view.detail.user',  {id:profil.user_id}) }}"><button class="btn waves-effect waves-light blue">Lihat Detail</button></a></center>
@@ -54,11 +59,11 @@
           <p><b>Domisili :</b></p>
           <p><b>- Negara :</b> {{profil1.kewarganegaraan}}.</p>
           <p><b>- Provinsi : </b> {{profil1.provinsi}}.</p>
-          <p><b>- Kota : </b> {{profil1.kota}}.</p>
-          {% if profil1.status_request == 2  %}
-          <p><b>Status : </b> <span class="new badge" data-badge-caption="Sedang Taaruf."></span></p>
-          {% else %}
+          <p><b>- Kota : </b> {{profil1.status_request}}.</p>
+          {% if profil1.status_request == NULL  %}
            <p><b>Status : </b> <span class="new badge" data-badge-caption="Available."></span>.</p>
+          {% else %}
+          <p><b>Status : </b> <span class="new badge" data-badge-caption="Sedang Taaruf."></span></p>
           {% endif %}
         </div>
          <div class="card-action">

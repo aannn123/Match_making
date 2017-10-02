@@ -45,13 +45,13 @@
 
      {% for data in taaruf %}
     {% if login.gender == 'laki-laki' %}
-    <p class="collection-item"><span class="" style="float:right"><a href="{{ path_for('user.cancel.taaruf', {id:data.id_terequest}) }}" style="color:red" data-position="bottom" data-delay="50" data-tooltip="Akhiri Taaruf" class="tooltipped"><i class="material-icons">clear</i></a></span>
+    <p class="collection-item"><span class="" style="float:right"><a href="{{ path_for('user.cancel.taaruf', {id:data.id}) }}" style="color:red" data-position="bottom" data-delay="50" data-tooltip="Akhiri Taaruf" class="tooltipped"><i class="material-icons">clear</i></a></span>
 
     <img src="{{ base_url() }}/assets/picture/avatar.png"  class="circle responsive-img"  width="650" style="width:10%" alt=""><b style="">{{data.perequest}}</b>&emsp;&emsp;&emsp;<b style="font-family:initial;font-style:oblique;font-size:15px">Sedang Taaruf Dengan</b>&emsp;&emsp;&emsp;
     <img src="{{ base_url() }}/assets/picture/woman.jpg"  class="circle responsive-img"  width="650" style="width:10%;" alt=""><b style="">{{data.terequest}}</b>
     </p>
     {% else %}
-    <p class="collection-item"><span class="" style="float:right"><a href="{{ path_for('user.cancel.taaruf', {id:data.id_terequest}) }}" style="color:red" data-position="bottom" data-delay="50" data-tooltip="Akhiri Taaruf" class="tooltipped"><i class="material-icons">clear</i></a></span>
+    <p class="collection-item"><span class="" style="float:right"><a href="{{ path_for('user.cancel.taaruf', {id:data.id}) }}" style="color:red" data-position="bottom" data-delay="50" data-tooltip="Akhiri Taaruf" class="tooltipped"><i class="material-icons">clear</i></a></span>
 
     <img src="{{ base_url() }}/assets/picture/woman.png"  class="circle responsive-img"  width="650" style="width:10%" alt=""><b style="">{{data.perequest}}</b>&emsp;&emsp;&emsp;<b style="font-family:initial;font-style:oblique;font-size:15px">Sedang Taaruf Dengan</b>&emsp;&emsp;&emsp;
     <img src="{{ base_url() }}/assets/picture/avatar.jpg"  class="circle responsive-img"  width="650" style="width:10%;" alt=""><b style="">{{data.terequest}}</b>

@@ -30,7 +30,9 @@
 <img src="{{ base_url() }}/assets/picture/not-acces.png" style="width:50%" alt="">
 </center>
 {% endif %}
-
+{% if pagination.total_data == null %}
+ <center><b class="" style=" font-family:initial;font-style:oblique;font-size:20px">Notifikasi tidak ada</b><br><br>
+{% endif %}
 
   
 {% endblock %}

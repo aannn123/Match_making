@@ -1458,6 +1458,8 @@ class UserController extends BaseController
       return $this->view->render($response, 'user/data/notification/notification.twig', [
           'data' => $data['data'],
           'blokir' => $blokir['data'],
+          'pagination' => $blokir['pagination'],
+          'paginate' => $data['pagination'],
         ]);
 
     }
@@ -2074,10 +2076,10 @@ class UserController extends BaseController
         $data = json_decode($result->getBody()->getContents(), true);
         // var_dump($data);die();
         if ($data['error'] == false) {
-            $this->flash->addMessage('success', $data['message']);
+            $this->flash->addMessage('success_material', "Taaruf berhasil di akhiri");
             return $response->withRedirect($this->router->pathFor('user.statistik'));
         } else {
-            $this->flash->addMessage('error', $data['message']);
+            $this->flash->addMessage('error_material', $data['message']);
             return $response->withRedirect($this->router->pathFor('user.statistik'));
         }
     }
