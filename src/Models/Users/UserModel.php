@@ -148,6 +148,17 @@ class UserModel extends BaseModel
            ->execute();
     }
 
+    public function setUserPremium($id)
+    {
+        $qb = $this->db->createQueryBuilder();
+        $qb->update($this->table)
+           ->set('role', 3)
+           ->where('role = 0')
+           ->andWhere('status = 2')
+           ->andWhere('id ='. $id)
+           ->execute();
+    }
+
     public function changePassword(array $data, $id)
     {
         $dataPassword = [

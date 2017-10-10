@@ -17,6 +17,7 @@ $app->group('/api', function() use ($app, $container) {
         $app->post('/create/member', 'App\Controllers\Api\Users\UserController:createMember')->setName('api.admin.create.user');
 
         $app->get('/setModerator/{id}', 'App\Controllers\Api\AdminController:setModerator')->setName('admin.setModerator');
+        $app->get('/setuserpremium/{id}', 'App\Controllers\Api\AdminController:setMemberPremium')->setName('admin.setUserPremium');
         $app->get('/approveUser/{id}', 'App\Controllers\Api\AdminController:approveUser')->setName('admin.approve.user');
         $app->get('/user/cancel/{id}', 'App\Controllers\Api\AdminController:cancelUser')->setName('admin.cancel.user');
         $app->get('/get-taaruf', 'App\Controllers\Api\AdminController:getTaaruf')->setName('admin.get.taaruf');

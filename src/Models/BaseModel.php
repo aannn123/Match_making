@@ -162,6 +162,7 @@ abstract class BaseModel
          $qb->setParameters($valuesData)
             ->where('id = ' . $id)
             ->execute();
+            return $qb;
      }
 
      // SoftDelete

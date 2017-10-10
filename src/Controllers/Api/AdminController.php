@@ -12,15 +12,6 @@ use App\Models\Users\CiriFisikController;
 
 class AdminController extends BaseController
 {
-    public function showUserPria($request, $response)
-    {
-
-    }
-
-    public function showUserWanita($request, $response)
-    {
-
-    }
 
     public function showProfilUser($request, $response)
     {
@@ -454,10 +445,41 @@ class AdminController extends BaseController
         return $data;
     }
 
-    // public function createMember($)
-    // {
-        
-    // }
+   public function setMemberPremium($request, $response, $args)
+   {
+       $users = new UserModel($this->db);
+       $userToken = new UserToken($this->db);
+       $token = $request->getHeader('Authorization');
+       $userId = $userToken->getUserId($token);
+
+       $findUser = $users->find('id', $args['id']);
+       $user = $users->getUser('id', $args['id']);
+        // var_dump($user['role']);die();
+        if ($findUser) {
+            if ($user['role'] == 3) {
+                $data = $this->responseDetail(400, true, 'Member sudah menjadi premium');
+
+            } elseif($user['role'] == 0 && $user['status'] == 2) {
+                $setPremium = $users->setUserPremium($args['id']);
+                $find = $users->find('id', $args['id']);
+                $data = $this->responseDetail(200, false, 'Member berhasil dijadikan premium', [
+                        'data'  => $find
+                ]);
+            } elseif ($user['role'] == 2 && $user['status'] == 2) {
+                $data = $this->responseDetail(404, true, 'Dia bukan user');
+            } elseif ($user['role'] == 1) {
+                $data = $this->responseDetail(404, true, 'Dia bukan user');    
+            } else {
+                $data = $this->responseDetail(404, true, 'Member tidak bisa dijadikan premium dikarenakan status user belum complete');
+            }
+        } else {
+            $data = $this->responseDetail(404, true, 'Member tidak ditemukan');
+        }
+
+            return $data;
+
+
+   }
 
 
 }

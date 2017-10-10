@@ -91,7 +91,8 @@
                             <label for="complaintinput6">Status Member :</label>
                             <select name="role" id="complaintinput6" class="form-control" >
                                 <option value="">Pilih Status Member</option>
-                                <option value="0" {% if old.role == '0' %}{% endif %}>Member</option>
+                                <option value="0" {% if old.role == '0' %}{% endif %}>Member (Normal)</option>
+                                <option value="4" {% if old.role == '4' %}{% endif %}>Member (Premium)</option>
                                 <option value="1" {% if old.role == '1' %}{% endif %}>Admin</option>
                                 <option value="2" {% if old.role == '2' %}{% endif %}>Moderator</option>
                             </select>

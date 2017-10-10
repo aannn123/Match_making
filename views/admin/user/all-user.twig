@@ -36,7 +36,7 @@
                                 <th>Email</th>
                                 <th>Jenis Kelamin</th>
                                 <th>Status</th>
-                                <th>Status User</th>
+                                <th>Status Member</th>
                                 <th>Option</th>
                             </tr>
                         </thead>
@@ -50,11 +50,13 @@
                                 <td>{{user.gender}}</td>
                                 <td>
                                  {% if user.role == 0 %}
-                                   <span class="tag tag-info" style="border-radius:10%">User</span>
+                                   <span class="tag tag-info" style="border-radius:10%">Member</span>
                                 {% elseif user.role == 1 %}
                                    <span class="tag tag-primary" style="border-radius:10%">Admin</span>
                                 {% elseif user.role == 2 %}
                                    <span class="tag tag-success" style="border-radius:10%">Moderator</span>
+                                {% elseif user.role == 3 %}
+                                   <span class="tag tag-danger" style="border-radius:10%">Member Premium</span>
                                 {% endif %}
                                 </td>
                                 <td>
@@ -67,13 +69,20 @@
                                 {% endif %}
                                 </td>
                                 <td>
-                                    <a href="{{ path_for('admin.detail.user', {'id':user.id}) }}" style="color: #1a53ff"  data-placement="top" title="View Detail" data-toggle="tooltip"><i class="icon-eye4"></i></a>
+                                    <a href="{{ path_for('admin.detail.user', {'id':user.id}) }}" style="color: #1a53ff"  data-placement="top" title="View detail" data-toggle="tooltip"><i class="icon-eye4"></i></a>
                                      <a href="{{ path_for('admin.setModerator.user', {'id':user.id}) }}" data-toggle="tooltip" data-placement="top" title="Set moderator"><i class="icon-check"></i></a>
+                                     <a href="{{ path_for('admin.setpremium.user', {'id':user.id}) }}" data-toggle="tooltip" data-placement="top" title="Set member premium"><i class="icon-check-square-o" style="color:green"></i></a>
                                 </td>
                             </tr>
                             {% endfor %}
                         </tbody>
                     </table>
+                        {% if pagination.total_data == null %}
+                            <center><b style="font-family:initial;font-style:oblique;font-size:25px;color:red">User tidak ditemukan</b><br></center>
+                            <center>
+                                <a href="{{ base_url() }}/admin/user"><button type="submit" class="btn btn-outline-danger">Back</button></a>
+                            </center>
+                        {% endif %}
    
                         <div class="text-xs-right mb-3">
                             <nav aria-label="Page navigation">

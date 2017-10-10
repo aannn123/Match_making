@@ -19,7 +19,7 @@ class AdminController extends BaseController
                         'search' => $request->getParam('search'),
             ], 
                  'query' => [
-                     'perpage' => 5,
+                     'perpage' => 10,
                      'page' => $request->getQueryParam('page'),
                      'id' => $_SESSION['login']['id']
             ]]);
@@ -568,13 +568,20 @@ class AdminController extends BaseController
 
     public function logout(Request $request, Response $response)
     {
-       if ($_SESSION['login']['role'] == 1) {
-            session_destroy();
-            return $response->withRedirect($this->router->pathFor('admin.login'));
-
-        } elseif ($_SESSION['login']['role'] == 2) {
+       $user = new \App\Models\Users\UserModel($this->db);
+       if ($_SESSION['login']['role'] == 0) {
+        $data = [
+            'last_online' => date('Y-m-d H:i:s')
+        ];
+        $var = $user->updateData($data, $_SESSION['login']['id']);
+        // echo date('Y-m-d H:i:s');die;
             session_destroy();
             return $response->withRedirect($this->router->pathFor('user.login'));
+
+        } elseif ($_SESSION['login']['role'] == 1) {
+         // echo $var;die;
+            session_destroy();
+            return $response->withRedirect($this->router->pathFor('admin.login'));
         } else {
             session_destroy();
             return $response->withRedirect($this->router->pathFor('user.login'));
@@ -923,5 +930,30 @@ class AdminController extends BaseController
         $_SESSION['old'] = $request->getParams();
         return $response->withRedirect($this->router->pathFor('admin.create.user'));
        }
+    }
+
+    public function setMemberPremium(Request $request, Response $response, $args)
+    {
+        try {
+            $result = $this->client->request('GET',
+            $this->router->pathFor('admin.setUserPremium', ['id' => $args['id']]), [
+                 'query' => [
+                     'perpage' => 5,
+                     'page' => $request->getQueryParam('page'),
+                     'id' => $_SESSION['login']['id']
+            ]]);
+            // $content = json_decode($result->getBody()->getContents());
+        } catch (GuzzleException $e) {
+            $result = $e->getResponse();
+        }
+        $data = json_decode($result->getBody()->getContents(), true);
+        // var_dump($data);die();
+        if ($data['error'] == false) {
+            $this->flash->addMessage('success', $data['message']);
+            return $response->withRedirect($this->router->pathFor('admin.user'));
+        } else {
+            $this->flash->addMessage('error', $data['message']);
+            return $response->withRedirect($this->router->pathFor('admin.user'));
+        }
     }
 }

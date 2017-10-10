@@ -120,6 +120,11 @@ class UserController extends BaseController
 
     public function login(Request $request, Response $response)
     {
+      $user = new \App\Models\Users\UserModel($this->db);
+      $login = [
+            'last_online' => date('Y-m-d H:i:s')
+        ];
+        // var_dump($login);die;
          try {
                $result = $this->client->request('POST',
                $this->router->pathFor('api.user.login'),
@@ -132,14 +137,18 @@ class UserController extends BaseController
                $result = $e->getResponse();
            }
            $data = json_decode($result->getBody()->getContents(), true);
-// var_dump($data);die;
+// var_dump($data['data']['id']);die;
            if ($data['code'] == true ) {
                 $_SESSION['key'] = $data['key'];
                 $_SESSION['login'] = $data['data'];
                 // var_dump($_SESSION['login']['role'] == 1);die();
-               if ($_SESSION['login']['role'] == 0 && $_SESSION['login']['status'] == 2 ) {
+               if ($_SESSION['login']['role'] == 0  && $_SESSION['login']['status'] == 2 ) {
+                $user->updateData($login, $data['data']['id']);
                    return $response->withRedirect($this->router->pathFor('user.home'));
-               } elseif ($_SESSION['login']['role'] == 2 && $_SESSION['login']['status'] == 2) {
+               } elseif ($_SESSION['login']['role'] == 3  && $_SESSION['login']['status'] == 2 ) {
+                 $user->updateData($login, $data['data']['id']);
+                 return $response->withRedirect($this->router->pathFor('user.home'));
+              } elseif ($_SESSION['login']['role'] == 2 && $_SESSION['login']['status'] == 2) {
                    return $response->withRedirect($this->router->pathFor('admin.home'));
                } elseif($_SESSION['login']['role'] == 0 && $_SESSION['login']['status'] == 0) {
                    $this->flash->addMessage('error_material', $data['message']);
@@ -1431,13 +1440,27 @@ class UserController extends BaseController
                     ]
                 ]);
 
+             try {
+                $users = $this->client->request('GET',
+                $this->router->pathFor('api.user.get.taaruf'), [
+                    'query' => [
+                        'id' => $_SESSION['login']['id'],
+                        'perpage' => 10,
+                        'page'    => $request->getQueryParam('page')
+                        ]
+                    ]);
+            } catch (GuzzleException $e) {
+                  $users = $e->getResponse();
+                 }
+             $user = json_decode($users->getBody()->getContents(), true);
+             // var_dump($user['data']);die;
 
             } catch (GuzzleException $e) {
                 $result = $e->getResponse();
             }
 
       $data = json_decode($result->getBody()->getContents(), true);
-      // var_dump($request->getUri()->getBaseUrl());die;
+      // var_dump($data);die;
        try {
             $result1 = $this->client->request('GET',
             $this->router->pathFor('api.request.reject'), [
@@ -1458,6 +1481,7 @@ class UserController extends BaseController
       return $this->view->render($response, 'user/data/notification/notification.twig', [
           'data' => $data['data'],
           'blokir' => $blokir['data'],
+          'approve' => $user['data'],
           'pagination' => $blokir['pagination'],
           'paginate' => $data['pagination'],
         ]);

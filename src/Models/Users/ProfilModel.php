@@ -73,13 +73,13 @@ class ProfilModel extends BaseModel
     public function joinSearchPria($val, $id)
     {
         $qb = $this->db->createQueryBuilder();
-        $this->query = $qb->select('prof.*', 'prof.id as id_profil', 'kot.nama as kota','prov.nama as provinsi','negara.nama as kewarganegaraan', 'user.gender as jenis_kelamin', 'user.status as status_user', 'req.status as status_request', 'req.blokir as blokir_request')
+        $this->query = $qb->select('prof.*', 'prof.id as id_profil', 'kot.nama as kota','prov.nama as provinsi','negara.nama as kewarganegaraan', 'user.gender as jenis_kelamin', 'user.status as status_user')
             ->from($this->table,'prof')
             ->join('prof','kota', 'kot', 'kot.id = prof.kota')
             ->join('prof','provinsi', 'prov', 'prov.id = prof.provinsi')
             ->join('prof','users', 'user', 'user.id = prof.user_id')
             ->join('prof','negara', 'negara', 'negara.id = prof.kewarganegaraan')
-            ->leftJoin('prof', 'request_taaruf', 'req', 'req.id_perequest = prof.user_id')
+            // ->leftJoin('prof', 'request_taaruf', 'req', 'req.id_perequest = prof.user_id')
             // ->leftJoin('prof', 'request_taaruf', 'req', 'req.id_perequest = prof.user_id')
             // ->groupBy('req.sta')
             // ->addGroupBy('req.id')
@@ -91,6 +91,7 @@ class ProfilModel extends BaseModel
                  ->andWhere('user_id != '. $id)
                  ->andWhere('user.gender = "laki-laki"')
                  ->andWhere('user.status = 2')
+                 ->orderBy('last_online', 'desc')
                  // ->andWhere()
                  // ->andWhere('status != 1')
                  // ->andWhere('deleted = 0')
@@ -104,13 +105,13 @@ class ProfilModel extends BaseModel
      public function joinSearchWanita($val, $id)
     {
         $qb = $this->db->createQueryBuilder();
-        $this->query = $qb->select('prof.*','kot.nama as kota','prov.nama as provinsi','negara.nama as kewarganegaraan', 'user.gender as jenis_kelamin', 'user.status as status_user', 'req.status as status_request', 'req.blokir as blokir_request')
+        $this->query = $qb->select('prof.*','kot.nama as kota','prov.nama as provinsi','negara.nama as kewarganegaraan', 'user.gender as jenis_kelamin', 'user.status as status_user')
             ->from($this->table,'prof')
             ->join('prof','kota', 'kot', 'kot.id = prof.kota')
             ->join('prof','provinsi', 'prov', 'prov.id = prof.provinsi')
             ->join('prof','users', 'user', 'user.id = prof.user_id')
             ->join('prof','negara', 'negara', 'negara.id = prof.kewarganegaraan')
-            ->leftJoin('prof', 'request_taaruf', 'req', 'req.id_perequest = prof.user_id')
+            // ->leftJoin('prof', 'request_taaruf', 'req', 'req.id_perequest = prof.user_id')
             ->where('umur LIKE :val')
                  ->orWhere('kot.nama LIKE :val')
                  ->orWhere('prov.nama LIKE :val')
@@ -118,7 +119,7 @@ class ProfilModel extends BaseModel
                  ->andWhere('user_id != '. $id)
                  ->andWhere('user.gender = "perempuan"')
                  ->andWhere('user.status = 2')
-                 // ->andWhere('status != 1')
+                 ->orderBy('last_online', 'desc')
                  // ->andWhere('deleted = 0')
                  ->setParameter('val', '%'.$val.'%');
         // $query = $qb->execute();

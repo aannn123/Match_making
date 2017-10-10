@@ -13,12 +13,18 @@
         font-family:initial;
         font-style:oblique;
     }
+    p {
+        color:#3498db;
+        font-size:15px; 
+        font-family:initial;
+        font-style:oblique;
+    }
 </style>
     <div class="row">
     <div class="col s12">
         <ul class="tabs tab-demo z-depth-1">
           <li class="tab"><a href="#test5" class="active" style="color:#3498db;font-size:15px; font-family:initial;font-style:oblique">User</a></li>
-          <li class="tab"><a href="#test6" style="color:#3498db;font-size:15px; font-family:initial;font-style:oblique">Profil</a></li>
+          <!-- <li class="tab"><a href="#test6" style="color:#3498db;font-size:15px; font-family:initial;font-style:oblique">Profil</a></li> -->
           <li class="tab"><a href="#test7" style="color:#3498db;font-size:15px; font-family:initial;font-style:oblique">Latar Belakang</a></li>
           <li class="tab"><a href="#test8" style="color:#3498db;font-size:15px; font-family:initial;font-style:oblique">Keseharian</a></li>
           <li class="tab"><a class="active" href="#test9" style="color:#3498db;font-size:15px; font-family:initial;font-style:oblique">Ciri Fisik</a></li>
@@ -28,16 +34,25 @@
         <div class="col s12 m12">
           <div class="card">
             <div class="card-content white-text">
-              <span class="card-title" style="color:black;font-size:20px; font-family:initial;font-style:oblique">Data User</span><hr><br>
-              <p id="tabs font" style="color:black"><b>Username : </b>{{user.username}}.</p>
+              <span class="card-title" style="color:black;font-size:20px; font-family:initial;font-style:oblique">Profil {{profil.nama_lengkap}}</span><hr><br>
+              <div class="col s12 m6 l5">
+              <img src="{{ base_url() }}/assets/picture/woman.jpg" class="responsive-img materialboxed"  width="" style="width:" alt="">
+              </div> 
+              <p id="tabs font" style="color:black"><b>Nama Lengkap : </b>{{profil.nama_lengkap}} .</p>
               <p id="tabs font" style="color:black"><b>Jenis Kelamin : </b>{{user.gender}} .</p>
-              <p id="tabs font" style="color:black"><b>Email : </b>{{user.email}} .</p>
-              <p id="tabs font" style="color:black"><b>Nomor Telepon : </b>{{user.phone}} .</p>
+              <p id="tabs font" style="color:black"><b>Umur : </b>{{"now"|date('Y m d') - profil.tanggal_lahir}} Tahun.</p>
+              <p id="tabs font" style="color:black"><b>Domisili : </b><br>
+                - <b>Kewarganegaraan : </b> {{profil.kewarganegaraan}}. <br>
+                - <b>Provinsi : </b> {{profil.provinsi}}. <br>
+                - <b>Kota : </b> {{profil.kota}}.
+              </p>
+              <p id="tabs font" style="color:black"><b>Target Menikah : </b>{{profil.target_menikah|date('j F Y')}} .</p>
+
             </div>
           </div>
       </div>
         </div>
-        <div id="test6" class="col s12">
+       <!--  <div id="test6" class="col s12">
         <div class="col s12 m12">
           <div class="card">
             <div class="card-content white-text">
@@ -56,7 +71,7 @@
             </div>
           </div>
         </div>
-        </div>
+        </div> -->
         <div id="test7" class="col s12">
         <div class="col s12 m12">
           <div class="card">
@@ -102,8 +117,8 @@
           <div class="card">
             <div class="card-content white-text">
               <span class="card-title" style="color:black;font-size:20px; font-family:initial;font-style:oblique">Data Ciri Fisik</span><hr><br>
-              <p id="tabs font" style="color:black"><b>Tinggi Badan : </b>{{fisik.tinggi}}.</p>
-              <p id="tabs font" style="color:black"><b>Berat Badan : </b>{{fisik.berat}} .</p>
+              <p id="tabs font" style="color:black"><b>Tinggi Badan : </b>{{fisik.tinggi}} cm.</p>
+              <p id="tabs font" style="color:black"><b>Berat Badan : </b>{{fisik.berat}} kg.</p>
               <p id="tabs font" style="color:black"><b>Warna Kulit : </b>{{fisik.warna_kulit}} .</p>
               <p id="tabs font" style="color:black"><b>Suku : </b>{{fisik.suku}} .</p>
               {% if user.gender == 'laki-laki' %}
@@ -138,7 +153,7 @@
           </div>
       </div>
         </div>
-        <a href="{{ path_for('user.notification') }}" style="float:right"><button class="btn waves-effect waves-blue blue">Back</button></a>
-         <a href=""><button class="btn waves-effect waves-blue blue"><i class="fa fa-paper-plane" style="color:white"></i>Approve Request</button></a>
+         <a href="{{ path_for('user.home') }}" style="float:right"><button class="btn waves-effect waves-blue blue">Back</button></a>
+         <a href="{{ path_for('user.send-request', {id:profil.user_id}) }}"><button class="btn waves-effect waves-blue blue"><i class="fa fa-paper-plane" style="color:white"></i> Send Request</button></a>
   </div>
 {% endblock %}

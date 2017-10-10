@@ -19,7 +19,7 @@
      <a href="{{ path_for('user.update.profil') }}"><button class="btn waves-effect waves-blue btn-small" style="font-size:xx-small;background:rgba(16, 164, 201, 0.33)"><b style="color:black">update profil</b></button></a>
     <a href="#modal2" class="tooltipped modal-trigger pulse" data-position="bottom" data-delay="50" data-tooltip="Settings"><i class="tiny material-icons">settings</i></a><br>
     {% if login.status == 2 %}{% endif %}
-    <a class="btn btn-floating pulse" style="width:10px;height:10px"></a><b style=" font-family:initial;font-style:oblique;font-size:12px"> Sedang Taaruf</b>
+    <!-- <a class="btn btn-floating pulse" style="width:10px;height:10px"></a><b style=" font-family:initial;font-style:oblique;font-size:12px"> Sedang Taaruf</b> -->
     </div>
     </div>
    <!--  {% if login.status == 2 %}
@@ -57,7 +57,7 @@
               <span class="black-text" style="font-family:initial;font-style:oblique;font-size:15px">
                 <p>Nama Lengkap : <b>{{profil.nama_lengkap}}</b></p>
                 
-                <p>Tanggal Lahir : <b>{{profil.tanggal_lahir}}</b></p>
+                <p>Tanggal Lahir : <b>{{profil.tanggal_lahir|date('j F Y')}}</b></p>
                 
                 <p>Tempat Lahir : <b>{{profil.tempat_lahir}}</b></p>
                 

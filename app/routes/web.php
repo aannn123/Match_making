@@ -30,6 +30,7 @@ $app->group('/admin', function() use ($app, $container) {
         $app->get('',  'App\Controllers\Web\AdminController:getAllUser')->setName('admin.user');
         $app->post('/search',  'App\Controllers\Web\AdminController:searchUser')->setName('admin.user.search');
         $app->get('/setModerator/{id}',  'App\Controllers\Web\AdminController:setModerator')->setName('admin.setModerator.user');
+        $app->get('/setuserpremium/{id}',  'App\Controllers\Web\AdminController:setMemberPremium')->setName('admin.setpremium.user');
         $app->get('/new',  'App\Controllers\Web\AdminController:getAllNewUser')->setName('admin.new.user.all');
         $app->get('/new/detail/{id}',  'App\Controllers\Web\AdminController:getUserNewDetail')->setName('admin.new.detail.user');
         $app->get('/new/approve/{id}',  'App\Controllers\Web\AdminController:approveUser')->setName('admin.approve.new.user');

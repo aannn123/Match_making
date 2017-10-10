@@ -212,6 +212,13 @@ class UserController extends BaseController
                     $data = $this->responseDetail(201, false, 'User Berhasil Di Tambahkan', [
                             'data' => $findUser,
                         ]);
+                } elseif ($request->getParsedBody()['role'] == 4) {
+                    $createUserPremium = $user->createMember($request->getParsedBody());
+                    $user->setActive($createUserPremium);
+                    $findUser = $user->find('id', $createModerator);
+                    $data = $this->responseDetail(201, false, 'User Premium Berhasil Di Tambahkan', [
+                            'data' => $findUser,
+                        ]);
                     
                 } elseif ($request->getParsedBody()['role'] == 2) {
                     $createModerator = $user->createMember($request->getParsedBody());
@@ -346,14 +353,20 @@ class UserController extends BaseController
             $user = $user->setActive($userToken['user_id']);
             $registers->hardDelete($userToken['id']);
             // var_dump($user);die();
-            $data = $this->responseDetail(200, false, 'Akun berhasil diverifikasi');
+            // return $this->view->render($response, 'response/activation.twig');
+            
+            return  $this->view->render($response, 'response/activation.twig', [
+                'message' => 'Akun telah berhasil diaktivasi, silahkan login'
+            ]);
         } elseif ($userToken['expired_date'] > $now) {
 
             $data = $this->responseDetail(400, true, 'Token telah kadaluarsa atau sudah tidak dapat digunakan');
 
         } else{
 
-            $data = $this->responseDetail(400, true, 'Token salah atau anda belum mendaftar');
+            return  $this->view->render($response, 'response/activation.twig', [
+                'message' => 'Token salah atau anda belum mendaftar atau akun anda sudah teraktivasi'
+            ]);
         }
             return $data;
     }
@@ -758,16 +771,17 @@ class UserController extends BaseController
         $token = $request->getHeader('Authorization')[0];
         $userId = $userToken->getUserId($token);
         $findUser = $requests->findTwo('id_terequest', $args['id'], 'id_perequest', $userId);
-        // $find = $user->getUser('id', $args['id']);
+        $finds = $user->getUser('id', $userId);
+        // var_dump($finds['status']);die;
         $find = $requests->getRequest('id_terequest', $args['id']);
         // var_dump($find['id_perequest'] && $find['id_terequest'] && $find['blokir'] == 0);die();
         $data = [
             'id_terequest'  =>  $args['id'],
             'id_perequest' => $userId,
         ];
+
         if ($findUser) {
             $data = $this->responseDetail(404, true, 'Data tidak ditemukan');
-
             if ($find['id_perequest'] && $find['id_terequest'] && $find['blokir'] == 1 && $find['status'] == 1) {
                 $requests->sendRequestTwo($userId, $args['id']);
                 $data = $this->responseDetail(200, false, 'Berhasilkan mengirimkan request', [
@@ -781,14 +795,19 @@ class UserController extends BaseController
             } elseif ($find['id_perequest'] && $find['id_terequest'] && $find['status'] == 1 && $find['blokir'] == 0) {
                 $data = $this->responseDetail(404, true, 'User sudah direquest');
             } elseif ($find['id_perequest'] && $find['id_terequest'] && $find['status'] == 2 && $find['blokir'] == 0) {
-                $data = $this->responseDetail(404, true, 'User sedang proses dengan anda');  
+                $data = $this->responseDetail(404, true, 'User sedang proses dengan anda');   
             }
         } else {
-            $sendRequest = $requests->createRequest($data);
-            $requests->sendRequest($userId, $args['id']);
-            $data = $this->responseDetail(200, false, 'Berhasilkan mengirimkan request', [
-                    'data' => $data
-                ]);
+            if ($finds['role'] == 0 && $finds['status'] == 1) {
+                $data = $this->responseDetail(404, true, 'Anda belum bisa mengirimkan request, silahkan  lengkapi data diri anda dan tunggu disetujui oleh admin');
+            } else {
+                $sendRequest = $requests->createRequest($data);
+                $requests->sendRequest($userId, $args['id']);
+                $data = $this->responseDetail(200, false, 'Berhasilkan mengirimkan request', [
+                        'data' => $data
+                    ]);
+            }
+
         }
         return $data;
     }
@@ -802,11 +821,13 @@ class UserController extends BaseController
         $userId = $userToken->getUserId($token);
 
         $findUser = $requests->findTwo('id_terequest', $userId, 'id_perequest', $args['id']);
-        $find = $requests->getRequest('id_perequest', $args['id']);
-        // var_dump($find['blokir']);die();
+        $find = $requests->getRequest('id_terequest', $userId);
+        var_dump($find['id_terequest']['status']);die();
         if ($findUser) {
             if ($find['status'] == 2) {
-                $data = $this->responseDetail(200, false, 'Request sudah diterima');
+                $data = $this->responseDetail(200, false, 'Request sudah diterima', [
+                        'data' => $find
+                    ]);
             } elseif ($find['blokir'] == 1) {
                 $data = $this->responseDetail(200, false, 'Request tidak bisa di approve');
             } else {
@@ -814,7 +835,7 @@ class UserController extends BaseController
                 $finds = $requests->find('id_perequest', $approve);
 
                 $data = $this->responseDetail(200, false, 'Berhasil menerima request', [
-                        'data' => $approve
+                        'data' => $finds
                     ]);
         }
         } else {
@@ -823,6 +844,8 @@ class UserController extends BaseController
 
             return $data;
     }
+
+
 
     public function getAllNotification($request, $response)
     {
@@ -833,6 +856,8 @@ class UserController extends BaseController
         $userId = $userToken->getUserId($token);
 
         $get = $requests->allNotification($userId);
+        $find = $requests->getRequest('id_terequest', $userId);
+        // var_dump($find['id_perequest']);die;
         // $gender = $user->find('gender');
         // var_dump($userId);die();
         $countUser = count($get);
