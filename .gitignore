@@ -3,3 +3,6 @@
 /app/setting.php
 phinx.yml
 composer.lock
+.env
+Dockerfile
+docker-composer.yml
