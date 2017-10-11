@@ -24,6 +24,7 @@
 </div> -->
  <ul class="collection with-header">
             <li class="collection-header"><b style="font-family:initial;font-style:oblique;font-size:20px">Notification</b></li>
+
         <!-- Request -->
             {% for notif in data %}
             {% if login.gender == 'perempuan' %}
@@ -36,9 +37,9 @@
                 
                 {% if notif.request_status == 1 %}
                 <a href="{{ path_for('user.approve.request', {id:notif.id_perequest}) }}" style="color:green;float:right;" data-position="bottom" data-delay="50" data-tooltip="Approve Request" class="tooltipped"><i class="material-icons">check</i></a><i style="float:right;"></i>
-                Mengirimkan request ke kamu | {{notif.created_at|date("g:i a")}} &emsp;</i>
+                Mengirimkan request ke kamu | <a href="#" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="{{notif.created_at|date("F jS \\a\\t H:i")}}">{{notif.created_at|date("H:i")}}</a> &emsp;</i>
                 {% else %}
-                Menerima request kamu | {{notif.created_at|date("g:i a")}} &emsp;</i>
+                Menerima request kamu | <a href="#" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="{{notif.created_at|date("F jS \\a\\t H:i")}}">{{notif.created_at|date("H:i")}}</a> &emsp;</i>
                 {% endif %}
             {% else %}
                 <li class="collection-item"><img src="{{ base_url() }}/assets/picture/woman.jpg" style="float:left;width:25px" class="circle responsive-img" alt="">&nbsp; <a href="{{ path_for('user.notification.detail', {id:notif.id_perequest}) }}" style="color:#26a69a">{{notif.perequest}}</a>
@@ -50,9 +51,9 @@
                 
                 {% if notif.request_status == 1 %}
                 <a href="{{ path_for('user.approve.request', {id:notif.id_perequest}) }}" style="color:green;float:right;" data-position="bottom" data-delay="50" data-tooltip="Approve Request" class="tooltipped"><i class="material-icons">check</i></a><i style="float:right;"></i>
-                Mengirimkan request ke kamu | {{notif.created_at|date("g:i a")}} &emsp;</i>
+                Mengirimkan request ke kamu | <a href="#" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="{{notif.created_at|date("F jS \\a\\t H:i")}}">{{notif.created_at|date("H:i")}}</a> &emsp;</i>
                 {% else %}
-                Menerima request kamu | {{notif.created_at|date("g:i a")}} &emsp;</i>
+                Menerima request kamu | <a href="#" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="{{notif.created_at|date("F jS \\a\\t H:i")}}">{{notif.created_at|date("H:i")}}</a> &emsp;</i>
                 {% endif %}
                 </li>
             {% endif %}
@@ -63,13 +64,13 @@
             {% if login.gender == 'perempuan' %}
                 <li class="collection-item"><img src="{{ base_url() }}/assets/picture/avatar.png" style="float:left;width:25px" class="circle responsive-img" alt="">&nbsp; <a href="{{ path_for('user.notification.detail', {id:data.id_perequest}) }}" style="color:#26a69a">{{data.terequest}}</a><a href="{{ path_for('user.delete.notification', {id:data.id_terequest}) }}" style="color:red;float:right;" data-position="bottom" data-delay="50" data-tooltip="Hapus Notifikasi" class="tooltipped"><i class="material-icons">clear</i></a><i style="float:right;">
 
-                Menolak request ke kamu | {{data.created_at|date("g:i a")}} &emsp;</i></li>
+                Menolak request kamu | <a href="#" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="{{data.created_at|date("F jS \\a\\t H:i")}}">{{data.created_at|date("H:i")}}</a> &emsp;</i></li>
             {% else %}
                 <li class="collection-item"><img src="{{ base_url() }}/assets/picture/woman.jpg" style="float:left;width:25px" class="circle responsive-img" alt="">&nbsp; <a href="{{ path_for('user.notification.detail', {id:data.id_perequest}) }}" style="color:#26a69a">{{data.terequest}}</a><a href="{{ path_for('user.delete.notification', {id:data.id_terequest}) }}" style="color:red;float:right;" data-position="bottom" data-delay="50" data-tooltip="Hapus Notifikasi" class="tooltipped"><i class="material-icons">clear</i></a><i style="float:right;">
 
-                Menolak request ke kamu | {{data.created_at|date("g:i a")}} &emsp;</i> </li>
+                Menolak request kamu | <a href="#" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="{{data.created_at|date("F jS \\a\\t H:i")}}">{{data.created_at|date("H:i")}}</a> &emsp;</i> </li>
             {% endif %}
             {% endfor %}
       </ul>
-
 {% endblock %}
+

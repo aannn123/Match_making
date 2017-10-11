@@ -148,6 +148,8 @@ class AdminController extends BaseController
             } else {
             $setUser = $user->setApproveUser($args['id']);
             $responseUser = $user->find('id', $args['id']);
+            
+            $base = $request->getUri()->getBaseUrl();
             // var_dump($acceptBy);die();
             $newUser = $user->getUser('id', $args['id']);
                '<h3>Notification</h3></a>';
@@ -173,7 +175,7 @@ class AdminController extends BaseController
                 <td rowspan="3" width="32px"></td></tr>
                 <tr><td><p>Yang terhormat '.$newUser['username'].',</p>
                 <p>Selamat, anda diterima sebagai member match making, silahkan anda login kembali untuk bisa mengakses halaman user.</p>
-                <center><p><a href="{{ base_url }}/login"><button type="submit" class="btn btn-primary" style="width:40%">Login</button></a></p></center>
+                <center><p><a href=""><button type="submit" class="btn btn-primary" style="width:40%">Login</button></a></p></center>
                 <p>Terima kasih sudah mendaftar di Match Maki</a>ng.</p>
                 <p>Terima kasih, <br /><br /> Admin Match Making</p></td></tr>
                 <tr height="32px"></tr></tbody></table></td></tr>

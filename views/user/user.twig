@@ -154,6 +154,7 @@
 
 
 <!-- Pagination -->
+<footer>
   <center><ul class="pagination">
       {% if pagination.current > pagination.first_page %}
               <li class="page-item">
@@ -188,7 +189,7 @@
       </nav>
   </div>
 </div></center>
-
+</footer>
 <!-- Modal footer -->
 <div id="modal3" class="modal bottom-sheet">
           <div class="modal-content">
@@ -233,7 +234,7 @@
       
 {% block js %}
     <script>
-        var $toastContent = $('<span>Anda belum bisa melihat detail user, silahkan lengkapi data diri anda</span>').add($('<a href="{{ base_url() }}/user/change-image"><button class="btn-flat toast-action">Next</button></a>'));
+        var $toastContent = $('<span>Anda belum bisa melihat detail user, silahkan lengkapi data diri anda dan tunggu persetujuan admin</span>').add($('<a href="{{ base_url() }}/user/change-image"><button class="btn-flat toast-action">Next</button></a>'));
     </script>
 {% endblock %}
 {% endblock %}

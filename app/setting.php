@@ -9,6 +9,7 @@ return [
 
 	//setting timezone
 	'timezone'	=> 'Asia/Jakarta',
+    'locale' => 'id',
 
 	//setting language
 	'lang'	=> [

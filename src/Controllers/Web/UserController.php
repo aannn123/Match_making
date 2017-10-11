@@ -1477,7 +1477,7 @@ class UserController extends BaseController
             }
 
       $blokir = json_decode($result1->getBody()->getContents(), true);
-      // var_dump($blokir['data']);die;  
+      // var_dump($date);die;  
       return $this->view->render($response, 'user/data/notification/notification.twig', [
           'data' => $data['data'],
           'blokir' => $blokir['data'],

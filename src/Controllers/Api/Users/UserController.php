@@ -821,22 +821,29 @@ class UserController extends BaseController
         $userId = $userToken->getUserId($token);
 
         $findUser = $requests->findTwo('id_terequest', $userId, 'id_perequest', $args['id']);
-        $find = $requests->getRequest('id_terequest', $userId);
-        var_dump($find['id_terequest']['status']);die();
+        $find = $requests->getRequest('id_perequest', $args['id']);
+        $count = count($requests->getTaarufUser($userId)->fetchAll());
+        $finduserId = $users->find('id', $userId);
+        // var_dump($finduserId);die();
         if ($findUser) {
             if ($find['status'] == 2) {
-                $data = $this->responseDetail(200, false, 'Request sudah diterima', [
+                $data = $this->responseDetail(200, true, 'Request sudah diterima', [
                         'data' => $find
                     ]);
             } elseif ($find['blokir'] == 1) {
-                $data = $this->responseDetail(200, false, 'Request tidak bisa di approve');
+                $data = $this->responseDetail(200, true, 'Request tidak bisa di approve');
             } else {
-                $approve = $requests->approveUser($args['id'], $userId);
-                $finds = $requests->find('id_perequest', $approve);
+                if ($finduserId['role'] == 0 && $count == 1) {
+                    $data = $this->responseDetail(404, true, 'Anda tidak bisa menerima request lebih dari satu, karena anda bukan member premium');  
+                } else {
+                    $approve = $requests->approveUser($args['id'], $userId);
+                    $finds = $requests->find('id_perequest', $approve);
 
-                $data = $this->responseDetail(200, false, 'Berhasil menerima request', [
-                        'data' => $finds
-                    ]);
+                    $data = $this->responseDetail(200, false, 'Berhasil menerima request', [
+                            'data' => $finds
+                        ]);
+                }
+
         }
         } else {
             $data = $this->responseDetail(200, false, 'Data tidak ditemukan');

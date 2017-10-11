@@ -162,9 +162,9 @@ class RequestModel extends BaseModel
             ->join('req','profil', 'prof1', 'req.id_perequest = prof1.user_id')
             ->where('req.status = 2')
             ->andWhere('req.blokir = 0')
-            // ->andWhere('(req.id_terequest = '.$id.' or req.id_perequest = '.$id.') and (req.id_terequest = '.$id.' or req.id_perequest = '.$id.'    )' );
-            ->orWhere('req.id_terequest ='. $id)
-            ->orWhere('req.id_perequest ='. $id);
+            ->andWhere('(req.id_terequest = '.$id.' or req.id_perequest = '.$id.') and (req.id_terequest = '.$id.' or req.id_perequest = '.$id.'    )' );
+            // ->andWhere('req.id_terequest ='. $id)
+            // ->orWhere('req.id_perequest ='. $id);
 
         $query = $qb->execute()->fetch();
         return $this;
@@ -256,6 +256,21 @@ class RequestModel extends BaseModel
 
         $query = $qb->execute();
         return $query->fetch();
+    }
+
+
+    public function findRequestMe($id)
+    {
+        $qb = $this->db->createQueryBuilder();
+        $this->query = $qb->select('id', 'id_perequest', 'id_terequest', 'status', 'blokir', 'updated_at', 'created_at')
+            ->from($this->table)
+            ->where('id_perequest ='. $id)
+            ->orWhere('id_terequest ='. $id)
+            // ->whereNotIn('role = 1')
+            ->orderBy('created_at', 'desc');
+        $query = $qb->execute();
+        
+        return $this;
     }
 
     public function getRequestTwo()
