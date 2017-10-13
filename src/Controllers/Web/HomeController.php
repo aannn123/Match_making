@@ -28,6 +28,60 @@ class HomeController extends BaseController
             // $inActiveItem = count($item->getAllTrash());
 
             // var_dump($activeGroup);die();
+            // 
+             try {
+            $result = $this->client->request('GET',
+            $this->router->pathFor('admin.notification'), [
+                    'query' => [
+                        'id_terequest' => $_SESSION['login']['id'],
+                        'perpage' => 10,
+                        'page'    => $request->getQueryParam('page')
+                    ]
+                ]);
+
+            try {
+                $result1 = $this->client->request('GET',
+                $this->router->pathFor('api.user.cancel-notification'), [
+                        'query' => [
+                            'id_terequest' => $_SESSION['login']['id'],
+                            'perpage' => 10,
+                            'page'    => $request->getQueryParam('page')
+                        ]
+                    ]);
+
+
+                } catch (GuzzleException $e) {
+                    $result1 = $e->getResponse();
+                }
+
+            $blokir = json_decode($result1->getBody()->getContents(), true);
+
+                 try {
+                    $result2 = $this->client->request('GET',
+                    $this->router->pathFor('admin.get.taaruf'), [
+                         'query' => [
+                             'perpage' => 5,
+                             'page' => $request->getQueryParam('page'),
+                             'id' => $_SESSION['login']['id']
+                    ]]);
+                    // $content = json_decode($result2->getBody()->getContents());
+                } catch (GuzzleException $e) {
+                    $result2 = $e->getResponse();
+                }
+                $approve = json_decode($result2->getBody()->getContents(), true);
+                // var_dump($approve);die;
+            } catch (GuzzleException $e) {
+                $result = $e->getResponse();
+            }
+
+            $request = json_decode($result->getBody()->getContents(), true);
+
+            $_SESSION['notif'] = [
+                'req' => $request['data'],
+                'blok' => $blokir['data'],
+                'approve' => $approve['data'],
+            ];
+            // var_dump($_SESSION['notif']);
             $data = $this->view->render($response, 'home.twig', [
                 'counts'=> [
                     'allUser'         =>  $allUser,

@@ -859,6 +859,7 @@ class AdminController extends BaseController
             }
 
       $data = json_decode($result->getBody()->getContents(), true);
+      // $_SESSION['']
       // var_dump($data['data']);die;  
       return $this->view->render($response, 'admin/notification.twig', [
           'data' => $data['data'],

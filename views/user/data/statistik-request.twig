@@ -1,62 +1,6 @@
 {% extends 'user/templates/default.twig' %}
 {% block title %} Statistik {% endblock %}
 {% block content %}
-<!-- <div class="container" style="width:100%;">
-    <div class="row">
-    <div class="col s12">
-      <ul class="tabs">
-        <li class="tab col s6"><a class="active" href="#photo">Request list</a></li>
-        <li class="tab col s6"><a href="#galery" style="float:right">Taaruf list</a></li>
-      </ul>
-    </div>
-    <div id="photo" class="col s12">
-         <div class="divider"></div>
-        <p style="font-family:initial;font-style:oblique;font-size:20px">Request List</p>
-     <div class="collection">
-             {% if login.gender == 'perempuan' %}
-            <div class="row section">
-              <div class="col s12 m12 l12">
-    </div><br><br>
-     {% for data in data %}
-         
-    <p class="collection-item"><span class="" style="float:right"><a href="{{ path_for('user.cancel-request', {id:data.id}) }}" style="color:red" data-position="bottom" data-delay="50" data-tooltip="Batalkan Request" class="tooltipped"><i class="material-icons">clear</i></a></span><a href=""><img src="{{ base_url() }}/assets/picture/avatar.png"  class="circle responsive-img"  width="650" style="width:10%" alt=""></a><br>{{data.terequest}} <b style="color:black;float:right">Menunggu Response</b></p>
-     {% endfor %}
-
-     {% else %}
-
-     {% for data in data %}
-            
-    <p class="collection-item"><span class="" style="float:right"><a href="{{ path_for('user.cancel-request', {id:data.id}) }}" style="color:red" data-position="bottom" data-delay="50" data-tooltip="Batalkan Request" class="tooltipped"><i class="material-icons">clear</i></a></span><a href=""><img src="{{ base_url() }}/assets/picture/woman.jpg"  class="circle responsive-img"  width="650" style="width:10%" alt=""></a><br>{{data.terequest}} <b style="color:black;float:right">Menunggu Response</b></p>
-     {% endfor %}
-    </div>
-    </div>
-    </div>
-     {% endif %}
-
-    <div id="galery" class="col s12">
-         <div class="divider"></div>
-        <p style="font-family:initial;font-style:oblique;font-size:20px">Taaruf List</p>
-     <div class="collection">
-            <div class="row section">
-
-     {% for data in taaruf %}
-    {% if login.gender == 'laki-laki' %}
-    <p class="collection-item"><span class="" style="float:right"><a href="{{ path_for('user.cancel.taaruf', {id:data.id}) }}" style="color:red" data-position="bottom" data-delay="50" data-tooltip="Akhiri Taaruf" class="tooltipped"><i class="material-icons">clear</i></a></span>
-
-    <img src="{{ base_url() }}/assets/picture/avatar.png"  class="circle responsive-img"  width="650" style="width:10%" alt=""><b style="">{{data.perequest}}</b>&emsp;&emsp;&emsp;<b style="font-family:initial;font-style:oblique;font-size:15px">Sedang Taaruf Dengan</b>&emsp;&emsp;&emsp;
-    <img src="{{ base_url() }}/assets/picture/woman.jpg"  class="circle responsive-img"  width="650" style="width:10%;" alt=""><b style="">{{data.terequest}}</b>
-    </p>
-    {% else %}
-    <p class="collection-item"><span class="" style="float:right"><a href="{{ path_for('user.cancel.taaruf', {id:data.id}) }}" style="color:red" data-position="bottom" data-delay="50" data-tooltip="Akhiri Taaruf" class="tooltipped"><i class="material-icons">clear</i></a></span>
-
-    <img src="{{ base_url() }}/assets/picture/woman.png"  class="circle responsive-img"  width="650" style="width:10%" alt=""><b style="">{{data.perequest}}</b>&emsp;&emsp;&emsp;<b style="font-family:initial;font-style:oblique;font-size:15px">Sedang Taaruf Dengan</b>&emsp;&emsp;&emsp;
-    <img src="{{ base_url() }}/assets/picture/avatar.jpg"  class="circle responsive-img"  width="650" style="width:10%;" alt=""><b style="">{{data.terequest}}</b>
-    {% endif %}
-     {% endfor %}
-    </div>
-    </div>
-
-  </div> -->
    <div class="row">
     <div class="col s12">
       <ul class="tabs">
@@ -94,7 +38,7 @@
                 {% else %}
                 <a href="{{ path_for('user.view.detail.user', {id:taaruf.id_perequest}) }}" style="float:right;color:#26a69a">{{taaruf.perequest}} &nbsp;<img src="{{ base_url() }}/assets/picture/avatar.png" style="float:right;width:25px" class="circle responsive-img" alt=""></a>
                 {% endif %}
-                <i style="float:right;"><a href="#" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Sejak {{taaruf.updated_at|date("F jS \\a\\t H:i")}}">Sedang Taaruf Dengan</a> &emsp;&emsp;&emsp;&emsp;&emsp;</i></li>
+                <i style="float:right;"><a href="#" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Since {{taaruf.updated_at|date("F jS \\a\\t H:i")}}">Sedang Taaruf Dengan</a> &emsp;&emsp;&emsp;&emsp;&emsp;</i></li>
             {% else %}
                 <li class="collection-item"><img src="{{ base_url() }}/assets/picture/avatar.png" style="float:left;width:25px" class="circle responsive-img" alt="">&nbsp; <a href="" style="color:#26a69a">Anda</a>
                 {% if login.id == taaruf.id_perequest %}
@@ -102,11 +46,10 @@
                 {% else %}
                 <a href="{{ path_for('user.view.detail.user', {id:taaruf.id_perequest}) }}" style="float:right;color:#26a69a">{{taaruf.perequest}} &nbsp;<img src="{{ base_url() }}/assets/picture/woman.jpg" style="float:right;width:25px" class="circle responsive-img" alt=""></a>
                 {% endif %}
-                <i style="float:right;"><a href="#" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Sejak {{taaruf.updated_at|date("F jS \\a\\t H:i")}}">Sedang Taaruf Dengan</a> &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</i></li>            
+                <i style="float:right;"><a href="#" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Since {{taaruf.updated_at|date("F jS \\a\\t H:i")}}">Sedang Taaruf Dengan</a> &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</i></li>            
                 {% endif %}
             {% endfor %}
       </ul>
     </div>
     </div>
-    test
 {% endblock %}

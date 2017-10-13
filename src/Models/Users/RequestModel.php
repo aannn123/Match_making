@@ -14,19 +14,21 @@ class RequestModel extends BaseModel
         $data = [
             'id_perequest'  =>  $data['id_perequest'],
             'id_terequest'   =>  $data['id_terequest'],
+            'created_at' => date('Y-m-d H:i:s', strtotime('+1 minutes')),
         ];
         $this->createData($data);
         return $this->db->lastInsertId();
     }
 
-        public function updateRequest(array $data, $id)
+    public function updateRequest(array $data, $id)
      {
-        // $data = [
-        //     'id_perequest'  =>   $id,
-        //     'id_terequest'   =>  $data['id_terequest'],
-        // ];
-        // $this->update($data, 'id_perequest', $id);
-        // return $this->db->lastInsertId();
+        $data = [
+            'id_perequest'  =>   $data['id_perequest'],
+            'id_terequest'   =>  $data['id_terequest'],
+            'created_at' => date('Y-m-d H:i:s', strtotime('+1 minutes')),
+        ];
+        $this->update($data, 'id_perequest', $data['id_perequest']);
+        return $this->db->lastInsertId();
     }
 
     public function sendRequest($id, $user)
@@ -173,10 +175,10 @@ class RequestModel extends BaseModel
     public function getAllRequestReject($id)
     {
         $qb = $this->db->createQueryBuilder();
-        $this->query = $qb->select('req.id', 'id_perequest', 'id_terequest', 'user.username as perequest', 'user1.username as terequest', 'id_terequest', 'req.status as request_status', 'req.blokir as request_blokir', 'req.created_at', 'req.updated_at')
+        $this->query = $qb->select('req.id', 'id_perequest', 'id_terequest', 'user.nama_lengkap as perequest', 'user1.nama_lengkap as terequest', 'id_terequest', 'req.status as request_status', 'req.blokir as request_blokir', 'req.created_at', 'req.updated_at')
             ->from($this->table,'req')
-            ->join('req','users', 'user', 'req.id_perequest = user.id')
-            ->join('req','users', 'user1', 'req.id_terequest = user1.id')
+            ->join('req','profil', 'user', 'req.id_perequest = user.user_id')
+            ->join('req','profil', 'user1', 'req.id_terequest = user1.user_id')
             ->where('req.blokir = 1')
             ->andWhere('id_perequest = '. $id);
 

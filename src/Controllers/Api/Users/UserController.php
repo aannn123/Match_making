@@ -772,23 +772,31 @@ class UserController extends BaseController
         $userId = $userToken->getUserId($token);
         $findUser = $requests->findTwo('id_terequest', $args['id'], 'id_perequest', $userId);
         $finds = $user->getUser('id', $userId);
-        // var_dump($finds['status']);die;
+        // var_dump();die;
         $find = $requests->getRequest('id_terequest', $args['id']);
-        // var_dump($find['id_perequest'] && $find['id_terequest'] && $find['blokir'] == 0);die();
+        $getRequest = $requests->getRequest('id_terequest', $args['id']);
+        // var_dump($getRequest['created_at']);die();
         $data = [
             'id_terequest'  =>  $args['id'],
             'id_perequest' => $userId,
         ];
 
+        $update = [
+            'created_at' => date('Y-m-d H:i:s', strtotime('+1 minutes')),
+        ];
+        // var_dump($req);die;
         if ($findUser) {
             $data = $this->responseDetail(404, true, 'Data tidak ditemukan');
             if ($find['id_perequest'] && $find['id_terequest'] && $find['blokir'] == 1 && $find['status'] == 1) {
-                $requests->sendRequestTwo($userId, $args['id']);
+
+                $send = $requests->sendRequestTwo($userId, $args['id']);
+                $requests->updateData($update, $getRequest['id']);
                 $data = $this->responseDetail(200, false, 'Berhasilkan mengirimkan request', [
                         'data' => $data
                     ]);
             } elseif ($find['id_perequest'] && $find['id_terequest'] && $find['blokir'] == 2 && $find['status'] == 2) {
                 $requests->sendRequestThree($userId, $args['id']);
+                $requests->updateData($update, $getRequest['id']);
                 $data = $this->responseDetail(200, false, 'Berhasilkan mengirimkan request', [
                         'data' => $data
                     ]);
@@ -852,8 +860,6 @@ class UserController extends BaseController
             return $data;
     }
 
-
-
     public function getAllNotification($request, $response)
     {
         $user = new UserModel($this->db);
@@ -864,21 +870,25 @@ class UserController extends BaseController
 
         $get = $requests->allNotification($userId);
         $find = $requests->getRequest('id_terequest', $userId);
+        $findUser = $user->getUser('id', $userId);
         // var_dump($find['id_perequest']);die;
         // $gender = $user->find('gender');
-        // var_dump($userId);die();
+        // var_dump(date('Y-m-d H:i:s'));die;
         $countUser = count($get);
         $query = $request->getQueryParams();
         if ($get) {
             $page = !$request->getQueryParam('page') ? 1 : $request->getQueryParam('page');
             $perPage = $request->getQueryParam('perpage');
             $getNotification = $requests->allNotification($userId)->setPaginate($page, $perPage);
-
+            // $date = date('Y-m-d H:i:s');
+            // var_dump($date);die;
             if ($getNotification) {
-                $data = $this->responseDetail(200, false,  'Data notification tersedia', [
+                if ($find['created_at'] <= date('Y-m-d H:i:s')) {
+                    $data = $this->responseDetail(200, false,  'Data notification tersedia', [
                         'data'          =>  $getNotification['data'],
                         'pagination'    =>  $getNotification['pagination'],
                     ]);
+                }
             } else {
                 $data = $this->responseDetail(404, true, 'Notification tidak ditemukan');
             }

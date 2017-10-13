@@ -55,7 +55,7 @@
                 </div>
 
               <div class="input-field col s12 {{ errors.kewarganegaraan ? 'has-error' : '' }}">
-                 <select name="kewarganegaraan">
+                 <select name="kewarganegaraan" class="select-2">
                     <option value = "0" disabled selected>Pilih Negara</option>
                     {% for negara in negara %}
                     <option value = "{{negara.id}}" {% if data.kewarganegaraan == '{{negara.id}}' %} selected="selected" {% endif %}>{{negara.nama}}</option>
@@ -68,7 +68,7 @@
                 </div>
 
                <div class="input-field col s12 {{ errors.provinsi ? 'has-error' : '' }}">
-                 <select name="provinsi">
+                 <select class="select-2" name="provinsi">
                     <option value = "0" disabled selected>Pilih Provinsi</option>
                     {% for provinsi in provinsi %}
                     <option value = "{{provinsi.id}}" {% if data.provinsi == '{{provinsi.id}}' %} selected="selected" {% endif %}>{{provinsi.nama}}</option>
@@ -81,7 +81,7 @@
                 </div>
 
              <div class="input-field col s12 {{ errors.kota ? 'has-error' : '' }}">
-                 <select name="kota">
+                 <select class="select-2" name="kota">
                     <option value = "0" disabled selected>Pilih Kota</option>
                     {% for kota in kota %}
                     <option value = "{{kota.id}}" {% if data.kota == '{{kota.id}}' %} selected="selected" {% endif %}>{{kota.nama}}</option>

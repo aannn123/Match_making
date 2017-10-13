@@ -7,7 +7,7 @@
             <li><a href="#modal1" class="modal-trigger" ><i class="material-icons">search</i></a></li>
             <li><a href="{{ path_for('user.statistik') }}" style=""><i class="material-icons">equalizer</i></a></li>
             
-            <li><a href="{{ path_for('user.notification') }}"><i class="material-icons">notifications_none</i><span class="new badge red" style=" position:absolute;margin:3px;border-radius:100px;top:2px;right:46px" data-badge-caption="0"></span></a></li>
+            <li class="notif"><a href="{{ path_for('user.notification') }}"><i class="material-icons">notifications_none</i><span class="new badge red" style=" position:absolute;margin:3px;border-radius:100px;top:2px;right:46px" data-badge-caption="{{ notif.request|length + notif.blokir|length }}"></span></a></li>
             <li><a href="{{ path_for('user.my.profil') }}"><i class="material-icons">account_circle</i></a></li>
           </ul>
         </div>
@@ -64,60 +64,11 @@
     </div>
   </div>
 </div>
+{% endif %}
+
 <!-- {% if pagination.total_data == null %}
 <center><b style="font-size:20px; xfont-family:initial;font-style:oblique;color:red">User tidak ditemukan</b>
   <br><a href="{{ path_for('user.home') }}"><button class="btn waves-effect waves-blue blue">Back</button></a>
 </center>
 {% endif %} -->
-<script src="{{ base_url() }}/assets/app-assets/js/core/libraries/jquery.min.js" type="text/javascript"></script>
 
-<script>
-  $('body').on('click', '.', function(e) {
-    e.preventDefault();
-    return false;
-});
-</script>
-{% endif %}
-<!-- <form>
-        <div class="input-field">
-          <input id="search" type="search" required>
-          <label class="label-icon" for="search"><i class="material-icons">search</i></label>
-          <i class="material-icons">close</i>
-        </div>
-      </form> -->
-<!-- 
-<nav  style="margin-top:-300px;width:40%;margin:0 auto;z-index: 3;">
-    <div class="green">
-        <div class="nav-buttom">
-          &nbsp;<a href="#!" class=""></a>
-          <ul class="right">
-            <li><a href="" style=""><i class="material-icons">equalizer</i></a></li>
-            <li><a href=""><i class="material-icons">notifications_none</i></a></li>
-            <li><a href=""><i class="material-icons">account_circle</i></a></li>
-          </ul>
-        </div>
-    </div>
-</nav> -->
-<!-- <nav  style="margin-top:-300px;width:40%;margin:0 auto;z-index: 3;">
-    <div class="green">
-        <div class="nav-buttom">
-          &nbsp;<a href="#!" class=""></a>
-          <ul class="right">
-            <li><a href="" style=""><i class="material-icons">equalizer</i></a></li>
-            <li><a href=""><i class="material-icons">notifications_none</i></a></li>
-            <li><a href=""><i class="material-icons">account_circle</i></a></li>
-          </ul>
-        </div>
-    </div>
-</nav> -->
-    <!--   <nav>
-    <div class="nav-wrapper">
-      <form>
-        <div class="input-field">
-          <input id="search" type="search" required>
-          <label for="search"><i class="material-icons">search</i></label>
-          <i class="material-icons">close</i>
-        </div>
-      </form>
-    </div>
-  </nav> -->

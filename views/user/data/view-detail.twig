@@ -36,7 +36,11 @@
             <div class="card-content white-text">
               <span class="card-title" style="color:black;font-size:20px; font-family:initial;font-style:oblique">Profil {{profil.nama_lengkap}}</span><hr><br>
               <div class="col s12 m6 l5">
-              <img src="{{ base_url() }}/assets/picture/woman.jpg" class="responsive-img materialboxed"  width="" style="width:" alt="">
+              {% if user.gender == 'laki-laki' %}
+              <img src="{{ base_url() }}/assets/picture/avatar.png" class="responsive-img materialboxed"  width="" style="width:" alt="">
+              {% else %}
+              <img src="{{ base_url() }}/assets/picture/woman.jpg" class="responsive-img materialboxed"  width="" style="width:" alt="">  
+              {% endif %}
               </div> 
               <p id="tabs font" style="color:black"><b>Nama Lengkap : </b>{{profil.nama_lengkap}} .</p>
               <p id="tabs font" style="color:black"><b>Jenis Kelamin : </b>{{user.gender}} .</p>

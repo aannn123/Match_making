@@ -1,27 +1,7 @@
 {% extends 'user/templates/default.twig' %}
 {% block title %} Notification {% endblock %}
-{% block content %}<!-- 
-<div class="container" style="width:100%;">
-    <h5 style="font-family:initial;font-style:oblique">Notification</h5>
-     <div class="collection">
-     {% for data in data  %}
-        <p class="collection-item" ><span style="float:right"><a href="{{ path_for('user.approve.request', {id:data.id_perequest}) }}" style="color:green" data-position="bottom" data-delay="50" data-tooltip="Approve Request" class="tooltipped"><i class="material-icons">done</i></a><a href="{{ path_for('user.blokir-notification', {id:data.id_perequest}) }}" style="color:red" data-position="bottom" data-delay="50" data-tooltip="Tolak Request" class="tooltipped"><i class="material-icons">clear</i></a></span>
-        {% if login.gender == 'laki-laki' %}
-            <a href="{{ path_for('user.notification.detail', {id:data.id_perequest}) }}"  data-position="bottom" data-delay="50" data-tooltip="View Request Detail User" class="tooltipped"><img src="{{ base_url() }}/assets/picture/woman.jpg"  class="circle responsive-img"  width="650" style="width:10%" alt=""></a><br>{{data.perequest}} <b style="color:black;float:right"> sent a request to you</b></p>
-        {% else %}
-            <a href="{{ path_for('user.notification.detail', {id:data.id_perequest}) }}"  data-position="bottom" data-delay="50" data-tooltip="View Request Detail User" class="tooltipped"><img src="{{ base_url() }}/assets/picture/avatar.png"  class="circle responsive-img"  width="650" style="width:10%" alt=""></a><br>{{data.perequest}} <b style="color:black;float:right"> sent a request to you</b></p>
-        {% endif %}
-     {% endfor %}
+{% block content %}
 
-     {% for data in blokir  %}
-     {% if login.gender == 'perempuan' %}
-        <p class="collection-item" ><span style="float:right"><a href="{{ path_for('user.delete.notification', {id:data.id_terequest}) }}" style="color:red" data-position="bottom" data-delay="50" data-tooltip="Delete Notification" class="tooltipped"><i class="material-icons">clear</i></a></span><a href="{{ path_for('user.notification.detail', {id:data.id_perequest}) }}"  data-position="bottom" data-delay="50" data-tooltip="View Request Detail User" class="tooltipped"><img src="{{ base_url() }}/assets/picture/avatar.png"  class="circle responsive-img"  width="650" style="width:10%" alt=""></a><br>{{data.terequest}} <b style="color:black;float:right"> menolak request anda</b></p>
-     {% else %}
-          <p class="collection-item" ><span style="float:right"><a href="{{ path_for('user.delete.notification', {id:data.id_terequest}) }}" style="color:red" data-position="bottom" data-delay="50" data-tooltip="Delete Notification" class="tooltipped"><i class="material-icons">clear</i></a></span><a href="{{ path_for('user.notification.detail', {id:data.id_perequest}) }}"  data-position="bottom" data-delay="50" data-tooltip="View Request Detail User" class="tooltipped"><img src="{{ base_url() }}/assets/picture/woman.jpg"  class="circle responsive-img"  width="650" style="width:10%" alt=""></a><br>{{data.terequest}} <b style="color:black;float:right"> menolak request anda</b></p>
-     {% endif %}
-     {% endfor %}
-
-</div> -->
  <ul class="collection with-header">
             <li class="collection-header"><b style="font-family:initial;font-style:oblique;font-size:20px">Notification</b></li>
 
@@ -72,5 +52,9 @@
             {% endif %}
             {% endfor %}
       </ul>
+<!-- {% if (pagination.request.total_data or pagination.blokir.total_data == null) or (pagination.request.total_data and pagination.blokir.total_data == null) %}
+    <center><b style="font-family:initial;font-style:oblique;font-size:20px;color:rgba(70, 53, 53, 0.48)">Tidak ada pemberitahuan</b><br>
+    </center>
+{% endif %} -->
 {% endblock %}
 

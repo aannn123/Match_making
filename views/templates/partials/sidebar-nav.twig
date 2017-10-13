@@ -39,7 +39,7 @@
               </li>
             </ul>
           </li>
-          <li class=" nav-item"><a href="#"><i class="icon-ios-albums-outline"></i><span data-i18n="nav.cards.main" class="menu-title">Notification</span></a>
+          <li class=" nav-item"><a href="#"><i class="icon-ios-bell"></i><span data-i18n="nav.cards.main" class="menu-title">Notification <b style="" class="tag tag-pill tag-default tag-danger tag-default">{{ notif.req|length + notif.blok|length + notif.approve|length }}</b></span></a>
             <ul class="menu-content">
               <li><a href="{{ path_for('admin.notification.all') }}" data-i18n="nav.cards.card_bootstrap" class="menu-item">All Notification</a>
               </li>

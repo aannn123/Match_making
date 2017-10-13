@@ -1460,7 +1460,8 @@ class UserController extends BaseController
             }
 
       $data = json_decode($result->getBody()->getContents(), true);
-      // var_dump($data);die;
+      // $_SESSION['notif'] = $user['data'];
+      // var_dump($_SESSION['notif']['request']);die;
        try {
             $result1 = $this->client->request('GET',
             $this->router->pathFor('api.request.reject'), [
@@ -1477,13 +1478,19 @@ class UserController extends BaseController
             }
 
       $blokir = json_decode($result1->getBody()->getContents(), true);
-      // var_dump($date);die;  
+      $_SESSION['notif'] = [
+          'request' => $data['data'],
+          'blokir' => $blokir['data']
+      ];
+      // var_dump($_SESSION['notif']);die;  
       return $this->view->render($response, 'user/data/notification/notification.twig', [
           'data' => $data['data'],
           'blokir' => $blokir['data'],
           'approve' => $user['data'],
-          'pagination' => $blokir['pagination'],
-          'paginate' => $data['pagination'],
+          'pagination' => [
+              'request' => $data['pagination'],
+              'blokir'  => $blokir['pagination']
+          ],
         ]);
 
     }

@@ -10,7 +10,7 @@
         <div class="content-body"><!-- stats -->
 <div class="row">
     <div class="col-xl-4 col-lg-6 col-xs-12">
-        <div class="card">
+        <a href="{{ base_url() }}/admin/user/wanita" class="pink"><div class="card">
             <div class="card-body">
                 <div class="card-block">
                     <div class="media">
@@ -24,10 +24,11 @@
                     </div>
                 </div>
             </div>
+            </a>
         </div>
     </div>
     <div class="col-xl-4 col-lg-6 col-xs-12">
-        <div class="card">
+        <a href="{{ base_url() }}/admin/user/pria" class="teal"><div class="card">
             <div class="card-body">
                 <div class="card-block">
                     <div class="media">
@@ -42,9 +43,10 @@
                 </div>
             </div>
         </div>
+        </a>
     </div>
     <div class="col-xl-4 col-lg-6 col-xs-12">
-        <div class="card">
+        <a href="{{ base_url() }}/admin/user/new" class="deep-orange"><div class="card">
             <div class="card-body">
                 <div class="card-block">
                     <div class="media">
@@ -59,43 +61,46 @@
                 </div>
             </div>
         </div>
+        </a>
     </div>
     <div class="col-xl-4 col-lg-6 col-xs-12">
-        <div class="card">
+        <a href="{{ base_url() }}/admin/user" class="info"><div class="card">
             <div class="card-body">
                 <div class="card-block">
                     <div class="media">
                         <div class="media-body text-xs-left">
-                            <h3 class="deep-orange"> {{ counts.allUser }} </h3>
+                            <h3 class="info"> {{ counts.allUser }} </h3>
                             <span>Total Member Yang Terdaftar</span>
                         </div>
                         <div class="media-right media-middle">
-                            <i class="icon-users deep-orange font-large-2 float-xs-right"></i>
+                            <i class="icon-users info font-large-2 float-xs-right"></i>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        </a>
     </div>
     <div class="col-xl-4 col-lg-6 col-xs-12">
-        <div class="card">
+        <a href="{{ base_url() }}/admin/user/get-request-all" class="red"><div class="card">
             <div class="card-body">
                 <div class="card-block">
                     <div class="media">
                         <div class="media-body text-xs-left">
-                            <h3 class="deep-orange">{{ counts.userRequest }}</h3>
+                            <h3 class="red">{{ counts.userRequest }}</h3>
                             <span>Member Request</span>
                         </div>
                         <div class="media-right media-middle">
-                            <i class="icon-send-o deep-orange font-large-2 float-xs-right"></i>
+                            <i class="icon-send-o red font-large-2 float-xs-right"></i>
                         </div>
                     </div>
                 </div>
             </div>
+            </a>
         </div>
     </div>
     <div class="col-xl-4 col-lg-6 col-xs-12">
-        <div class="card">
+        <a href="{{ base_url() }}/admin/user/get-taaruf" class="cyan"><div class="card">
             <div class="card-body">
                 <div class="card-block">
                     <div class="media">
@@ -110,6 +115,7 @@
                 </div>
             </div>
         </div>
+        </a>
     </div>
 </div>
      

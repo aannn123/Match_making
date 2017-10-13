@@ -5,6 +5,8 @@
     <title>{% block title %}{% endblock %}</title>
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <meta http-equiv="refresh" content="1" /> -->
+
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="shortcut icon" type="image/png" href="{{ base_url() }}/assets/images/logo.png">
@@ -80,7 +82,7 @@
     {% block js %}
         
     {% endblock %}
-    
+
    <script>
          $(document).ready(function() {
             $('select').material_select();
