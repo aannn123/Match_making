@@ -28,6 +28,8 @@ $app->group('/api', function() use ($app, $container) {
         $app->post('/search', 'App\Controllers\Api\Users\UserController:searchUserAll')->setName('api.search.user.all');
         $app->get('/all-notification', 'App\Controllers\Api\AdminController:getAllNotification')->setName('admin.notification');
 
+        $app->get('/request/set-timeout', 'App\Controllers\Api\AdminController:setTimeOut')->setName('admin.set-timeout');
+
 
 
 

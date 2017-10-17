@@ -14,7 +14,7 @@ class RegisterModel extends BaseModel
         $data = [
             'user_id' => $id,
             'token' => $token,
-            'expired_date' => date('Y-m-d H:i:s', strtotime('+1 minute'))
+            'expired_date' => date('Y-m-d H:i:s')
         ];
 
             $this->createData($data);

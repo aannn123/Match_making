@@ -1834,8 +1834,60 @@ class UserController extends BaseController
         }
     }
 
-    public function getAllUserSearch(Request $request,Response $response)
+    public function getAllUserSearch(Request $request,Response $response, $args)
     {
+       try {
+            $result = $this->client->request('GET',
+            $this->router->pathFor('api.notification'), [
+                    'query' => [
+                        'id_terequest' => $_SESSION['login']['id'],
+                        'perpage' => 10,
+                        'page'    => $request->getQueryParam('page')
+                    ]
+                ]);
+
+             try {
+                $users = $this->client->request('GET',
+                $this->router->pathFor('api.user.get.taaruf'), [
+                    'query' => [
+                        'id' => $_SESSION['login']['id'],
+                        'perpage' => 10,
+                        'page'    => $request->getQueryParam('page')
+                        ]
+                    ]);
+            } catch (GuzzleException $e) {
+                  $users = $e->getResponse();
+                 }
+             $user = json_decode($users->getBody()->getContents(), true);
+             // var_dump($user['data']);die;
+
+            } catch (GuzzleException $e) {
+                $result = $e->getResponse();
+            }
+
+      $data = json_decode($result->getBody()->getContents(), true);
+      // $_SESSION['notif'] = $user['data'];
+      // var_dump($_SESSION['notif']['request']);die;
+       try {
+            $result1 = $this->client->request('GET',
+            $this->router->pathFor('api.request.reject'), [
+                    'query' => [
+                        'id_terequest' => $_SESSION['login']['id'],
+                        'perpage' => 10,
+                        'page'    => $request->getQueryParam('page')
+                    ]
+                ]);
+
+
+            } catch (GuzzleException $e) {
+                $result1 = $e->getResponse();
+            }
+
+      $blokir = json_decode($result1->getBody()->getContents(), true);
+      $_SESSION['notif'] = [
+          'request' => $data['data'],
+          'blokir' => $blokir['data']
+      ];
         try {
             $result = $this->client->request('POST',
             $this->router->pathFor('api.search.User.Pria'), [
@@ -1886,25 +1938,7 @@ class UserController extends BaseController
         }
           $request = json_decode($result2->getBody()->getContents(), true); 
 
-          try {
-            $result3 = $this->client->request('GET', $this->router->pathFor('api.notification'),
-            ['query' => [
-                // 'user_id'  => $_SESSION['login']['id'],
-                // 'page'     => $request->getQueryParam('page'),
-                'perpage'  => 10,
-                ]
-            ]);
-        } catch (GuzzleException $e) {
-            $result3 = $e->getResponse();
-        }
-        $notif = json_decode($result3->getBody()->getContents(), true);
-        if ($notif['message'] == 'Data ditemukan') {
-            $_SESSION['notif'] = $notif['data'];
-        }
-        // var_dump($notif['message']);die;
 
-        // var_dump($request);die;
-        // $this->flash->addMessage('succes', 'sadasdsa');
         return $this->view->render($response, 'user/user.twig', [
             'data'          =>  $data['data'] ,
             'user'          =>  $profil['data'] ,

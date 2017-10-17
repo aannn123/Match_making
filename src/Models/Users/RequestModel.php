@@ -9,12 +9,12 @@ class RequestModel extends BaseModel
     protected $table = 'request_taaruf';
     protected $column = ['id', 'id_perequest', 'id_terequest', 'status', 'blokir', 'updated_at', 'created_at'];
 
-    public function createRequest(array $data)
+    public function createRequest(array $data, $date)
     {
         $data = [
             'id_perequest'  =>  $data['id_perequest'],
             'id_terequest'   =>  $data['id_terequest'],
-            'created_at' => date('Y-m-d H:i:s', strtotime('+1 minutes')),
+            'created_at' => date('Y-m-d H:i:s', strtotime('+30 minutes')),
         ];
         $this->createData($data);
         return $this->db->lastInsertId();
@@ -25,7 +25,7 @@ class RequestModel extends BaseModel
         $data = [
             'id_perequest'  =>   $data['id_perequest'],
             'id_terequest'   =>  $data['id_terequest'],
-            'created_at' => date('Y-m-d H:i:s', strtotime('+1 minutes')),
+            'created_at' => date('Y-m-d H:i:s', strtotime('+30 minutes')),
         ];
         $this->update($data, 'id_perequest', $data['id_perequest']);
         return $this->db->lastInsertId();

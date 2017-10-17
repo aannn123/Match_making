@@ -1,7 +1,6 @@
 {% extends 'user/templates/default.twig' %}
 {% block title %} Notification {% endblock %}
 {% block content %}
-
  <ul class="collection with-header">
             <li class="collection-header"><b style="font-family:initial;font-style:oblique;font-size:20px">Notification</b></li>
 
@@ -44,17 +43,15 @@
             {% if login.gender == 'perempuan' %}
                 <li class="collection-item"><img src="{{ base_url() }}/assets/picture/avatar.png" style="float:left;width:25px" class="circle responsive-img" alt="">&nbsp; <a href="{{ path_for('user.notification.detail', {id:data.id_perequest}) }}" style="color:#26a69a">{{data.terequest}}</a><a href="{{ path_for('user.delete.notification', {id:data.id_terequest}) }}" style="color:red;float:right;" data-position="bottom" data-delay="50" data-tooltip="Hapus Notifikasi" class="tooltipped"><i class="material-icons">clear</i></a><i style="float:right;">
 
-                Menolak request kamu | <a href="#" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="{{data.created_at|date("F jS \\a\\t H:i")}}">{{data.created_at|date("H:i")}}</a> &emsp;</i></li>
+                Menolak request kamu | <a href="#" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="{{data.updated_at|date("F jS \\a\\t H:i")}}">{{data.updated_at|date("H:i")}}</a> &emsp;</i></li>
             {% else %}
                 <li class="collection-item"><img src="{{ base_url() }}/assets/picture/woman.jpg" style="float:left;width:25px" class="circle responsive-img" alt="">&nbsp; <a href="{{ path_for('user.notification.detail', {id:data.id_perequest}) }}" style="color:#26a69a">{{data.terequest}}</a><a href="{{ path_for('user.delete.notification', {id:data.id_terequest}) }}" style="color:red;float:right;" data-position="bottom" data-delay="50" data-tooltip="Hapus Notifikasi" class="tooltipped"><i class="material-icons">clear</i></a><i style="float:right;">
 
-                Menolak request kamu | <a href="#" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="{{data.created_at|date("F jS \\a\\t H:i")}}">{{data.created_at|date("H:i")}}</a> &emsp;</i> </li>
+                Menolak request kamu | <a href="#" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="{{data.updated_at|date("F jS \\a\\t H:i")}}">{{data.updated_at|date("H:i")}}</a> &emsp;</i> </li>
             {% endif %}
             {% endfor %}
       </ul>
-<!-- {% if (pagination.request.total_data or pagination.blokir.total_data == null) or (pagination.request.total_data and pagination.blokir.total_data == null) %}
-    <center><b style="font-family:initial;font-style:oblique;font-size:20px;color:rgba(70, 53, 53, 0.48)">Tidak ada pemberitahuan</b><br>
-    </center>
-{% endif %} -->
 {% endblock %}
-
+{% block js %}
+      
+ {% endblock %} 
