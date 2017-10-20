@@ -29,7 +29,7 @@ class CreateDipoligamiTable extends AbstractMigration
     {
          $dipoligami = $this->table('dipoligami');
              $dipoligami->addColumn('user_id', 'integer')
-                  ->addColumn('kesiapan', 'enum', ['values' => ['bersedia', 'kurang yakin', 'tidak bersedia']])
+                  ->addColumn('kesiapan', 'string')
                   ->addColumn('penjelasan_kesiapan', 'text')
                   ->addColumn('updated_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP','update' => 'CURRENT_TIMESTAMP'])
                   ->addColumn('created_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
