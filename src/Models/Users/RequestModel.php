@@ -67,7 +67,8 @@ class RequestModel extends BaseModel
     {
         $qb = $this->db->createQueryBuilder();
 
-        $qb->delete($this->table)
+        $qb->update($this->table)
+            ->set('blokir', 3)
             ->where('status = 1')
             ->andWhere('blokir = 1')
             ->orWhere('status = 2')

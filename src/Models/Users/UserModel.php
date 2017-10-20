@@ -231,6 +231,7 @@ class UserModel extends BaseModel
                  ->orWhere('email LIKE :val')
                  ->orWhere('phone LIKE :val')
                  ->andWhere('deleted = 0')
+                 ->orderBy('created_at', 'desc')
                  ->setParameter('val', '%'.$val.'%');
 
         // $result = $this->query->execute();

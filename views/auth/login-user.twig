@@ -9,13 +9,14 @@
     <link rel="shortcut icon" type="image/png" href="{{ base_url() }}/assets/picture/logo.png">
     <link rel="stylesheet" href="{{ base_url() }}/assets/assets/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
- 
     <link rel="stylesheet" href="{{ base_url() }}/assets/assets/css/user.css">
+    <style>
+      
+    </style>
 </head>
 
 <body> 
-
+<div id="lol"></div>
 <center><div class="loader" style="height:700px;width:100%;background:rgba(252, 250, 250, 0.48);position:fixed;z-index:9999999999999;margin-top:-20px;padding:20%">
   <div class="preloader-wrapper big active">
     <div class="spinner-layer spinner-green-only">
@@ -35,7 +36,7 @@
         <div class="midle">
         {% include 'templates/partials/flash.twig' %}
         <center><h5 style="color:white">Welcome</h5></center>
-        <center><img src="{{base_url()}}/assets/picture/logomm.png" style="width:20%" alt=""></center>
+        <center><img class="img" src="{{base_url()}}/assets/picture/logomm.png" style="width:20%" alt=""></center>
         <center><b style="color:whitesmoke">Login</b></center>
             <div class="row">
                 <form class="col s12" action="{{ path_for('post.login.user') }}" method="POST">

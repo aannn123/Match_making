@@ -61,9 +61,9 @@
                                 </td>
                                 <td>
                                  {% if (user.status == 0) and (user.role == 0) %}
-                                   <span class="tag tag-danger" style="border-radius:10%">Belum diapprove</span>
+                                   <span class="tag tag-danger" style="border-radius:10%">Belum Diverifikasi</span>
                                 {% elseif (user.status == 1) %}
-                                   <span class="tag tag-primary" style="border-radius:10%">Belum Diverifikasi</span>
+                                   <span class="tag tag-primary" style="border-radius:10%">Belum di approve</span>
                                 {% elseif user.status == 2 %}
                                    <span class="tag tag-success" style="border-radius:10%">Complete</span>
                                 {% endif %}

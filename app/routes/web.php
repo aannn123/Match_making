@@ -149,7 +149,7 @@ $app->group('/admin', function() use ($app, $container) {
         $app->get('/change/avatar',  'App\Controllers\Web\UserController:getChangeAvatar')->setName('user.change.avatar');
 
         $app->get('/cancel/taaruf/{id}',  'App\Controllers\Web\UserController:cancelTaaruf')->setName('user.cancel.taaruf');
-       
+        $app->get('/request/statistik',  'App\Controllers\Web\UserController:userStatistikRequest')->setName('user.request.statistik');
     });
 
 })->add(new \App\Middlewares\web\AuthMiddleware($container));

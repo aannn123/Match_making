@@ -992,18 +992,7 @@ class UserController extends BaseController
                        'target_menikah' => $request->getParam('target_menikah'),
                        'tentang_saya' => $request->getParam('tentang_saya'),
                        'pasangan_harapan' => $request->getParam('pasangan_harapan'),
-                       // 'user_id' => 4,
-                       // 'nama_lengkap' => 'Farhan ' ,
-                       // 'tanggal_lahir' =>  '2017-09-05',
-                       // 'tempat_lahir' => 'dasdas',
-                       // 'alamat' =>  'dasdsa',
-                       // 'umur' => 2,
-                       // 'kota' => 2,
-                       // 'provinsi' => 2 ,
-                       // 'kewarganegaraan' => 2,
-                       // 'target_menikah' => '2017-09-05' ,
-                       // 'tentang_saya' =>  'asdsad',
-                       // 'pasangan_harapan' => 'dasdas' ,
+
                    ],
                ]);
            } catch (GuzzleException $e) {
@@ -1045,7 +1034,7 @@ class UserController extends BaseController
           }
 
         $latar = json_decode($result3->getBody()->getContents(), true);
-        
+        // var_dump($_SESSION['login']['id']);die();
         return $this->view->render($response, 'user/data/form/update/latar-belakang.twig',[ 
           'data' => $latar['data'],
         ]);
@@ -1061,7 +1050,7 @@ class UserController extends BaseController
                $result = $this->client->request('PUT',
                $this->router->pathFor('api.user.update.latar-belakang'),
                    ['form_params' => [
-                       'user_id'     => $_SESSION['login']['id'],
+                       'user_id'     => $id,
                        'pendidikan' => $request->getParam('pendidikan'),
                        'penjelasan_pendidikan' => $request->getParam('penjelasan_pendidikan'),
                        'agama' => $request->getParam('agama'),
@@ -1079,7 +1068,7 @@ class UserController extends BaseController
            }
            $data = json_decode($result->getBody()->getContents(), true);
            
-            // var_dump($data['message']);die;
+            // var_dump($id);die;
         if ($this->validator->validate()) {
            if ($data['code'] == 201 ) {
                 $this->flash->addMessage('error_material', $data['message']);
@@ -2062,7 +2051,7 @@ class UserController extends BaseController
 
 
         if ($data['error'] == false) {
-            $this->flash->addMessage('success_material', 'Foto profil di upload');
+            $this->flash->addMessage('success_material', 'Foto profil di perbarui');
             return $response->withRedirect($this->router->pathFor('user.change-image'));
             $_SESSION['login'] = $newUser['data'];
         } else {
@@ -2147,6 +2136,11 @@ class UserController extends BaseController
             $this->flash->addMessage('error_material', $data['message']);
             return $response->withRedirect($this->router->pathFor('user.statistik'));
         }
+    }
+
+    public function userStatistikRequest(Request $request, Response $response)
+    {
+      return $this->view->render($response, 'user/data/user-statistik.twig');
     }
 
 }

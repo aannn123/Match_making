@@ -411,7 +411,7 @@ class UserController extends BaseController
         } else{
 
             return  $this->view->render($response, 'response/activation.twig', [
-                'message' => 'Token salah atau anda belum mendaftar atau akun anda sudah teraktivasi'
+                'message' => 'Akun anda sudah teraktivasi, atau mungkin token anda sudah expired'
             ]);
         }
             return $data;
@@ -604,7 +604,7 @@ class UserController extends BaseController
 <td style="font-family: Avenir, Helvetica, sans-serif; box-sizing: border-box;">
         <table class="footer" align="center" width="570" cellpadding="0" cellspacing="0" style="font-family: Avenir, Helvetica, sans-serif; box-sizing: border-box; margin: 0 auto; padding: 0; text-align: center; width: 570px; -premailer-cellpadding: 0; -premailer-cellspacing: 0; -premailer-width: 570px;"><tr>
 <td class="content-cell" align="center" style="font-family: Avenir, Helvetica, sans-serif; box-sizing: border-box; padding: 35px;">
-                    <p style="font-family: Avenir, Helvetica, sans-serif; box-sizing: border-box; line-height: 1.5em; margin-top: 0; color: #AEAEAE; font-size: 12px; text-align: center;">© 2017 Match Making.</p>
+                    <p style="font-family: Avenir, Helvetica, sans-serif; box-sizing: border-box; line-height: 1.5em; margin-top: 0; color: #AEAEAE; font-size: 12px; text-align: center;">© 2017 Match Making. All rights reserved.</p>
                 </td>
             </tr></table>
 </td>
@@ -883,14 +883,14 @@ class UserController extends BaseController
         // var_dump($req);die;
         if ($findUser) {
             $data = $this->responseDetail(404, true, 'Data tidak ditemukan');
-            if ($find['id_perequest'] && $find['id_terequest'] && $find['blokir'] == 1 && $find['status'] == 1) {
+            if ($find['id_perequest'] && $find['id_terequest'] && $find['blokir'] == 1 && $find['status'] == 1 || $find['id_perequest'] && $find['id_terequest'] && $find['blokir'] == 3 && $find['status'] == 1) {
 
                 $send = $requests->sendRequestTwo($userId, $args['id']);
                 $requests->updateData($update, $getRequest['id']);
                 $data = $this->responseDetail(200, false, 'Berhasilkan mengirimkan request', [
                         'data' => $data
                     ]);
-            } elseif ($find['id_perequest'] && $find['id_terequest'] && $find['blokir'] == 2 && $find['status'] == 2) {
+            } elseif ($find['id_perequest'] && $find['id_terequest'] && $find['blokir'] == 2 && $find['status'] == 2 || $find['id_perequest'] && $find['id_terequest'] && $find['blokir'] == 3 && $find['status'] == 2) {
                 $requests->sendRequestThree($userId, $args['id']);
                 $requests->updateData($update, $getRequest['id']);
                 $data = $this->responseDetail(200, false, 'Berhasilkan mengirimkan request', [

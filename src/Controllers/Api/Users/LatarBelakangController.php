@@ -85,35 +85,6 @@ class LatarBelakangController extends BaseController
         }
 
         return $data;
-
-        // $user      = new UserModel($this->db);
-        // $userToken = new UserToken($this->db);
-        // $token = $request->getHeader('Authorization')[0];
-        // $user = $userToken->getUserId($token);
-        // $latar = new LatarBelakangModel($this->db);
-
-        // $find       = $latar->findWithoutDelete('user_id', $user['id']);
-
-        // if ($find) {
-        //     $datainput  = $request->getParsedBody();
-        //     $datainput['user_id'] = $user['id'];
-
-        //     try {
-        //         $latar->updateLatar($datainput);
-        //         $find  = $latar->findWithoutDelete('user_id', $user['id']);
-
-        //         $data = $this->responseDetail(200, false, 'Data telah terupdate', [
-        //                 'data'  => $find
-        //             ]);
-
-        //     } catch (Exception $e) {
-        //         $data = $this->responseDetail(500, true, $e->getMessage);
-        //     }
-
-        // } else {
-        //     $data = $this->responseDetail(400, true, 'update data gagal');
-        // }
-        // return $data;
     }
 
     public function findData($request, $response, $args)
