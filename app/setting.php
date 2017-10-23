@@ -12,6 +12,7 @@ return [
     'locale' => 'id',
 
 	//setting language
+    //
 	'lang'	=> [
 		'default'	=> 'id',
 	],
